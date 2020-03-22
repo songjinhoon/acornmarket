@@ -47,4 +47,10 @@
 		FROM user1
 		WHERE userid = #{userId}
 	</select>
+	
+	<select id="checkUserId" parameterType="String" resultType="String">
+		SELECT username
+		FROM user1
+		WHERE username = #{userName}
+	</select>
 </mapper>

@@ -42,6 +42,7 @@
                             </c:if>
                              <c:if test="${userId != null }">
                              	<c:if test="${emailCheck != 0 }">
+                             		<a href="${pageContext.request.contextPath}/chat/webNoteListForm?categoryCheck=1"><i class="far fa-envelope"></i></a>
                                 	<a href="${pageContext.request.contextPath}/chat/chatForm"><i class="fa fa-comments"></i></a>
                                 	<a href="${pageContext.request.contextPath}/user/logoutForm"><i class="fa fa-lock"></i></a>
                                 	<a href="${pageContext.request.contextPath}/user/myPage"><i class="fa fa-user-circle"></i></a>  
@@ -71,7 +72,6 @@
                                         <li><a href="blog.html">상품게시판</a></li>
                                         <li><a href="#">지역정보게시판</a></li>
                                         <li><a href="#">Q&A</a></li>
-                                        <li><p onclick="messageEvent()">쪽지</p></li>
                                         <!-- <li><a href="#">공지사항<i class="ti-angle-down"></i></a>
                                             <ul class="submenu">
                                                 <li><a href="#">공지사항</a></li>
@@ -91,12 +91,4 @@
         </div>
     </header>
 </body>
-	<!-- 나중에 지워야합니다. -->
-	<script>
-		function messageEvent(){
-			var popupX = (window.screen.width / 2) - (400 / 2);
-			var popupY= (window.screen.height / 2) - (400 / 2);
-			window.open('http://localhost:8080/zSpringProject/common/messageForm.jsp','window_name','width=400,height=400,location=no,status=no,scrollbars=yes, left=' + popupX + ', top=' + popupY);
-		}
-	</script>	
 </html>

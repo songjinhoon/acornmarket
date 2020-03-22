@@ -14,18 +14,17 @@
 <body>
 	<div class="container" style="border: 1px solid black; width: 70%; margin-top: 30px; margin-bottom: 1qpx solid black; ">
 		<form method="post" action="${pageContext.request.contextPath}/chat/messagePro">
-			<input type="hidden" value="보내는사람이름" name="writer">
-			<input type="hidden" value="받는사람이름" name="receiver">
+			<input type="hidden" value="${userName}" name="writer">
 			<div class="row form-group pt-1">
-				<div class="col-6">보내는사람: </div>
-				<div class="col-6">DATA PUSH</div>
+				<div class="col-lg-4">보내는사람: </div>
+				<div class="col-lg-8">${ userName }</div>
 			</div>
 			<div class="row form-group pt-1">
-				<div class="col-6">받는 사람: </div>
-				<div class="col-6">DATA PUSH</div>
+				<div class="col-lg-4">받는 사람: </div>
+				<div class="col-lg-8"><input type="text" name="receiver" id="exception"></div>
 			</div>
 			<div class="row form-group pt-1" style="width: 80%; margin: 0 auto; ">
-				<textarea class="form-control" rows="5" name="messageContent"></textarea>
+				<textarea class="form-control" rows="5" name="messagecontent"></textarea>
 			</div>		
 			<div class="form-group pt-3"><input type="submit" class="btn btn-primary form-control" value="보내기 "></div>
 		</form>

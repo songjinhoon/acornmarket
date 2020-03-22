@@ -168,4 +168,19 @@ public class MybatisUserDao extends AbstractRepository {
 		}
 		return user;
 	}
+	
+//	아이디 존재 여부 확인
+	public String checkUserId(String userName) {
+		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		String statement = null;
+		try {
+			statement = namespace + ".checkUserId";
+			return sqlSession.selectOne(statement, userName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			sqlSession.close();
+		}
+		return null;
+	}
 }

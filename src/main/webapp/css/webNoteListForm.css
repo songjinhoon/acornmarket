@@ -1,0 +1,16 @@
+* { font-family: 'Noto Sans KR', sans-serif; }
+#section1 { padding:0; height: 450px; border: 10px solid #745d46; }
+#section1 .row { padding: 0; margin: 0; }
+#section2 { height: 430px; border: 1px solid #6E6E6E; }
+#section2 p { text-align: center; margin: 0; padding: 10px 0; }
+#section2 p:hover { cursor: pointer; background-color: #bbbbbb; }
+#section2 span { display: block; font-size: 12px; text-align: center; width: 100%; height: 30px; line-height: 30px; margin-top: 50px; border: 1px solid gainsboro; }
+#section2 span:hover { background-color: #F3E2A9; cursor: pointer;   }
+#section3 { height: 430px; border: 1px solid #6E6E6E; }
+#section3 .container-fluid { height: 370px; }
+#section3 table tbody:hover { cursor: pointer; }
+#section3 table th:nth-child(2) { width: 20%; }
+#section3 table th:nth-child(3) { width: 50%; }
+#section3 table th:nth-child(4) { width: 25%; }
+#section3 button { float: right; width: 10%; }
+#section3 button:hover { background-color: #745d46; }
