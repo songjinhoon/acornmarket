@@ -98,10 +98,16 @@ public class ChatController {
 		if(check == null){
 //			쪽지를 받을 사람이 존재하지 않는다는거지.
 			System.out.println("[쪽지 전송 실패]");
+			String messageContent = webNote.getMessagecontent();
+			String showError = "존재하는 아이디가 없습니다.";
 			PrintWriter script = response.getWriter();
 //			아래에 추가 효과 작업 해야함.
 			script.println("<script>");
-			script.println("history.go(-1)");
+//			script.println("history.go(-1)");
+			
+			script.println("var popupX = (window.screen.width / 2) - (400 / 2)");
+			script.println("var popupY= (window.screen.height / 2) - (400 / 2)");
+			script.println("window.open('http://localhost:8080/zSpringProject/common/messageForm.jsp','쪽지','width=400,height=400,location=no,status=no,scrollbars=yes, left=' + popupX + ', top=' + popupY)");
 			script.println("</script>");
 		}else{
 //			존재 한다면?

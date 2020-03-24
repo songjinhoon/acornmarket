@@ -110,7 +110,7 @@
 		function messageEvent(){
 			var popupX = (window.screen.width / 2) - (400 / 2);
 			var popupY= (window.screen.height / 2) - (400 / 2);
-			window.open('http://localhost:8080/zSpringProject/common/messageForm.jsp','window_name','width=400,height=400,location=no,status=no,scrollbars=yes, left=' + popupX + ', top=' + popupY);
+			window.open('http://localhost:8080/zSpringProject/common/messageForm.jsp','쪽지','width=400,height=400,location=no,status=no,scrollbars=yes, left=' + popupX + ', top=' + popupY);
 		}
 	</script>	
 </body>
