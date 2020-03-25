@@ -3,7 +3,7 @@ package controller;
 import java.io.IOException;
 
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import model.WebNote;
 import repository.MybatisUserDao;
@@ -37,7 +39,6 @@ public class ChatController {
 	public void initProcess(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
 		String userId = (String) session.getAttribute("userId");
-		System.out.println(userId);
 		if(userId != null){
 			userIdCheck = true;
 			userName = (String) session.getAttribute("userName");
@@ -92,32 +93,37 @@ public class ChatController {
 		return "chat/webNoteListForm";
 	}
 	
-	@RequestMapping(value = "messagePro", method = RequestMethod.POST)
-	public void messagePro(WebNote webNote, HttpServletResponse response) throws IOException {
-		String check = userService.checkUserId(webNote.getReceiver());
-		if(check == null){
-//			쪽지를 받을 사람이 존재하지 않는다는거지.
-			System.out.println("[쪽지 전송 실패]");
-			String messageContent = webNote.getMessagecontent();
-			String showError = "존재하는 아이디가 없습니다.";
-			PrintWriter script = response.getWriter();
-//			아래에 추가 효과 작업 해야함.
-			script.println("<script>");
-//			script.println("history.go(-1)");
-			
-			script.println("var popupX = (window.screen.width / 2) - (400 / 2)");
-			script.println("var popupY= (window.screen.height / 2) - (400 / 2)");
-			script.println("window.open('http://localhost:8080/zSpringProject/common/messageForm.jsp','쪽지','width=400,height=400,location=no,status=no,scrollbars=yes, left=' + popupX + ', top=' + popupY)");
-			script.println("</script>");
-		}else{
-//			존재 한다면?
-			service.insertWebNote(webNote);
-			System.out.println("[쪽지 전송 완료]");
-			PrintWriter script = response.getWriter();
-			script.println("<script>");
-			script.println("window.close()");
-			script.println("opener.location.reload(true)");
-			script.println("</script>");
-		}
-	}
+    @RequestMapping(value="messagePro", method=RequestMethod.POST)
+    @ResponseBody
+    public WebNote messagePro(WebNote webNote) {
+    	System.out.println("[TEST] = " + webNote.toString());
+    	String check = userService.checkUserId(webNote.getReceiver());
+    	if(check == null){
+    		return webNote;
+    	}else{
+    		service.insertWebNote(webNote);
+    		webNote.setWriter("[cwjli13wa]");
+    		return webNote;
+    	}
+    }
+    
+    @RequestMapping(value="messageContent", method=RequestMethod.POST)
+    @ResponseBody
+    public WebNote messageContent(WebNote webNote) {
+    	System.out.println("[TEST] = " + webNote.toString());
+    	webNote = service.getWebNote(webNote.getMessageno());
+    	System.out.println("[TEST] = " + webNote.toString());
+    	
+    	return webNote;
+    }
+    
+    @RequestMapping(value="messsageDelete", method=RequestMethod.POST)
+    @ResponseBody 
+    public void messageDelete(@RequestBody HashMap<String, Object> map) {
+    	@SuppressWarnings("unchecked")
+		List<String> list = (List<String>) map.get("messageNoList");
+    	for(int i=0; i<list.size(); i++){
+    		service.deleteWebNote(Integer.parseInt(list.get(i)));
+    	}
+    }
 }

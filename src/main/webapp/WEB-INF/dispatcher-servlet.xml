@@ -17,14 +17,6 @@
 	<context:component-scan base-package="controller, repository" />
 	<mvc:default-servlet-handler />
 	<mvc:view-controller path="/index" view-name="index" />
-	
-	<!-- websocket 설정 -->
-	<websocket:handlers>
-		<websocket:mapping handler="webSocketWebNote" path="/webNoteListForm"/>
-		<websocket:mapping handler="webSocketWebNote" path="/messageForm"/>
-	</websocket:handlers>
-	
-	<bean id="webSocketWebNote" class="util.WebSocketWebNote "></bean>
 
 	<!-- view밑에 있는 파일들은 모두 걸어라 -->
 	<bean id="viewResolver"

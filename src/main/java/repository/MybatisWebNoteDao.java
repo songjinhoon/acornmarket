@@ -93,4 +93,32 @@ public class MybatisWebNoteDao extends AbstractRepository{
 		}
 		return null;
 	}
+	
+	public WebNote getWebNote(int messageNo){
+		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		String statement = null;
+		try{
+			statement = namespace + ".getWebNote";
+			return sqlSession.selectOne(statement, messageNo);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			sqlSession.close();
+		}
+		return null;
+	}
+	
+	public void deleteWebNote(int messageNo){
+		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		String statement = null;
+		try{
+			statement = namespace + ".deleteWebNote";
+			sqlSession.delete(statement, messageNo);
+			sqlSession.commit();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			sqlSession.close();
+		}
+	}
 }

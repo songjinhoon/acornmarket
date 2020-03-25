@@ -20,39 +20,50 @@
    <div class="container-fluid" style="background-color: #212529; height: 30px;">
    </div>
    <div class="container" style="border: 5px solid #745d46; width: 70%; margin-top: 40px;">
-      <form id="form1">
-         <input type="hidden" value="${userName}" name="writer">
-         <div class="form-group pt-3">
-            <input type="text" name="receiver" id="exception" placeholder="받는사람  이름 입력" style="width: 100%;">
-         </div>
-         <div class="form-group pt-1" style="width: 100%; margin: 0 auto; ">
-            <textarea class="form-control" rows="5" name="messagecontent" placeholder="내용"></textarea>
-         </div>
-         <div class="form-group pt-3"><input id="btn1" class="btn form-control" value="보내기 " style="background-color: #745d46;"></div>      
-      </form>
+   		<div class="container" id="writer"></div>
+   		<div class="container" id="receiver" style="border-bottom: 1px solid #745d46;"></div>
+   		<div class="container" id="content" style="margin: 20px 0; border: 1px solid #745d46; height: 200px;"></div>
    </div>
 </body>
 	<script>
-	    $('#btn1').on('click', function(){
-	    	let queryString = $('#form1').serialize();
-	    	
-	        $.ajax({
-	            url: "http://localhost:8080${pageContext.request.contextPath}/chat/messagePro",
+		$(document).ready(function(){
+			var messageNo = getParam("messageNo");
+			var webNote = {
+					messageno: messageNo
+			}
+			
+			$.ajax({
+	            url: "http://localhost:8080${pageContext.request.contextPath}/chat/messageContent",
 	            type: "POST",
 	            dataType: "json",
-	            data: queryString,
+	            data: webNote,
 	            success: function(data){
-	            	if(data.writer == "[cwjli13wa]"){
-	            		window.close();
-	            		opener.location.reload(true);
-	            	}else{
-	            		$('#exception').val('전송실패-이름을 확인하세요.').focus();	            		
-	            	}
+	            	console.log(data.regdate);
+	            	$('#writer').text('보낸 사람: ' + data.writer);
+	            	$('#receiver').text('받은 사람: ' + data.receiver);
+	            	$('#regdate').text(data.regdate);
+	            	$('#content').text(data.messagecontent);
 	            },
 	            error: function(){
 	                alert("serialize err");
 	            }
-	        });
-	    });
+     	   })
+		});
+		
+		function getParam(sname) {
+		    var params = location.search.substr(location.search.indexOf("?") + 1);
+		    var pram = "";
+
+		    params = params.split("&");
+
+		    for (var i = 0; i < params.length; i++) {
+		        temp = params[i].split("=");
+		        if ([temp[0]] == sname) { 
+		        	pram = temp[1]; 
+		        }
+		    }
+		    return pram;
+		}
+		
 	</script>
 </html>
