@@ -31,12 +31,12 @@
 			<version>4.3.1.Final</version>
 		</dependency>
 
-<!-- 		<dependency>
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 			<scope>runtime</scope>
-		</dependency> -->
+		</dependency>
 		
 	    <!-- Servlet -->
 		<dependency>
@@ -46,25 +46,25 @@
 		    <scope>provided</scope>
 		</dependency>
 		 
-		<dependency>
+		<!-- <dependency>
 		    <groupId>javax.servlet.jsp</groupId>
 		    <artifactId>jsp-api</artifactId>
 		    <version>2.2</version>
 		    <scope>provided</scope>
-		</dependency>
+		</dependency> -->
 		<!-- standard.jar -->
-		<dependency>
+		<!-- <dependency>
 		    <groupId>taglibs</groupId>
 		    <artifactId>standard</artifactId>
 		    <version>1.1.2</version>
-		</dependency>
+		</dependency> -->
 		<!-- JSTL -->
-		<dependency>
+		<!-- <dependency>
 		    <groupId>javax.servlet.jsp.jstl</groupId>
 		    <artifactId>jstl-api</artifactId>
 		    <version>1.2</version>
 		    <type>jar</type>
-		</dependency>
+		</dependency> -->
 		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
