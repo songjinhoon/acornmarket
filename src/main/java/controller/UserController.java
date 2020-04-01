@@ -486,28 +486,23 @@ public class UserController {
 		return "user/jjimList";
 	}
 
+	
 	// 회원 탈퇴
 	@RequestMapping(value = "userDelete", method = RequestMethod.GET)
 	public String userDelete(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("utf-8");
+		
 
-		PrintWriter script = response.getWriter();
+		return "user/delete/userdelete";
+	}
 
-		script.println("<script>");
-		script.println(" if (confirm('정말 탈퇴하시겠습니까?')) {");
-		service.deleteUser(userId);
-		session.invalidate();
-		script.println(" alert('탈퇴가 완료되었습니다.\\n그동안 도토리마켓을 이용해주셔서 감사합니다.');");
-		script.println("location.href = '/zSpringProject/main/main'");
-		script.println("   } else {");
-		script.println("alert('탈퇴를 취소합니다.');");
-		script.println("location.href = '/zSpringProject/user/myPage'}");
-		script.println("</script>");
-		script.close();
+	// 회원 탈퇴 처리
+	@RequestMapping(value = "userDeletePro", method = RequestMethod.POST)
+	public String userDeletePro(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		return "redirect:/main/main";
+		
+
+		return "user/delete/userdeletePro";
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////
