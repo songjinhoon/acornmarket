@@ -44,6 +44,7 @@
                             </c:if>
                               <c:if test="${userId != null }">
                              	<c:if test="${emailCheck != 0 }">
+                             		<a href="${pageContext.request.contextPath}/chat/webNoteListForm?categoryCheck=1"><i class="far fa-envelope"></i></a>
                                 	<a href="${pageContext.request.contextPath}/chat/chatForm"><i class="fa fa-comments"></i></a>
                                 	<a href="${pageContext.request.contextPath}/user/logoutForm"><i class="fa fa-lock"></i></a>
                                 	<a href="${pageContext.request.contextPath}/user/myPage"><i class="fa fa-user-circle"></i></a>  
