@@ -1,5 +1,7 @@
 package repository;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import model.User;
@@ -182,5 +184,85 @@ public class MybatisUserDao extends AbstractRepository {
 			sqlSession.close();
 		}
 		return null;
+	}
+	
+
+	// 회원 삭제
+	public void deleteUser(String userId) {
+		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		String statement = null;
+		try {
+			statement = namespace + ".deleteUser";
+			sqlSession.delete(statement, userId);
+			sqlSession.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			sqlSession.close();
+		}
+	}
+
+	public String getUserPasswd(String userId) {
+		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		String statement = null;
+		String userpasswdCK = null;
+		try {
+			statement = namespace + ".getUserPasswd";
+			userpasswdCK = sqlSession.selectOne(statement, userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			sqlSession.close();
+		}
+		return userpasswdCK;
+	}
+
+	// user 정보 수정
+	public int setUserUpdate(User user) {
+
+		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		int checked = 0;
+
+		try {
+
+			sqlSession.update(namespace + ".setUserUpdate", user);
+			sqlSession.commit();
+			checked = 1;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			sqlSession.close();
+		}
+		return checked;
+	}
+
+	//user본인 주소 조회
+	public String getUserAddress(String userid) {
+		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		String statement = null;
+		String useraddress = null;
+
+		try {
+			statement = namespace + ".getUserAddress";
+			useraddress = sqlSession.selectOne(statement, userid);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			sqlSession.close();
+		}
+		return useraddress;
+	}
+	
+	//user 주변 거래 주소 검색
+	public List<String> getAddress(String useraddress){
+		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		String statement = null;
+		try {
+			statement = namespace + ".getAddress";
+			return sqlSession.selectList(statement, useraddress);
+		}finally {
+			sqlSession.close();
+		}		
 	}
 }

@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/slicknav.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+	  
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
 	<header>
@@ -36,11 +38,11 @@
                         </div>
                         <div class="col-lg-6 col-md-4 ">
                             <div class="social_media_links">
-                              <c:if test="${userId == null || emailCheck == 0 }">
+                               <c:if test="${userId == null || emailCheck == 0 }">
                             	<a href="${pageContext.request.contextPath}/user/loginForm"><i class="fa fa-unlock"></i></a>
                             	<a href="${pageContext.request.contextPath}/user/selectJoinForm"><i class="fa fa-user-plus"></i></a>
                             </c:if>
-                             <c:if test="${userId != null }">
+                              <c:if test="${userId != null }">
                              	<c:if test="${emailCheck != 0 }">
                              		<a href="${pageContext.request.contextPath}/chat/webNoteListForm?categoryCheck=1"><i class="far fa-envelope"></i></a>
                                 	<a href="${pageContext.request.contextPath}/chat/chatForm"><i class="fa fa-comments"></i></a>

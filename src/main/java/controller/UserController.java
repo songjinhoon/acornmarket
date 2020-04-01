@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Address;
@@ -20,9 +21,11 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import model.User;
 import repository.MybatisUserDao;
@@ -35,8 +38,22 @@ import util.SHA256;
 @RequestMapping("/user/")
 public class UserController {
 
+	HttpSession session;
+	String userId;
+	int emailCheck = 0;
+
 	@Autowired
 	MybatisUserDao service;
+
+	@ModelAttribute // 메소드를 실행할 때 마다 매번 실행된다.
+	public void initProcess(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("------------------");
+
+		HttpSession session = request.getSession();
+		userId = (String) session.getAttribute("userId");
+		System.out.println("User----------" + userId);
+
+	}
 
 	@RequestMapping(value = "selectJoinForm", method = RequestMethod.GET)
 	public String selectJoinForm(HttpServletRequest request) throws Exception {
@@ -110,12 +127,6 @@ public class UserController {
 	// 로그인 폼
 	@RequestMapping(value = "loginForm", method = RequestMethod.GET)
 	public String loginForm(HttpServletRequest request) throws Exception {
-		HttpSession session = request.getSession();
-		String userId = (String) session.getAttribute("userId");
-		if (userId != null) {
-			int emailCheck = (int) session.getAttribute("emailCheck");
-			System.out.println("emailCheck : " + emailCheck);
-		}
 
 		System.out.println("userID : " + userId);
 
@@ -134,11 +145,10 @@ public class UserController {
 		request.setCharacterEncoding("utf-8");
 
 		User user = new User();
-		HttpSession session = request.getSession();
-		String userId = request.getParameter("userId");
+		session = request.getSession();
+		userId = request.getParameter("userId");
 
 		String userPasswd = request.getParameter("userPasswd");
-		int emailCheck = 0;
 
 		user.setUserid(userId);
 		user.setUserpasswd(userPasswd);
@@ -315,7 +325,7 @@ public class UserController {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("utf-8");
 
-		HttpSession session = request.getSession();
+		session = request.getSession();
 		String code = request.getParameter("code");
 
 		String userId = null;
@@ -382,20 +392,84 @@ public class UserController {
 	@RequestMapping(value = "myPage", method = RequestMethod.GET)
 	public String myPage(HttpServletRequest request) throws Exception {
 
-		HttpSession session = request.getSession();
-		String userId = (String) session.getAttribute("userId");
-
 		int userScore = service.getUserScore(userId);
-		request.setAttribute("userScore", userScore);
+		String useraddress = service.getUserAddress(userId);
 
-		return "user/myPage";
+		System.out.println(useraddress + "------------------------");
+		
+		List<String> userAddress = service.getAddress(useraddress);
+		System.out.println("userAddress------------------------" + userAddress);
+
+		request.setAttribute("addressList", userAddress);
+		request.setAttribute("userScore", userScore);
+		request.setAttribute("useraddress", useraddress);
+
+		return "user/mypage/myPage";
+	}
+
+	// 회원 정보 수정 전 비밀번호 체크
+	@RequestMapping(value = "userPasswdCheck", method = RequestMethod.GET)
+	public String userPasswdCheck(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		return "user/update/userPasswdCheck";
+	}
+
+	// 회원 정보 수정 전 비밀번호 체크
+	@RequestMapping(value = "userPasswdCheckPro", method = RequestMethod.POST)
+	public String userPasswdCheckPro(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		response.setContentType("text/html; charset=UTF-8");
+		request.setCharacterEncoding("utf-8");
+
+		String userpasswd = request.getParameter("userpasswd");
+		String userpasswdCh = service.getUserPasswd(userId);
+
+		if (userpasswd.equals(userpasswdCh)) {
+			return "redirect:/user/userModifyForm";
+		} else {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('비밀번호가 맞지 않습니다.\\n다시 입력해주세요..');");
+			script.println("history.back();");
+			script.println("</script>");
+			script.close();
+		}
+
+		return "";
 	}
 
 	// 회원 정보 수정 페이지
-	@RequestMapping(value = "userModifyForm", method = RequestMethod.GET)
-	public String userModifyForm(HttpServletRequest request) throws Exception {
+	@RequestMapping(value = "userModifyForm")
+	public String userModifyForm(Model model, User user) throws Exception {
 
-		return "user/userModifyForm";
+		user = service.getUserInfo(userId);
+
+		model.addAttribute("user", user);
+
+		System.out.println(user);
+		return "user/update/userModifyForm";
+	}
+
+	// 회원 정보 수정 처리
+
+	@RequestMapping(value = "userModifyPro", method = RequestMethod.POST)
+	public void userModifyPro(Model model, User user, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
+		response.setContentType("text/html; charset=UTF-8");
+		request.setCharacterEncoding("utf-8");
+
+		System.out.println(user);
+		int check = service.setUserUpdate(user);
+		PrintWriter script = response.getWriter();
+
+		if (check == 1) {
+			script.println("<script>");
+			script.println(" alert('수정이 완료되었습니다.');");
+			script.println("location.href = '/zSpringProject/user/myPage'");
+			script.println("</script>");
+			script.close();
+		}
 	}
 
 	// 구매 내역
@@ -411,4 +485,52 @@ public class UserController {
 
 		return "user/jjimList";
 	}
+
+	// 회원 탈퇴
+	@RequestMapping(value = "userDelete", method = RequestMethod.GET)
+	public String userDelete(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		response.setContentType("text/html; charset=UTF-8");
+		request.setCharacterEncoding("utf-8");
+
+		PrintWriter script = response.getWriter();
+
+		script.println("<script>");
+		script.println(" if (confirm('정말 탈퇴하시겠습니까?')) {");
+		service.deleteUser(userId);
+		session.invalidate();
+		script.println(" alert('탈퇴가 완료되었습니다.\\n그동안 도토리마켓을 이용해주셔서 감사합니다.');");
+		script.println("location.href = '/zSpringProject/main/main'");
+		script.println("   } else {");
+		script.println("alert('탈퇴를 취소합니다.');");
+		script.println("location.href = '/zSpringProject/user/myPage'}");
+		script.println("</script>");
+		script.close();
+
+		return "redirect:/main/main";
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////
+
+	// 회원가입 폼
+	@RequestMapping(value = "joinFormTest", method = RequestMethod.GET)
+	public String joinFormTest(HttpServletRequest request) throws Exception {
+		return "user/join/joinForm";
+	}
+
+	// ID 중복체크 창 TEST
+	@ResponseBody
+	@RequestMapping(value = "idCheckTest", method = RequestMethod.GET)
+	public String idCheckTest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		System.out.println(userId);
+
+		int userIdChecked = service.getUserIdCheck(userId);
+
+		// el로 사용할 수 있게 보냄
+		request.setAttribute("userIdChecked", userIdChecked);
+		request.setAttribute("userId", userId);
+		return "user/idCheckTest";
+	}
+
 }
