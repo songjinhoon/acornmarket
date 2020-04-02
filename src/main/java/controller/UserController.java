@@ -25,6 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import model.User;
@@ -198,7 +199,7 @@ public class UserController {
 	// 회원가입 폼
 	@RequestMapping(value = "joinForm", method = RequestMethod.GET)
 	public String joinForm(HttpServletRequest request) throws Exception {
-		return "user/joinForm";
+		return "user/join/joinForm";
 	}
 
 	// 회원가입 처리 (이메일 인증)
@@ -311,7 +312,7 @@ public class UserController {
 				script.println("</script>");
 				script.close();
 
-				return "redirect:/user/joinForm";
+				return "redirect:/user/join/joinForm";
 			}
 			return "user/joinSendEmail";
 		}
@@ -371,22 +372,17 @@ public class UserController {
 	}
 
 	// ID 중복체크 창
-	@RequestMapping(value = "idCheck", method = RequestMethod.GET)
-	public String idCheck(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	@RequestMapping(value = "idCheck", method = RequestMethod.POST)
+	@ResponseBody
+	public int idCheck(@RequestParam("userId") String userid) throws Exception {
 
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("utf-8");
+		System.out.println(userid);
 
-		String userId = request.getParameter("userId");
-		// System.out.println(userId);
+		int userIdChecked = service.getUserIdCheck(userid);
 
-		int userIdChecked = service.getUserIdCheck(userId);
-
-		// el로 사용할 수 있게 보냄
-		request.setAttribute("userIdChecked", userIdChecked);
-		request.setAttribute("userId", userId);
-		return "user/idCheck";
+		return userIdChecked;
 	}
+	
 
 	// 마이페이지
 	@RequestMapping(value = "myPage", method = RequestMethod.GET)
@@ -450,15 +446,17 @@ public class UserController {
 		return "user/update/userModifyForm";
 	}
 
+	
 	// 회원 정보 수정 처리
-
 	@RequestMapping(value = "userModifyPro", method = RequestMethod.POST)
-	public void userModifyPro(Model model, User user, HttpServletRequest request, HttpServletResponse response)
+	public void userModifyPro(Model model, User user, String useraddress, String detailaddress, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("utf-8");
 
+		user.setUseraddress(useraddress + " " + detailaddress);
+		
 		System.out.println(user);
 		int check = service.setUserUpdate(user);
 		PrintWriter script = response.getWriter();
@@ -511,29 +509,6 @@ public class UserController {
 		}
 
 		return "user/delete/userdeletePro";
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////
-
-	// 회원가입 폼
-	@RequestMapping(value = "joinFormTest", method = RequestMethod.GET)
-	public String joinFormTest(HttpServletRequest request) throws Exception {
-		return "user/join/joinForm";
-	}
-
-	// ID 중복체크 창 TEST
-	@ResponseBody
-	@RequestMapping(value = "idCheckTest", method = RequestMethod.GET)
-	public String idCheckTest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-		System.out.println(userId);
-
-		int userIdChecked = service.getUserIdCheck(userId);
-
-		// el로 사용할 수 있게 보냄
-		request.setAttribute("userIdChecked", userIdChecked);
-		request.setAttribute("userId", userId);
-		return "user/idCheckTest";
 	}
 
 }

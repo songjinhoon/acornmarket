@@ -8,6 +8,7 @@
 <script src="${pageContext.request.contextPath}/js/sweetalert/sweetalert.js"></script>
 </head>
 <script>
+
 	function checkIt() {
 		var userinput = eval("document.userinput");
 
@@ -22,12 +23,12 @@
 			user.userPasswd.focus();
 			return false;
 		}
-		
+		/* 
 		if (!document.user.userPasswdCheck.value) {
 			swal("비밀번호를 확인 해주세요.");
 			user.userPasswd.focus();
 			return false;
-		}
+		} */
 
 		if (!document.user.userName.value) {
 			swal("이름을 입력하세요");
@@ -45,10 +46,18 @@
 			swal("핸드폰번호를 입력하세요");
 			user.phone1.focus();
 			return false;
+		}else if(document.user.phone2.value.length < 3 || document.user.phone2.value.length < 0){
+			swal("잘못된 번호입니다.\n다시 입력해주세요.");
+			user.phone1.focus();
+			return false;
 		}
 
 		if (!document.user.phone2.value) {
 			swal("핸드폰번호를 입력하세요");
+			user.phone2.focus();
+			return false;
+		}else if(document.user.phone2.value.length < 4 || document.user.phone2.value.length < 0){
+			swal("잘못된 번호입니다.\n다시 입력해주세요.");
 			user.phone2.focus();
 			return false;
 		}
@@ -57,35 +66,77 @@
 			swal("핸드폰번호를 입력하세요");
 			user.phone3.focus();
 			return false;
+		}else if(document.user.phone3.value.length < 4 || document.user.phone3.value.length < 0){
+			swal("잘못된 번호입니다.\n시 입력해주세요.");
+			user.phone3.focus();
+			return false;
 		}
 
 		if (!document.user.userAddress.value) {
 			swal("주소를 입력하세요");
 			user.userAddress.focus();
 			return false;
+		}else if(document.user.userAddress.value.length < 8){
+			swal("잘못된 주소입니다.\n주소찾기를 통하여 다시 입력해주세요.");
+			user.userAddress.focus();
+			return false;
+		}
+		
+		if (!document.user.detailAddress.value) {
+			swal("상세주소를 입력하세요");
+			user.detailAddress.focus();
+			return false;
 		}
 
 	}
 	
 
-	//아이디 중복 여부를 판단
-	function openidCheck(user) {
-		//아이디를 입력했는지 검사
-		if (user.userId.value == "") { //id를 입력하지않은 빈칸일 경우
-			swal("ID를 입력하세요.");
-			return;
-		}
-		//URL과 사용자 입력 ID를 조합합니다.
-		url = "idCheck?userId=" + user.userId.value; //idCheck.jsp의 id값을 form에 입력한 값으로 저장
+	$(function() {
+		$("#userId").blur(function() {
+			//var userid = $("#userId").val();
+			$.ajax({
+				url : "idCheck",
+				type : "post",
+				data : {
+					"userId" : $('#userId').val()
+				},
+				success : function(data) {
+					console.log("1 = 중복 , 0 = 중복아님--------" + data);
 
-		//새로운 윈도우(창)을 엽니다.
-		open(
-				url,
-				"idCheck",
-				"toolbar = no, location=no, status=no, scrollbars=no, resizable=no, width=330, height=350");
-	}
-	 
+					if (data == 1) {
+						//아이디 중복시
+						if($('#userId').val() == ''){
+							$('#userIdCheck').text("");
+						}else{
+						$('#userIdCheck').text("이미 사용중인 아이디입니다.");
+						$('#userIdCheck').css("color", "red");
+						}
+					} else {
+						$('#userIdCheck').text("사용 가능한 아이디입니다.");
+						$('#userIdCheck').css("color", "blue");
+					}
+				},
+				error : function() {
+					console.log("실패");
+				}
+			});
+		});
 
+		
+		$('#PasswdCheck').blur(function() {
+			if ($('#userPasswd').val() != $('#PasswdCheck').val()) {
+				if ($('#PasswdCheck').val() != '') {
+					$('#pwCheck').text("비밀번호가 일치하지 않습니다.");
+					$('#pwCheck').css("color", "red");
+					$('#PasswdCheck').val('');
+					$('#PasswdCheck').focus();
+				}
+			} else{
+				$('#pwCheck').text("비밀번호가 일치합니다.");
+				$('#pwCheck').css("color", "blue");
+			}
+		});
+	});
 </script>
 
 <style>
@@ -108,39 +159,44 @@ label {
 					<tr>
 						<td width="100%">
 							<label>ID</label> <br>
-							<label><input class="w3-input w3-round w3-border" size="35" type="text" name="userid" id="userId"></label>
-							<input type="button" class="w3-button w3-round-large w3-middle" style="background-color: #f0e68c; color:#745d46;"
-								   name="confirm_id" value="ID중복 확인" onclick="openidCheck(this.form)">
+						<input class="w3-input w3-round w3-border" size="35" type="text" name="userid" id="userId">
 						</td>
 					</tr>
 					<tr><td> <div id="userIdCheck"></div></td></tr>
+					<tr><td>s</td></tr>
 					<tr>
 						<td>
 							<label class="w3-margin-right">Password</label> 
 							<input class="w3-input w3-round w3-border" size="22" type="password" name="userpasswd" id="userPasswd">
 						</td>
-						
 					</tr>
-				
-		
+					<tr><td> s</td></tr>
+					<tr>
+						<td>
+							<label class="w3-margin-right">Password Check</label> 
+							<input class="w3-input w3-round w3-border" size="22" type="password" name="userpasswd" id="PasswdCheck">
+							<div id="pwCheck"></div>
+						</td>
+					</tr>
+					<tr><td> s</td></tr>
 					<tr>
 						<td>
 							<label>Name</label> 
-							<input class="w3-input w3-round w3-border" size="8" type="text" name="username"></td>
+							<input class="w3-input w3-round w3-border" size="8" type="text" name="username" id="userName"></td>
 					</tr>
 					<tr><td> s</td></tr>
 					<tr>
 						<td>
 							<label>Email</label> 
-							<input class="w3-input w3-round w3-border" size="25" type="text" name="useremail"></td>
+							<input class="w3-input w3-round w3-border" size="25" type="text" name="useremail" id="userEmail"></td>
 					</tr>
 					<tr><td> s</td></tr>
 					<tr>
 						<td>
 							<label>Phone</label><br> 
-							<label><input class="w3-input w3-round w3-border" size="12" type="text" name="phone1"></label> - 
-							<label><input class="w3-input w3-round w3-border" size="12" type="text" name="phone2"></label> - 
-							<label><input class="w3-input w3-round w3-border" size="12" type="text" name="phone3"></label>
+							<label><input class="w3-input w3-round w3-border" size="12" type="text" name="phone1" id="phone1"></label> - 
+							<label><input class="w3-input w3-round w3-border" size="12" type="text" name="phone2" id="phone2"></label> - 
+							<label><input class="w3-input w3-round w3-border" size="12" type="text" name="phone3" id="phone3"></label>
 						</td>
 					</tr>
 					<tr><td> s</td></tr>
