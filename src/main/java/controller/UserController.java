@@ -396,7 +396,7 @@ public class UserController {
 		String useraddress = service.getUserAddress(userId);
 
 		System.out.println(useraddress + "------------------------");
-		
+
 		List<String> userAddress = service.getAddress(useraddress);
 		System.out.println("userAddress------------------------" + userAddress);
 
@@ -486,21 +486,29 @@ public class UserController {
 		return "user/jjimList";
 	}
 
-	
 	// 회원 탈퇴
 	@RequestMapping(value = "userDelete", method = RequestMethod.GET)
 	public String userDelete(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-		
-
 		return "user/delete/userdelete";
 	}
 
 	// 회원 탈퇴 처리
 	@RequestMapping(value = "userDeletePro", method = RequestMethod.POST)
 	public String userDeletePro(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		session = request.getSession();
+		int check = 0;
+		String userpasswd = request.getParameter("userpasswd");
+		String DBcheckPassWd = service.getUserPasswd(userId);
 
-		
+		if (userpasswd.equals(DBcheckPassWd)) {
+			service.deleteUser(userId);
+			session.invalidate();
+			check = 1;
+			request.setAttribute("check", check);
+		} else {
+			check = 0;
+			request.setAttribute("check", check);
+		}
 
 		return "user/delete/userdeletePro";
 	}

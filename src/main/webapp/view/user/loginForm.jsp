@@ -80,7 +80,7 @@
 
 		<div class="col-lg-4 jumbotron w3-round-xlarge">
 
-			<form method="post" action="${pageContext.request.contextPath}/user/loginPro" name="user" onsubmit="return checkIt()">
+			<form method="post" action="${pageContext.request.contextPath}/user/loginPro" name="user" onsubmit="return checkIt()" autocomplete="off">
 
 				<table style="color: white;">
 

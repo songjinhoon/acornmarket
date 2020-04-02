@@ -31,12 +31,14 @@ b {
 	<div align="center">
 		<div class="col-lg-5 jumbotron w3-panel w3-round-xlarge">
 			<br>
-			<p/>
-				<br> <b><h3>탈퇴 안내</h3></b><br>
+			<div align="right">
+				<input type="button" class="w3-button w3-round-large" value="X"  style=" background-color: #745d46; color:#f0e68c; margin-right:20px; margin-top: 20px; " onclick="location='myPage'" />
+			</div>
+			<b><h3>탈퇴 안내</h3></b><br>
 			<p>
 			<p>
 			<p>
-				<b>회원탈퇴를 신청하기 전에 안내 사항을 꼭 확인해주세요.</b>
+				<b>※회원탈퇴를 신청하기 전에 안내 사항을 꼭 확인해주세요.</b>
 			</p>
 			<p>
 				<b>사용하고 계신 아이디는 탈퇴할 경우 복구가 불가하오니 신중하게 선택하시기 바랍니다.</b>
@@ -73,7 +75,7 @@ b {
 			</p>
 			<div align="center">
 				<br>				<p>					<br>
-				<form method="post" action="userPasswdCheckPro">
+				<form method="post" action="userDeletePro">
 					<label> 
 						<input class="w3-input" type="password" name="userpasswd" placeholder="Password" size="30" />
 					</label> 

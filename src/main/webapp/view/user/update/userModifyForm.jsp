@@ -9,6 +9,20 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
+<script type="text/javascript">
+	$(function(){
+		//비밀번호 확인
+		$('#passCheck').blur(function(){
+			if($('#userpasswd').val() != $('#passCheck').val()){
+				if($('#passCheck').val() != '')
+				
+			}
+		})
+		
+	});
+</script>
+
+
 <style>
 label {
 	color: #745d46;
