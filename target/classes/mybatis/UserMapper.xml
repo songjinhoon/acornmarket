@@ -82,4 +82,13 @@
 		FROM user1
 		WHERE substr(useraddress, 0, instr(useraddress, ' ', 1, 2)) =substr(#{useraddress}, 0, instr(#{useraddress}, ' ', 1, 2)) and useraddress not in(#{useraddress}) 
 	</select>
+	
+	<select id="getUserList" parameterType="int" resultType="User">
+		SELECT *
+		FROM   (SELECT * 
+		        FROM user1 
+		        ORDER BY userscore DESC)
+		WHERE  ROWNUM &lt;= #{count} 
+	</select>
+	
 </mapper>

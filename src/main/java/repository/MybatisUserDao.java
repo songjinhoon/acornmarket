@@ -265,4 +265,19 @@ public class MybatisUserDao extends AbstractRepository {
 			sqlSession.close();
 		}		
 	}
+	
+//	상위 x명 유저 가져오기
+	public List<User> getUserList(int count) {
+		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		String statement = null;
+		try {
+			statement = namespace + ".getUserList";
+			return sqlSession.selectList(statement, count);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			sqlSession.close();
+		}
+		return null;
+	}
 }

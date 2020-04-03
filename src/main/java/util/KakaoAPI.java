@@ -47,6 +47,10 @@ public class KakaoAPI {
 	        
 	        int responseCode = conn.getResponseCode();
 	        System.out.println("responseCode : " + responseCode);
+	        if(responseCode == 400){
+	        	
+	        	return "error";
+	        }
 	 
 	        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 	        String line = "";
@@ -117,15 +121,17 @@ public class KakaoAPI {
         return userInfo;
     }
     
-    public void kakaoLogout(String access_Token) {
-        String reqURL = "https://kapi.kakao.com/v1/user/logout";
+    // 카카오 연결 끊기
+    public int kakaoLogout(String access_Token) {
+        String reqURL = "https://kapi.kakao.com/v1/user/unlink";
+        int responseCode = 0;
         try {
             URL url = new URL(reqURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Authorization", "Bearer " + access_Token);
             
-            int responseCode = conn.getResponseCode();
+            responseCode = conn.getResponseCode();
             System.out.println("responseCode : " + responseCode);
             
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -137,9 +143,11 @@ public class KakaoAPI {
                 result += line;
             }
             System.out.println(result);
+            
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+		return responseCode;
     }
 }
