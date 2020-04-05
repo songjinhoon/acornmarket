@@ -76,7 +76,7 @@
                          </div>
                          <div class="service_content text-center">
                             <h3>채팅하고 쪽지 보내기</h3>
-                            <p>채팅과 쪽지를 통해 의사소통을 진행하세요.</p>
+                            <p>채팅과 쪽지로 의사소통을 진행하세요.</p>
                          </div>
                     </div>
                 </div>

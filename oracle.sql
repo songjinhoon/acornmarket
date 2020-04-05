@@ -1,3 +1,26 @@
+create table user1(
+    userId varchar(30) PRIMARY KEY,
+    userPasswd varchar(20) not null,
+    userName varchar(20) not null, 
+    userEmail varchar(30) not null,
+    userEmailHash varchar(80) not null,
+    userEmailCheck int default 0,
+    userphone varchar(15) not null,
+    useraddress varchar(60) not null,
+    userscore number
+);
+
+create table webnote(
+    messageno number primary key,
+    writer varchar(20) not null,
+    receiver varchar(20) not null,
+    messagecontent varchar(200) not null,
+    regDate Date not null
+);
+
+
+
+
 select * from USER1;
 
 delete from USER1;

@@ -138,7 +138,7 @@ public class NaverAPI {
 		
 		String email = resObj.getAsJsonObject().get("email").getAsString();
 		String name = resObj.getAsJsonObject().get("name").getAsString();
-//			체크
+		
 		System.out.println(email);
 		System.out.println(name);
 		
@@ -149,7 +149,7 @@ public class NaverAPI {
         return userInfo;
     }
     
-    public int reAuthorize(String param1) throws Exception{
+    public String reAuthorize(String param1) throws Exception{
 	    String apiUrl;
 	    String redirectUri = URLEncoder.encode(redirectURI,"UTF-8");
 	    String state = URLEncoder.encode(param1,"UTF-8");
@@ -160,11 +160,12 @@ public class NaverAPI {
 	    apiUrl += "&state=" + state;
 	    apiUrl += "&auth_type=" + "reprompt";
 	    
-	    URL url = new URL(apiUrl);
+	    return apiUrl;
+/*	    URL url = new URL(apiUrl);
 		HttpURLConnection con = (HttpURLConnection)url.openConnection();
 		con.setRequestMethod("GET");
 		int responseCode = con.getResponseCode();
-		return responseCode;
+		return responseCode;*/
     }
 
 }

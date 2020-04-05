@@ -27,7 +27,7 @@
 	<select id="getUserIdCheck" parameterType="String" resultType="String">
 		SELECT userid
 		FROM user1 
-		WHERE userid = #{userid}
+		WHERE userid = #{userId}
 	</select>
 	
 	<select id="Login" parameterType="List" resultType="String">

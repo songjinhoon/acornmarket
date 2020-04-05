@@ -65,7 +65,6 @@ public class UserController {
 		return "user/selectJoinForm";
 	}
 
-//	REST API를 이용한 카카오 회원가입 및 로그인 처리
 	@RequestMapping(value = "kakaoLoginForm", method = RequestMethod.GET)
 	public String kakaoLoginForm(HttpServletRequest request) throws Exception {
 		String code = request.getParameter("code");
@@ -74,54 +73,63 @@ public class UserController {
 		if (code != null) {
 			KakaoAPI kakao = new KakaoAPI();
 			String access_Token = kakao.getAccessToken(code);
+
 			if(access_Token.equals("error")){
 				System.out.println("- 카카오 토큰 받기 에러 -");
 				
 				return "redirect:/main/main";
 			}
-			HashMap<String, Object> userInfo = kakao.getUserInfo(access_Token);
-			if (userInfo.get("nickname") != null) {
-//				토큰 삭제
-				int result = kakao.kakaoLogout(access_Token);
-				if(result == 200){
-					System.out.println("- 카카오 연결 끊기 성공 -");
-				}else{
-					System.out.println("- 카카오 연결 끊기 실패 -");
-				}
-				request.setAttribute("userId", userInfo.get("email"));
-				request.setAttribute("userName", userInfo.get("nickname"));
-				// 여기서 디비를 통해 id체크
+			HashMap<String, String> userInfo = kakao.getUserInfo(access_Token);
+			System.out.println(userInfo);
+			System.out.println("userId: " + userInfo.get("userId"));
+			System.out.println("userName: " + userInfo.get("userName"));
+			// 토큰 삭제
+			int result = kakao.kakaoLogout(access_Token);
+			if(result == 200){
+				System.out.println("-카카오 연결 끊기 성공-");
+			}else{
+				System.out.println("-카카오 연결 끊기 실패-");
 			}
+			// 여기서 디비를 통해 ID체크
+			int check = service.getUserIdCheck(userInfo.get("userId"));
+			// 기존 아이디가 존재하지않는다면
+			if (check == 0) {
+				request.setAttribute("userId", userInfo.get("userId"));
+				request.setAttribute("userName", userInfo.get("userName"));
+				
+				return "user/apiLoginForm";
+			} else {
+				return "user/overlapJoinForm";
+			}	
 		}else{
 			System.out.println("- 토큰 오류가 발생했습니다 -");
 			
 			return "redirect:/main/main";
 		}
-		
-		return "user/apiLoginForm";
 	}
 
 	@RequestMapping(value = "naverLoginForm", method = RequestMethod.GET)
 	public String naverLoginForm(HttpServletRequest request) throws Exception {
+		HttpSession session = request.getSession();
 		NaverAPI naverAPI = new NaverAPI();
 		String code = request.getParameter("code");
 		String state = request.getParameter("state");
 		String error = request.getParameter("error");
 		String error_description = request.getParameter("error_description");
-//		네이버 API 재동의 요청
-		int reAtr = naverAPI.reAuthorize(state);
-		if(reAtr == 200){
-			System.out.println("-네이버 API 재인증 요청 성공-");
-		}else{
-			System.out.println("-네이버 API 재인증 요청 실패-");
-		}
+		String access_token;
+		HashMap<String, String> userInfo;
 //		네이버 로그인 정보와 정보제공 동의 과정 완료 및 실패
-		try{
-			if (code != null && state != null) {
-				String access_token = naverAPI.getAccessToken(code, state);
-				HashMap<String, String> userInfo = naverAPI.getUserInfo(access_token);
-				request.setAttribute("userId", userInfo.get("userId"));
-				request.setAttribute("userName", userInfo.get("userName"));
+		if (code != null && state != null) {
+			try{
+				access_token = naverAPI.getAccessToken(code, state);
+			}catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("-토큰 절차 에러-");
+				
+				return "redirect:/main/main";
+			}
+			try{
+				userInfo = naverAPI.getUserInfo(access_token);
 				// 토큰 삭제
 				String result = naverAPI.deleteAccessToken(access_token);
 				if (result.equals("success")) {
@@ -129,27 +137,48 @@ public class UserController {
 				} else {
 					System.out.println("- 네이버 토큰 삭제 실패 -");
 				}
-				// 여기서 디비를 통해 ID체크하고 기존에 가입을 했었던 사람이라면 메인으로 보내주고 아니면 apiloginform ㅇㅋ?
-				System.out.println("userId: " + userInfo.get("userId"));
-				System.out.println("userName: " + userInfo.get("userName"));
+				// 여기서 디비를 통해 ID체크
 				int check = service.getUserIdCheck(userInfo.get("userId"));
 				// 기존 아이디가 존재하지않는다면
 				if (check == 0) {
+					request.setAttribute("userId", userInfo.get("userId"));
+					request.setAttribute("userName", userInfo.get("userName"));
+					
 					return "user/apiLoginForm";
 				} else {
-					return "redirect:/main/main";
+					return "user/overlapJoinForm";
+				}			
+			}catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("-정보 제공 동의 에러-");
+				
+				String reAtr = naverAPI.reAuthorize(state);
+				if(session.getAttribute(access_token) == null){
+					session.setAttribute(access_token, 1);
+					System.out.println("session값 체크: " + session.getAttribute(access_token));
+					
+					return "redirect:" + reAtr;
+				}else{
+					if(session.getAttribute(access_token).toString().equals("3") ){
+						System.out.println("session값 체크: " + session.getAttribute(access_token));
+						session.removeAttribute(access_token);
+						
+						return "user/naverLoginForm";
+					}else{
+						int count = ((int) session.getAttribute(access_token)) + 1;
+						session.setAttribute(access_token, count);
+						System.out.println("session값 체크: " + session.getAttribute(access_token));
+						
+						return "redirect:" + reAtr;
+					}
 				}
-			} else {
-				System.out.println("네이버 아이디 로그인 인증 실패");
-				System.out.println("에러코드: " + error);
-				System.out.println("에러메시지: " + error_description);
-
-				return "redirect:/main/main";
 			}
-		}catch(Exception e){
-			e.printStackTrace();
-			System.out.println("-네이버 예외 발생-");
-			
+
+		} else {
+			System.out.println("네이버 아이디 로그인 인증 실패");
+			System.out.println("에러코드: " + error);
+			System.out.println("에러메시지: " + error_description);
+
 			return "redirect:/main/main";
 		}
 	}
@@ -157,13 +186,8 @@ public class UserController {
 	// 로그인 폼
 	@RequestMapping(value = "loginForm", method = RequestMethod.GET)
 	public String loginForm(HttpServletRequest request) throws Exception {
-
 		System.out.println("userID : " + userId);
 
-		String naverApiUrl = NaverAPI.getApiUrl();
-		String kakaoApiUrl = KakaoAPI.getApiUrl();
-		request.setAttribute("naverApiUrl", naverApiUrl);
-		request.setAttribute("kakaoApiUrl", kakaoApiUrl);
 		return "user/loginForm";
 	}
 
@@ -249,7 +273,7 @@ public class UserController {
 		System.out.println(userEmailHash);
 		System.out.println("-------------------------------");
 		System.out.println(user);
-
+		
 		service.joinUser(user);
 		session.setAttribute("userId", user.getUserid());
 
