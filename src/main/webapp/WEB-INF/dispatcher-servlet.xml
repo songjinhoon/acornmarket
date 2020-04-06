@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -33,5 +32,7 @@
 	<bean class="repository.MybatisWebNoteDao">
 		<property name="dbname" value="Oracle" />
 	</bean>
-
+	<bean class="repository.CScenterDao">
+		<property name="dbname" value="Oracle"></property>
+	</bean>
 </beans>
