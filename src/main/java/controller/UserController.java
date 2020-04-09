@@ -321,7 +321,7 @@ public class UserController {
 			return "redirect:/main/main";
 		} else if (emailChecked == 0) {
 			// 사용자에게 보낼 이메일 내용을 입력
-			String host = "http://localhost:8080/zSpringProject/user/";
+			String host = "http://localhost:9080/zSpringProject/user/";
 			String from = "oakNutSpring@gmail.com";
 			String to = service.getUserEmail(userId);
 

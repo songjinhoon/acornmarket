@@ -2,20 +2,22 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
+   <settings>
+   <setting name="jdbcTypeForNull" value="NULL"/>
+   </settings>
 	<typeAliases>
 		<typeAlias type="model.User" alias="User"/>
 		<typeAlias type="model.Board" alias="Board"/>
-		<typeAlias type="model.WebNote" alias="WebNote"/>
-		<typeAlias type="model.CScenterDataBean" alias="CScenter" />
+		<!-- <typeAlias type="model.Reply" alias="Reply"/> -->
 	</typeAliases>
 	
 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC"/>
 			<dataSource type="POOLED">
-				<property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
-				<property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"/>
-				<property name="username" value="acorn"/>
+				<property name="driver" value="com.mysql.jdbc.Driver"/>
+				<property name="url" value="jdbc:mysql://localhost:3306/acorn?characterEncoding=UTF-8&amp;serverTimezone=UTC"/>
+				<property name="username" value="scott"/>
 				<property name="password" value="1111"/>
 			</dataSource>
 		</environment>
@@ -23,8 +25,7 @@
 	
 	<mappers>
 		<mapper resource="mybatis/UserMapper.xml"/>
-		<mapper resource="mybatis/BoardMapper.xml" />
-		<mapper resource="mybatis/WebNoteMapper.xml"/>
-		<mapper resource="mybatis/CScenter.xml" />
+		<mapper resource="mybatis/BoardMapper.xml"/>
+		<!-- <mapper resource="mybatis/ReplyMapper.xml"/> -->
 	</mappers>
 </configuration>

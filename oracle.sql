@@ -41,3 +41,7 @@ SELECT substr(useraddress, 0, instr(useraddress, ' ', 1, 4))
 FROM user1
 where substr(useraddress, 0, instr(useraddress, ' ', 1, 2)) =substr(useraddress, 0, instr(useraddress, ' ', 1, 2)) and useraddress not in('서울 강남구 테헤란로 132 8층') 
 
+
+
+update board set soldout = 1 where boardnum = 0
+
