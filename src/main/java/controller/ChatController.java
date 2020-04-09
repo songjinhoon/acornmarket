@@ -61,23 +61,25 @@ public class ChatController {
 	@RequestMapping(value = "webNoteListForm", method = RequestMethod.GET)
 	public String webNoteListForm(@RequestParam(value="categoryCheck", defaultValue="1") int categoryCheck, @RequestParam(value="pageNum", defaultValue="1") int pageNum ,Model model) {
 		List<WebNote> webNoteList;
+		// 카테고리 별로 쪽지 리스트 가져오기 -> 이건 필요한건가? 
 		if(categoryCheck == 1){
 			webNoteList = service.getWebNoteList1(userName);
 		}else{
 			webNoteList = service.getWebNoteList2(userName);
 		}
-//		페이지넘 처리 작업
+		
 		int pageSize = 10;
 		int startRow = (pageNum - 1) * pageSize + 1; // 1, 11
 		int endRow = startRow + pageSize - 1; // 10, 20
-		int count = webNoteList.size(); // 10       -> 20
+		int count = webNoteList.size();
+		// scope 내 쪽지 가져오기
 		if(categoryCheck == 1){
 			webNoteList = service.getWebNoteList3(startRow, endRow, userName);
 		}else{
 			webNoteList = service.getWebNoteList4(startRow, endRow, userName);
 		}
 		int number = count - (pageNum - 1) * pageSize; // 10 -> 20, 10  
-		int bottomLine = 3;// 페이지번호의 단위
+		int bottomLine = 3; // 페이지번호의 단위
 		int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1); 
 		int startPage = 1 + (pageNum - 1) / bottomLine * bottomLine; 
 		int endPage = startPage + bottomLine - 1; 
@@ -89,6 +91,7 @@ public class ChatController {
 		model.addAttribute("pageCount", pageCount);
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);
+		model.addAttribute("number", number);
 		
 		return "chat/webNoteListForm";
 	}

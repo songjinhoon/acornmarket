@@ -23,20 +23,22 @@
 		ORDER BY regdate DESC
 	</select>
 	<select resultType="WebNote" parameterType="hashmap" id="getWebNoteList3">
-		SELECT	*
-		FROM	(SELECT *
-        		FROM webnote
-		        WHERE receiver = #{userName}
-		        ORDER BY regdate DESC) sub
-		WHERE	ROWNUM BETWEEN #{startRow} AND #{endRow}
+		SELECT  *
+		FROM   (SELECT  ROWNUM rnum, a.*
+		        FROM    (SELECT * 
+		                FROM webnote
+		                WHERE receiver = #{userName}
+		                ORDER BY regdate DESC) a)
+		WHERE   rnum BETWEEN #{startRow} AND #{endRow}
 	</select>
 	<select resultType="WebNote" parameterType="hashmap" id="getWebNoteList4">
-		SELECT	*
-		FROM	(SELECT *
-        		FROM webnote
-		        WHERE writer = #{userName}
-		        ORDER BY regdate DESC) sub
-		WHERE	ROWNUM BETWEEN #{startRow} AND #{endRow}
+		SELECT  *
+		FROM   (SELECT  ROWNUM rnum, a.*
+		        FROM    (SELECT * 
+		                FROM webnote
+		                WHERE writer = #{userName}
+		                ORDER BY regdate DESC) a)
+		WHERE   rnum BETWEEN #{startRow} AND #{endRow}
 	</select>
 	<select id="getWebNote" parameterType="int" resultType="WebNote">
 		SELECT *
