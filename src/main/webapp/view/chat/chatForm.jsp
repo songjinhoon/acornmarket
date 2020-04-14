@@ -8,6 +8,9 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/chatForm.css">
 </head>
 <body>
+	<h1>도토리 마켓 오픈 채팅방</h1>
+	<div class="container line" style="background-color: black; height: 2px; margin-bottom: 50px; width: 20%; ">
+	</div>
 	<div class="container chattingform">
 		<div class="container" id="section1">
 			<div class="row">

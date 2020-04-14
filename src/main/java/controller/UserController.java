@@ -97,6 +97,7 @@ public class UserController {
 			if (check == 0) {
 				request.setAttribute("userId", userInfo.get("userId"));
 				request.setAttribute("userName", userInfo.get("userName"));
+				request.setAttribute("check", check);
 				
 				return "user/apiLoginForm";
 			} else {
