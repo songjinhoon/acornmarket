@@ -420,10 +420,10 @@
 					var myChart = new Chart(ctx, {
 					    type: 'bar',
 					    data: {
-					        labels: [user[0].userid, user[1].userid,'Yellow', 'Green', 'Purple', 'Orange'],
+					        labels: [user[0].userid, user[1].userid, user[2].userid, user[3].userid, user[4].userid, user[5].userid],
 					        datasets: [{
 					            label: '도토리인 Top 6',
-					            data: [user[0].userscore, user[1].userscore, 3, 5, 2, 3],
+					            data: [user[0].userscore, user[1].userscore, user[2].userscore, user[3].userscore, user[4].userscore, user[5].userscore],
 					            backgroundColor: [
 					                'rgba(255, 99, 132, 0.2)',
 					                'rgba(54, 162, 235, 0.2)',

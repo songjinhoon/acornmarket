@@ -19,7 +19,7 @@
             	</c:if>
     	        <c:if test="${ categoryCheck == 2 }">
 					<p onClick="pageChange2()">받은쪽지함</p>
-                	<p style="font-weight: bold; color: black;">보낸쪽지함</p>            	
+                	<p style="font-weight: bold; color: black; ">보낸쪽지함</p>            	
             	</c:if>           	
                 <div onclick="messageEvent()"><span>쪽지쓰기</span></div>
             </div>
@@ -60,10 +60,25 @@
                         </tbody>
                     </table>
                 </div>
-          		<c:forEach var="index" begin="1" end="${pageCount}">
-          			<a href="${pageContext.request.contextPath}/chat/webNoteListForm?categoryCheck=${categoryCheck}&pageNum=${index}">${index}</a>           				
-   				</c:forEach>
-                <button id="deleteBtn" class="btn btn-outline-secondary">삭제</button>
+                <div class="row">
+                	<div class="col-sm-4"></div>
+                	<div class="col-sm-4">
+                		<div class="pagebutton">
+	                		<c:if test="${startPage > bottomLine}">
+			            		<a href="webNoteListForm?categoryCheck=${categoryCheck}&pageNum=${startPage-bottomLine}">&lt;</a>
+			         		</c:if>
+			         		<c:forEach var="index" begin="${startPage}" end="${endPage}">
+			          			<a href="${pageContext.request.contextPath}/chat/webNoteListForm?categoryCheck=${categoryCheck}&pageNum=${index}">${index}</a>           				
+			   				</c:forEach>
+			         		<c:if test="${endPage < pageCount}">
+			            		<a href="webNoteListForm?categoryCheck=${categoryCheck}&pageNum=${startPage+bottomLine}">&gt;</a>
+			         		</c:if>
+		         		</div>
+                	</div>
+                	<div class="col-sm-4">
+                		<button id="deleteBtn" class="btn btn-outline-secondary">삭제</button>
+                	</div>
+                </div>
             </div>
         </div>
     </div>

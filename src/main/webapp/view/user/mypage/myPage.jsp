@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -43,7 +44,7 @@
 				${userScore } ℃
 			</div>
 			<div style="float: left; width:25%;">
-				<label>찜 목록</label><br> <br>
+				<label>관심 목록</label><br> <br>
 				<a href="${pageContext.request.contextPath}/user/jjimList"><i class="fas fa-heart fa-4x"></i></a>
 			</div>
 			<div style="float: left; width:25%;">
@@ -183,4 +184,3 @@
 	});
 	</script>
 </body>
-</html>
