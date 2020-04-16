@@ -321,7 +321,7 @@
                             <ul class="links">
                                 <li><a href="#" onclick="return false;">Song Jinhoon</a></li>
                                 <li><a href="#" onclick="return false;">Kim Sunho</a></li>
-                                <li><a href="#" onclick="return false;">Kim Ensole</a></li>
+                                <li><a href="#" onclick="return false;">Kim Eun Sol</a></li>
                                 <li><a href="#" onclick="return false;">Kim Yurim</a></li>
                             </ul>
                         </div>
@@ -412,7 +412,7 @@
     	$(document).ready(function(){
 
  			$.ajax({
-	            url: "http://localhost:8080${pageContext.request.contextPath}/main/chart1",
+	            url: "http://localhost:9080${pageContext.request.contextPath}/main/chart1",
 	            type: "GET",
 	            success: function(user){
 	            	/* chart1 정의 */            	

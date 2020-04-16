@@ -117,10 +117,7 @@
 										<img class="pic-2"
 										src="${pageContext.request.contextPath}/uploadFile/${list.filename}">
 									</a>
-									<ul class="social">
-										<li><a href="" class="fa fa-heart"
-											style="text-decoration: none"></a></li>
-									</ul>
+									
 								</div>
 								<div class="product-content">
 									<div class="price">${list.subject}</div>

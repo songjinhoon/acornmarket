@@ -76,36 +76,38 @@
 
 
 									<div class="form-group cont2">
-									<input type="text" class="form-control white"
-											id="boardnum" name="boardnum" value="${article.boardnum}"
-											readonly name="boardnum">
+										<input type="text" class="form-control white" id="boardnum"
+											name="boardnum" value="${article.boardnum}" readonly
+											name="boardnum">
 									</div>
 
 									<div class="form-group cont2">
-										<input type="text" class="form-control white"
-											id="regdate" name="regdate" value="${article.regdate}"
-											readonly name="regdate">
+										<input type="text" class="form-control white" id="regdate"
+											name="regdate" value="${article.regdate}" readonly
+											name="regdate">
 									</div>
 
 									<div class="form-group cont2">
 										<input type="text" class="form-control" id="readcount"
-											name="readcount" value="${article.readcount}"  readonly
+											name="readcount" value="${article.readcount}" readonly
 											name="readcount">
 									</div>
-									
+
 									<div class="form-group cont1">
 										<input type="text" class="form-control" id="userid"
 											name="userid" value="${article.userid}">
 									</div>
-									
+
 
 									<c:choose>
-									  <c:when test="${userid ne null}">
-									    <a href='javascript: like_func();'><img src='./images/dislike.png' id='like_img'></a>
-									  </c:when>
-									  <c:otherwise>
-									    <a href='javascript: login_need();'><img src='./images/dislike.png'></a>
-									  </c:otherwise>
+										<c:when test="${userid ne null}">
+											<a href='javascript: like_func();'><img
+												src='./images/dislike.png' id='like_img'></a>
+										</c:when>
+										<c:otherwise>
+											<a href='javascript: login_need();'><img
+												src='./images/dislike.png'></a>
+										</c:otherwise>
 									</c:choose>
 
 
@@ -130,9 +132,8 @@
 											name="address" value="${article.address}" readonly>
 									</div>
 
-									<div class="mapp" style="float:center; width: 70%;">
-										<div style=" height: 350px;"
-											id="map"></div>
+									<div class="mapp" style="float: center; width: 70%;">
+										<div class="map2" style="height: 350px;" id="map"></div>
 									</div>
 									<br>
 
@@ -143,45 +144,81 @@
 									</div>
 
 									<div class=button1>
+									<c:if test="${userId ne article.userid }">
+										<input type="button" value="쪽지하기">&nbsp;&nbsp; 
+										<input type="button" value="글목록"
+											onclick="location.href='${pageContext.request.contextPath}/board/categoryForm?category=${article.category}'">
+									</c:if>
+									
+									<c:if test="${userId eq article.userid }">
 										<input type="button" value="글수정"
 											onclick="location.href='${pageContext.request.contextPath}/board/updateForm?num=${article.boardnum}'">&nbsp;&nbsp;
 										<input type="button" value="글삭제"
 											onclick="location.href='${pageContext.request.contextPath}/board/delete?num=${article.boardnum}'">&nbsp;&nbsp;
+										
+										
+										<c:if test="${article.soldout == 1 }">
+										<input type="button" value="판매중" name="soldout" onclick="selling('${article.boardnum}')">&nbsp;&nbsp;
+										</c:if>
+										
+										<c:if test="${article.soldout == 0 }">
+										<input type="button" value="판매완료" onclick="selloff('${article.boardnum}')">&nbsp;&nbsp;
+										</c:if>
+										
+										
+										
 										<input type="button" value="쪽지하기">&nbsp;&nbsp; 
-										<input type="button" value="판매완료"
-											onclick="location.href='${pageContext.request.contextPath}'">&nbsp;&nbsp;
-										<input type="button" value="글목록"
-											onclick="location.href='${pageContext.request.contextPath}/board/categoryForm?category=${article.category}'">
+										<input type="button" value="글목록" onclick="location.href='${pageContext.request.contextPath}/board/categoryForm?category=${article.category}'">
 										<p></p>
+										
+									</c:if>
 									</div>
-
+									</form>
 									<hr>
 
 									<!-- 댓글창 -->
+									<form name="reply" method="post">
+									<input type="hidden" name="boardnum" value="${article.boardnum}">
+									
 									<div class="form-group1 re1">
 										<div class="col-md-12">
-											<textarea class="form-control" id="textarea" name="comment"
+											<textarea class="form-control" id="comments" name="comments" 
 												cols="40" rows="3" placeholder="댓글로 자유롭게 거래하세요!"></textarea>
 										</div>
 									</div>
 									<p></p>
 									<br>
-									<div class=btn1>
-										<input type="button" value="댓글작성">
+									<div class=btn1> <input type="button" value="댓글작성" onclick="replyInsert()">
 									</div>
+									</form>
+					<hr>
+						
+						<div class = "commentbox" style="width: 100%;">
+						<c:forEach var="li" items="${list}">
+								<div id="inn">
+									<h4><strong>${li.userid}</strong></h4>									
+										${li.regdate} <p>${li.comments}</p>
+									<div class = "button2" style = "margin-left: 78%;">
+									<input type="button" id="commentModify" value="댓글수정"  onclick="replyUpdate('${li.comments}','${li.replynum}','${li.userid}')">
+									<input type="button" id="commentDelete" value="댓글삭제"  onclick="replyDelete('${li.userid}', '${li.replynum}' )">
+								</div>
+								</div>
+								<hr>
+								</c:forEach>
+						</div>
+							
+								<br>
 							</div>
 						</div>
-						</form>
+						
 					</div>
+						
 				</div>
 			</div>
 		</div>
 	</div>
-	</div>
-	</div>
-	
-	
-	
+
+
 	<!-- 지도 -->
 	<script>
 		//container : 지도를 표시할 div의 아이디
@@ -231,7 +268,195 @@
 						});
 	</script>
 
+		<script type="text/javascript">
+		
+		//댓글 입력
+		function replyInsert(){
+			var action = "${pageContext.request.contextPath}/board/replyinsert";
+			
+			var data = {
+				//넘기는 것 아래 형식으로 써서넘기기
+				// 키 : 밸류 ( 문서에서 리플라이(폼네임).(이름을 가진 값))
+				comments : $('#comments').val(),
+				userid : $('#userid').val(),
+				boardnum : $('#boardnum').val()
+			};
+			
+			$.ajax({ 
+				type : 'GET',//데이터 처리방식
+				url : action, //서비스 주소
+				data : data, //
+				dataType : 'TEXT',
+				success : function(result) {
+					
+					location.reload();
+					/* $("#inn").html(result) */
+				}, // Ajax success end
+			
+				error : function(request, status, error) {
+					
+					alert("code:" + request.status + "\n" + "message:"
+							+ request.responseText + "\n" + "error:"
+							+ error);
+				} // Ajax error 
+		});
+		}
 
+		//댓글 수정 
+		function replyUpdate(comments, num, name){
+			alert(comments);
+			var action = "${pageContext.request.contextPath}/board/replyUpdate";
+			
+			var inputstring = prompt("수정할 댓글을 입력하세요",comments);
+			
+			var data = {
+					comments : inputstring,
+					userid : name,
+					boardnum : ${article.boardnum},
+					replynum : num 
+
+				};
+			alert(action)
+			
+			$.ajax({ 
+				type : 'GET',//데이터 처리방식
+				url : action, //서비스 주소
+				data : data, //
+				dataType : 'TEXT',
+				success : function(result) {
+					if(result=="ok"){
+						alert("댓글이 수정되었습니다.")
+						location.reload();
+					}else if(result=="no"){
+						alert("본인의 댓글이 아닙니다")
+					}
+				
+				}, // Ajax success end
+			
+				error : function(request, status, error) {
+					
+					alert("code:" + request.status + "\n" + "message:"
+							+ request.responseText + "\n" + "error:"
+							+ error);
+				} // Ajax error 
+		});
+		}
+		
+		
+		//댓글 삭제
+		function replyDelete(name, num ){
+			var action = "${pageContext.request.contextPath}/board/replyDelete";
+			
+			var data = {
+				userid : name,
+				replynum : num
+
+			};
+			alert(action)
+			
+			$.ajax({ 
+				type : 'POST',//데이터 처리방식
+				url : action, //서비스 주소
+				data : data, //
+				dataType : 'TEXT',
+				success : function(result) {
+					
+					if(result=="ok"){
+						alert("댓글이 삭제되었습니다.")
+						location.reload();
+					}else if(result=="no"){
+						alert("본인의 댓글이 아닙니다")
+					}
+
+				}, // Ajax success end
+			
+				error : function(request, status, error) {
+					
+					alert("code:" + request.status + "\n" + "message:"
+							+ request.responseText + "\n" + "error:"
+							+ error);
+				} // Ajax error 
+		});
+		}
+		
+</script>
+
+	<script type="text/javascript">
+		
+		//soldout 1 -> 0
+		function selling(boardnum){
+			var action = "${pageContext.request.contextPath}/board/selling";
+			
+// 			var data = {
+// 				//넘기는 것 아래 형식으로 써서넘기기
+// 				// 키 : 밸류 ( 문서에서 리플라이(폼네임).(이름을 가진 값))
+// 				soldout : $('#soldout').val()
+// 			};
+			alert(boardnum);
+			$.ajax({ 
+				type : 'GET',//데이터 처리방식
+				url : action, //서비스 주소
+				data : { boardnum : boardnum}, //
+				success : function(result) {
+					
+					if(result=="ok"){
+						alert("상태변화OK")
+						location.reload();
+					}else if(result=="no"){
+						alert("수정 실패")
+					}
+					location.reload();
+				}, // Ajax success end
+			
+				error : function(request, status, error) {
+					
+					alert("code:" + request.status + "\n" + "message:"
+							+ request.responseText + "\n" + "error:"
+							+ error);
+				} // Ajax error 
+		});
+		}
+		</script>
+		<script type="text/javascript">
+			
+			//댓글 입력
+			function selloff(bdnum){
+				var action = "${pageContext.request.contextPath}/board/selloff";
+				
+				alert(bdnum);
+				
+				$.ajax({ 
+					type : 'POST',//데이터 처리방식
+					url : action, //서비스 주소
+					data : {boardnum : bdnum}, //
+					success : function(result) {
+						
+						location.reload();
+						/* $("#inn").html(result) */
+					}, // Ajax success end
+				
+					error : function(request, status, error) {
+						
+						alert("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:"
+								+ error);
+					} // Ajax error 
+			});
+			}
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
 	<!-- 좋아요 -->
 	<script>
 	function like_func(){
@@ -266,6 +491,6 @@
 		    }
 		  });
 		}
-	  </script>
+	  </script> 
 </body>
 </html>

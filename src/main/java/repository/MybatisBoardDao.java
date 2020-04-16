@@ -69,9 +69,12 @@ public class MybatisBoardDao extends AbstractRepository {
 
 		String statement = null;
 
-		int number = article.getBoardnum();
-
+		int boardnumber = article.getBoardnum();
+		int number = 1;
+		
 		try {
+			article.setBoardnum(boardnumber);
+			number = sqlSession.selectOne(namespace + ".insert_boardnum");
 			article.setBoardnum(number);
 			sqlSession.insert(namespace + ".insert", article);
 			
@@ -149,6 +152,41 @@ public class MybatisBoardDao extends AbstractRepository {
 		return x;
 	}
 	
+	
+	//soldout  //1 -> 0
+	public int soldoutCheck1(int boardnum) {
+		SqlSession sqlSession = getSqlSessionFactory().openSession();
+
+		try {
+			int i = sqlSession.update(namespace + ".soldoutCheck1", boardnum);
+			if (i == 0) {
+				return 0;
+			} else {
+				sqlSession.commit();
+				return 1;
+			}
+		} finally {
+			sqlSession.close();
+		}
+	}
+	
+	//soldout  //0 -> 1
+		public int soldoutCheck2(int boardnum) {
+			SqlSession sqlSession = getSqlSessionFactory().openSession();
+
+			try {
+				int i = sqlSession.update(namespace + ".soldoutCheck2", boardnum);
+				
+				if (i == 0) {
+					return 0;
+				} else {
+					sqlSession.commit();
+					return 1;
+				}
+			} finally {
+				sqlSession.close();
+			}
+		}
 	
 	//좋아요
 	

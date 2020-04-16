@@ -71,3 +71,5 @@ FROM user1
 where substr(useraddress, 0, instr(useraddress, ' ', 1, 2)) =substr(useraddress, 0, instr(useraddress, ' ', 1, 2)) and useraddress not in('서울 강남구 테헤란로 132 8층') 
 >>>>>>> 799cc39d22c5937a5b33a9c661b36d0721fb4398
 
+
+select count (*) from reply where replynum = 1 and userid = 'safa'

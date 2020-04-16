@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -28,7 +29,9 @@ import org.springframework.web.multipart.MultipartRequest;
 
 import model.Board;
 import model.Likecheck;
+import model.Reply;
 import repository.MybatisBoardDao;
+import repository.MybatisReplyDao;
 
 @Controller
 @RequestMapping("/board/")
@@ -41,14 +44,15 @@ public class BoardController {
 	@Autowired
 	MybatisBoardDao dbPro;
 
-//	@Autowired
-//	MybatisReplyDao replyPro;
+	@Autowired
+	MybatisReplyDao replyPro;
 
 	@ModelAttribute
 	public void initProcess(HttpServletRequest request) {
 
 		HttpSession session = request.getSession();
-		String userid = (String) session.getAttribute("userId");
+		userid = (String) session.getAttribute("userId");
+		System.out.println(userid);
 	}
 
 	@RequestMapping(value = "list")
@@ -68,13 +72,11 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "writePro", method = RequestMethod.POST)
-	public String board_writePro(HttpServletRequest multipart, Board article, Model m, String address1, String address2, HttpServletRequest request)
-			throws Exception {
-		
+	public String board_writePro(HttpServletRequest multipart, Board article, Model m, String address1, String address2,
+			HttpServletRequest request) throws Exception {
+
 		HttpSession session = request.getSession();
-		String userid = (String) session.getAttribute("userId");
-		
-		System.out.println(article);
+
 		article.setAddress(address1 + " " + address2);
 
 		article.setFilename("null");
@@ -94,6 +96,8 @@ public class BoardController {
 			article.setFilename("");
 		}
 
+		article.setUserid(userid);
+		System.out.println("writer--" + article);
 		dbPro.insertArticle(article);
 
 		return "board/writePro";
@@ -104,7 +108,7 @@ public class BoardController {
 
 		HttpSession session = request.getSession();
 
-		String userid = (String) session.getAttribute("userId");
+		userid = (String) session.getAttribute("userId");
 		System.out.println(userid);
 
 		int pageSize = 5;
@@ -113,23 +117,17 @@ public class BoardController {
 
 		if (session.getAttribute("pageNum") == null) {
 			session.setAttribute("pageNum", 1);
-			System.out.println("2 " + currentPage);
 		}
 
 		try {
 			currentPage = Integer.parseInt(request.getParameter("pageNum"));
 			session.setAttribute("pageNum", currentPage);
-
-			System.out.println("1 " + currentPage);
-
 		} catch (Exception e) {
 
 		}
 
 		currentPage = (Integer) session.getAttribute("pageNum");
 		int count = dbPro.getArticleCount(category);
-
-		System.out.println(count);
 
 		int pageCount = count / pageSize + (count % pageSize == 0 ? 0 : 1);
 
@@ -175,8 +173,9 @@ public class BoardController {
 	public String content(int num, Model m) throws Exception {
 
 		Board article = dbPro.getArticle(num);
-
+		List<Reply> list = replyPro.getArticles(num);
 		m.addAttribute("article", article);
+		m.addAttribute("list", list);
 		return "board/content";
 	}
 
@@ -211,7 +210,6 @@ public class BoardController {
 		return "board/deleteForm";
 	}
 
-	@RequestMapping(value = "deletePro", method = RequestMethod.POST)
 	public String board_deletePro(int num, String passwd, Model m) throws Exception {
 
 		int check = dbPro.deleteArticle(num, passwd);
@@ -220,45 +218,120 @@ public class BoardController {
 	}
 
 	@ResponseBody
-	  @RequestMapping(value="/liketo/like.do", produces="text/plain;charset=UTF-8")
-	  public String like(int boardnum, HttpSession session, String userid){
-	    //System.out.println("--> like() created");
-	    int mno = (Integer)session.getAttribute("userid");
-	    JSONObject obj = new JSONObject();
-	 
-	    ArrayList<String> msgs = new ArrayList<String>();
-	    HashMap<String,Object> hashMap = new HashMap<String, Object>();
-	    hashMap.put("boardnum", boardnum);
-	    hashMap.put("userid", userid);
-	    Likecheck liketoVO = MybatisBoardDao.read(hashMap);
-	    
-	    Board board = MybatisBoardDao.read(boardnum);
-	    int like_cnt = Board.getLike_cnt();     //게시판의 좋아요 카운트
-	    int like_check = 0;
-	    like_check = liketoVO.getLike_check();    //좋아요 체크 값
-	    
-	    if(MybatisBoardDao.countbyLike(hashMap)==0){
-	    	MybatisBoardDao.create(hashMap);
-	    }
-	      
-	    if(like_check == 0) {
-	      msgs.add("좋아요!");
-	      MybatisBoardDao.like_check(hashMap);
-	      like_check++;
-	      like_cnt++;
-	      MybatisBoardDao.like_cnt_up(boardnum);   //좋아요 갯수 증가
-	    } else {
-	      msgs.add("좋아요 취소");
-	      MybatisBoardDao.like_check_cancel(hashMap);
-	      like_check--;
-	      like_cnt--
-	      MybatisBoardDao.like_cnt_down(boardnum);   //좋아요 갯수 감소
-	    }
-	    obj.put("boardnum", Likecheck.getBoardnum());
-	    obj.put("like_check", like_check);
-	    obj.put("like_cnt", like_cnt);
-	    obj.put("msg", msgs);
-	    
-	    return obj.toJSONString();
-	  }
+	@RequestMapping(value = "replyinsert", method = RequestMethod.GET)
+	public String reply_insert(HttpServletRequest request, Reply reply) throws Exception {
+
+		System.out.println(reply);
+		int boardnum = Integer.parseInt(request.getParameter("boardnum"));
+		reply.setUserid(userid);
+		replyPro.insertreply(reply);
+
+		System.out.println(boardnum);
+
+		request.setAttribute("boardnum", boardnum);
+		request.setAttribute("reply", reply);
+		return "ok";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "replyUpdate", method = RequestMethod.GET)
+	public String reply_update(Reply reply) {
+
+		System.out.println(reply.getComments() + " + : " + reply.getReplynum());
+		System.out.println(reply.getBoardnum() + " + : " + reply.getUserid());
+		reply.setUserid(userid);
+
+		int check = replyPro.updatereply(reply);
+
+		if (check == 1) {
+			return "ok";
+		} else {
+			return "no";
+		}
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "replyDelete", method = RequestMethod.POST)
+	public String reply_delete(Reply reply) {
+		reply.setUserid(userid);
+		int check = replyPro.deletereply(reply);
+
+		if (check == 1) {
+			return "ok";
+		} else {
+			return "no";
+		}
+	}
+
+	@ResponseBody // 1 -> 0
+	@RequestMapping(value = "selling", method = RequestMethod.GET)
+	public String selling(HttpServletRequest request) {
+
+		int boardnum = Integer.parseInt(request.getParameter("boardnum"));
+		System.out.println(boardnum);
+		int check = dbPro.soldoutCheck1(boardnum);
+
+		if (check == 1) {
+			return "ok";
+		} else {
+			return "no";
+		}
+	}
+
+	@ResponseBody // 0 -> 1
+	@RequestMapping(value = "selloff", method = RequestMethod.POST)
+	public String selloff(HttpServletRequest request,String boardnum) {
+		String bdnum = request.getParameter("boardnum");
+		System.out.println(boardnum);
+		int check = dbPro.soldoutCheck2(Integer.parseInt(boardnum));
+
+		if (check == 1) {
+			return "ok";
+		} else {
+			return "no";
+		}
+	}
+
+//	@ResponseBody
+//	  @RequestMapping(value="/liketo/like.do", produces="text/plain;charset=UTF-8")
+//	  public String like(int boardnum, HttpSession session, String userid){
+//	    //System.out.println("--> like() created");
+//	    int mno = (Integer)session.getAttribute("userid");
+//	    JSONObject obj = new JSONObject();
+//	 
+//	    ArrayList<String> msgs = new ArrayList<String>();
+//	    HashMap<String,Object> hashMap = new HashMap<String, Object>();
+//	    hashMap.put("boardnum", boardnum);
+//	    hashMap.put("userid", userid);
+//	    Likecheck liketoVO = MybatisBoardDao.read(hashMap);
+//	    
+//	    Board board = MybatisBoardDao.read(boardnum);
+//	    int like_cnt = Board.getLike_cnt();     //게시판의 좋아요 카운트
+//	    int like_check = 0;
+//	    like_check = liketoVO.getLike_check();    //좋아요 체크 값
+//	    
+//	    if(MybatisBoardDao.countbyLike(hashMap)==0){
+//	    	MybatisBoardDao.create(hashMap);
+//	    }
+//	      
+//	    if(like_check == 0) {
+//	      msgs.add("좋아요!");
+//	      MybatisBoardDao.like_check(hashMap);
+//	      like_check++;
+//	      like_cnt++;
+//	      MybatisBoardDao.like_cnt_up(boardnum);   //좋아요 갯수 증가
+//	    } else {
+//	      msgs.add("좋아요 취소");
+//	      MybatisBoardDao.like_check_cancel(hashMap);
+//	      like_check--;
+//	      like_cnt--
+//	      MybatisBoardDao.like_cnt_down(boardnum);   //좋아요 갯수 감소
+//	    }
+//	    obj.put("boardnum", Likecheck.getBoardnum());
+//	    obj.put("like_check", like_check);
+//	    obj.put("like_cnt", like_cnt);
+//	    obj.put("msg", msgs);
+//	    
+//	    return obj.toJSONString();
+//	  }
 }// class end

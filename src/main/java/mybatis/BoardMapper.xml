@@ -21,10 +21,9 @@
 		 select * from board where to_char(regdate, 'yyyymmdd') = to_char(sysdate, 'yyyymmdd') 
 	</select> 
 	
-
-	 <select id="insert_max" resultType="int">
-		select max(boardnum)+1 from
-		board
+	<!-- 글번호 올려주는거? -->
+	 <select id="insert_boardnum" resultType="int">
+		select max(boardnum)+1 from board
 	</select> 
 
 	<insert id="insert" parameterType="Board">
@@ -73,5 +72,14 @@
     where userid=#{userid} and boardnum=#{boardnum}
   	</update>
   	
+  	<!-- soldout 체크 -->
+	<update id="soldoutCheck1" parameterType="int">
+	update board set soldout = 0 where boardnum = #{boardnum}
+	</update>
+	
+	<!-- soldout 체크 -->
+	<update id="soldoutCheck2" parameterType="int">
+	update board set soldout = 1 where boardnum = #{boardnum}
+	</update>
   	
 </mapper>

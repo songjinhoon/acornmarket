@@ -5,10 +5,39 @@
 <mapper namespace="mybatis.ReplyMapper">
 	<cache />
 
-	<!-- 댓글 조회-->
-	
-	<select id="readReply" resultType="Reply">
-	select replynum, userid, ref, re_step, re_level, regdate, 
-	comment from reply where boardnum = #{boardnum}
+	<!-- replynum 올려주는거  -->
+	 <select id="insert_replynum" resultType="int" parameterType="int">
+		select decode(count(*),0,1,max(replynum)+1) from reply
+	</select> 
+
+	<!-- 댓글 조회 -->
+	<select id="listReply" resultType="Reply">
+		select replynum, boardnum, userid, ref, re_step, re_level, regdate, update_date,
+		comments from reply where boardnum = #{boardnum}
+		order by regdate desc
 	</select>
+
+	<!-- 댓글 입력 -->
+	<insert id="insertReply" parameterType="Reply">
+		insert into reply values(#{replynum}, #{boardnum}, #{userid}, #{ref},
+		#{re_step}, #{re_level}, sysdate, sysdate, #{comments})
+	</insert>
+	
+	<!-- 댓글 수정 -->
+	<update id="updateReply" parameterType="Reply" >
+	update reply set comments =#{comments}, update_date = sysdate 
+	where replynum = #{replynum}
+	</update>
+	
+	<!-- userid 체크 -->
+	<select id="check" parameterType="Reply" resultType="int">
+	select count (*) from reply where replynum = #{replynum} and userid = #{userid}
+	</select>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="deleteReply" parameterType="int">
+	delete from reply where replynum = #{replynum}
+	</delete>
 </mapper>
+
+	

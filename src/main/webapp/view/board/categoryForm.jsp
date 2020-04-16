@@ -102,7 +102,15 @@
 							
 							<p></p>
 
+							
+							<c:if test="${empty li}">
+								게시물이 없습니다.
+							</c:if>
+							
+							
+
 							<div class="list-group">
+							<c:if test="${!empty li}">
 								<c:forEach items="${li}" var="list">
 									<a href="#" class="list-group-item">
 										<div class="media col-md-3">
@@ -127,15 +135,10 @@
 
 										<div class="col-md-3 text-center">
 											
-										
-										
 										<c:if test="${list.soldout == 0}">
 											<button type="button" class="btn btn-info btn-lg btn-block blue" 
-											onclick="location.href='${pageContext.request.contextPath}/board/content?num=${list.boardnum}'">구매하기</button>
-										
-											
-											<button type="button" class="btn btn-danger btn-lg btn-block blue" 
 											onclick="location.href='${pageContext.request.contextPath}/board/content?num=${list.boardnum}'">판매중</button>
+											
 										</c:if>
 										
 										<c:if test="${list.soldout != 0}">
@@ -146,7 +149,7 @@
 										
 									</a>
 								</c:forEach>
-
+</c:if>
 
 							</div>
 						</div>
