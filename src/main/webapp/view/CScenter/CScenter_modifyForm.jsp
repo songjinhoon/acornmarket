@@ -17,7 +17,7 @@ body {
 
 		<h2>CScenter Form</h2>
 
-		<form name="modifyform" id="form" role="form" method="post" action="${pageContext.request.contextPath}/CScenter/CScenter_preContent?type=write&page=${page}">
+		<form name="modifyform" id="form" role="form" method="post" action="${pageContext.request.contextPath}/CScenter/CScenter_preContent?num=${num }&type=${type }&page=${page}">
 
 			<input type="hidden" name="readCount" value="0"> <input type="hidden" name="passwd" value="admin">
 

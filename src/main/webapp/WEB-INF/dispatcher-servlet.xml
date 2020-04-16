@@ -35,4 +35,7 @@
 	<bean class="repository.CScenterDao">
 		<property name="dbname" value="Oracle"></property>
 	</bean>
+	<bean class="repository.MarketDao">
+		<property name="dbname" value="Oracle"></property>
+	</bean>
 </beans>

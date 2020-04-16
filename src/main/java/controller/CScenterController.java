@@ -28,7 +28,8 @@ import repository.CScenterDao;
 public class CScenterController {
 
 	String ip;
-
+	int check=0;
+	
 	@Autowired
 	CScenterDao service;
 
@@ -60,12 +61,16 @@ public class CScenterController {
 	}
 	
 	@RequestMapping(value = "CScenter_preContent", method = RequestMethod.POST)
-	public String CScenter_preContent(@RequestParam(value = "page", required = false, defaultValue = "1") int page,@RequestParam String type,CScenterDataBean article,Model model) throws Exception {
+	public String CScenter_preContent(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam String type,CScenterDataBean article,
+			@RequestParam(value = "num", required = false, defaultValue = "1") int num,
+			Model model) throws Exception {
 
 		System.out.println(article);
 		model.addAttribute("article", article);
 		model.addAttribute("type", type);
 		model.addAttribute("page", page);
+		model.addAttribute("num", num);
 		SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd hh:mm:ss");
 		String regdate = format.format(new Date());
 		
@@ -94,6 +99,7 @@ public class CScenterController {
 		model.addAttribute("article", article);
 		model.addAttribute("type", type);
 		model.addAttribute("page", page);
+		check=0;
 
 		return "CScenter/CScenterNotice_contentForm";
 	}
@@ -122,6 +128,7 @@ public class CScenterController {
 		model.addAttribute("tempEndPage",tempEndPage);
 		model.addAttribute("page",page);
 		model.addAttribute("number",number);
+		check=0;
 		return "CScenter/CScenterNotice";
 	}
 
@@ -132,12 +139,15 @@ public class CScenterController {
 			CScenterDataBean article,
 			Model model) throws Exception {
 
-		System.out.println(type);
-		if(type.equals("read")) {
+		if(type.equals("read") && check == 0) {
 		article = service.getArticle(num);
-		} 
+		check =1;
+		}
 		model.addAttribute("article", article);
 		model.addAttribute("page", page);
+		model.addAttribute("type", type);
+		model.addAttribute("num", num);
+		
 		
 		return "CScenter/CScenter_modifyForm";
 	}
@@ -149,8 +159,8 @@ public class CScenterController {
 		article.setIp(ip);
 		article.setNum(num);
 		service.modifyArticle(article);
-		//int articleNum = service.getNum();
-		return "redirect:/CScenter/CScenterNotice_contentForm?num=" + num + "&type=w&page="+page;
+		check=0;
+		return "redirect:/CScenter/CScenterNotice_contentForm?num=" + num + "&type=read&page="+page;
 	}
 
 	@RequestMapping(value = "CScenter_deleteForm", method = RequestMethod.GET)

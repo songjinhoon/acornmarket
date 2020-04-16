@@ -60,9 +60,9 @@
 						</div>
 
 						<!-- //공지사항 본문 -->
-							<button onclick=mySubmit(1) class="plain-btn btn" style="margin-top: 20px;">저장</button>
-							<button onclick=mySubmit(2) class="plain-btn btn" style="margin-top: 20px;">수정</button>
-							<a href="${pageContext.request.contextPath}/CScenter/CScenterNotice?page=${page}" class="plain-btn btn" style="margin-top: 20px;">취소</a>
+						<button onclick=mySubmit(1) class="plain-btn btn" style="margin-top: 20px;">저장</button>
+						<button onclick=mySubmit(2) class="plain-btn btn" style="margin-top: 20px;">수정</button>
+						<a href="${pageContext.request.contextPath}/CScenter/CScenterNotice?page=${page}" class="plain-btn btn" style="margin-top: 20px;">취소</a>
 					</div>
 					<!--// 컨텐츠 영역 -->
 				</div>
@@ -74,13 +74,14 @@
 	function mySubmit(index) {
 
 		if (index == 1) {
-
+			if( ${type=='write'}) {
 			document.form.action = '${pageContext.request.contextPath}/CScenter/CScenter_write';
-
+			}
+			document.form.action = '${pageContext.request.contextPath}/CScenter/CScenter_modify?num=${num}';
 		}
 		if (index == 2) {
 
-			document.form.action = '${pageContext.request.contextPath}/CScenter/CScenter_modifyForm?type=write&page=${page}';
+			document.form.action = '${pageContext.request.contextPath}/CScenter/CScenter_modifyForm?num=${num}&type=${type}&page=${page}';
 
 		}
 		document.form.submit();

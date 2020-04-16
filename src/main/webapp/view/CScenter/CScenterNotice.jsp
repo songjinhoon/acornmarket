@@ -91,7 +91,7 @@
 						<!-- 하단 페이징 -->
 						<div class="pagination-box box">
 							<div class="pagination">
-								<a href="${pageContext.request.contextPath}/CScenter/CScenter_writeForm?category=n&page=${page}" class="plain-btn btn search_again_btn faq_search_btn">글쓰기</a>
+								<a href="${pageContext.request.contextPath}/CScenter/CScenter_writeForm?type=n&page=${page}" class="plain-btn btn search_again_btn faq_search_btn">글쓰기</a>
 								<div class="wrapper">
 									<a href="${pageContext.request.contextPath}/CScenter/CScenterNotice?page=1" class="fa fa-angle-double-left paging-btn btn first"></a>
 									<c:if test="${page > 1}"> 

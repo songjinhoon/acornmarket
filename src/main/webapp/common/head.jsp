@@ -71,7 +71,7 @@
                                     <ul id="navigation">
                                         <li><a href="about.html">도토리마켓소개</a></li>
                                         <li><a href="blog.html">상품게시판</a></li>
-                                        <li><a href="#">지역정보게시판</a></li>
+                                        <li><a href="${pageContext.request.contextPath}/market/market_main">지역정보게시판</a></li>
                                         <li><a href="${pageContext.request.contextPath}/CScenter/CScenter">고객센터</a></li>
                                         <!-- <li><a href="#">공지사항<i class="ti-angle-down"></i></a>
                                             <ul class="submenu">
