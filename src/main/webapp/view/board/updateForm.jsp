@@ -53,13 +53,12 @@
 					<div class="container">
 						<div class="col-md-5">
 							<div class="form-area">
-								<form role="form" method="post"
+								<form role="form" method="post" enctype="multipart/form-data"
 									action="${pageContext.request.contextPath}/board/updatePro">
 									
 									<input type="hidden" name="boardnum" value="${article.boardnum}">
-									<!-- <input type="hidden" name="userid" value="22"> -->
 									<input type="hidden" name="passwd" value="${article.passwd}">
-									<input type="hidden" name="regdate" value="${article.regdate}">
+								<%-- 	<input type="hidden" name="regdate" value="${article.regdate}"> --%>
 									<input type="hidden" name="readcount" value="${article.readcount}">
 									
 									
@@ -93,19 +92,19 @@
 
 									<div class="form-group">
 										<input type="file" class="form-control" id="filename"
-											name="filename" value="${article.filename}">
+											name="uploadfile" >
 									</div> 
-									
+									<input type="hidden"   name="oldfile"  value="${article.filename}">
 									<div class="form-group">
 									userid : <input type="text" class="form-control" id="userid"
-											name="userid" value="${article.userid} ">
+											name="userid" value="${article.userid}">
 									</div>
 									
 									<tr>
 										<td>
 										<label>
 										<input class="form-control" size="32" type="text" name="address1" id="address1"
-												placeholder="${article.address}" value="${boardnum}"> </label> 
+												placeholder="${article.address}" value="${article.address}"> </label> 
 										<label><input type="text" size="32" class="form-control" style=" margin-top: 3px;"id="address2" name="address2" placeholder="상세주소"> </label>		
 												
 												<input type="button" class="w3-button w3-round-large w3-tiny w3-border"

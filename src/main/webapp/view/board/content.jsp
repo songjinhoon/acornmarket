@@ -64,7 +64,7 @@
 					<div class="container">
 						<div class="col-md-5">
 							<div class="form-area">
-								<form role="form">
+								<form role="form" enctype="multipart/form-data">
 									<br style="clear: both">
 									<div class="img1">
 										<img
@@ -98,17 +98,6 @@
 											name="userid" value="${article.userid}">
 									</div>
 
-
-									<c:choose>
-										<c:when test="${userid ne null}">
-											<a href='javascript: like_func();'><img
-												src='./images/dislike.png' id='like_img'></a>
-										</c:when>
-										<c:otherwise>
-											<a href='javascript: login_need();'><img
-												src='./images/dislike.png'></a>
-										</c:otherwise>
-									</c:choose>
 
 
 									<div class="form-group">
@@ -387,11 +376,6 @@
 		function selling(boardnum){
 			var action = "${pageContext.request.contextPath}/board/selling";
 			
-// 			var data = {
-// 				//넘기는 것 아래 형식으로 써서넘기기
-// 				// 키 : 밸류 ( 문서에서 리플라이(폼네임).(이름을 가진 값))
-// 				soldout : $('#soldout').val()
-// 			};
 			alert(boardnum);
 			$.ajax({ 
 				type : 'GET',//데이터 처리방식
@@ -419,7 +403,6 @@
 		</script>
 		<script type="text/javascript">
 			
-			//댓글 입력
 			function selloff(bdnum){
 				var action = "${pageContext.request.contextPath}/board/selloff";
 				
@@ -443,54 +426,6 @@
 					} // Ajax error 
 			});
 			}
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
-	<!-- 좋아요 -->
-	<script>
-	function like_func(){
-		  var frm_read = $('#frm_read');
-		  var boardnum = $('#boardnum', frm_read).val();
-		  //var mno = $('#mno', frm_read).val();
-		  //console.log("boardno, mno : " + boardno +","+ mno);
-		  
-		  $.ajax({
-		    url: "../liketo/like.do",
-		    type: "GET",
-		    cache: false,
-		    dataType: "json",
-		    data: 'boardnum=' +boardnum,
-		    success: function(data) {
-		      var msg = '';
-		      var like_img = '';
-		      msg += data.msg;
-		      alert(msg);
-		      
-		      if(data.like_check == 0){
-		        like_img = "./images/dislike.png";
-		      } else {
-		        like_img = "./images/like.png";
-		      }      
-		      $('#like_img', frm_read).attr('src', like_img);
-		      $('#like_cnt').html(data.like_cnt);
-		      $('#like_check').html(data.like_check);
-		    },
-		    error: function(request, status, error){
-		      alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		    }
-		  });
-		}
-	  </script> 
 </body>
 </html>

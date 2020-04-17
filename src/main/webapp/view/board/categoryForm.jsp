@@ -26,6 +26,14 @@
 	src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
+<!-- 검색창  -->
+<!-- <script type="text/javascript">
+function search() {
+	
+	})
+}
+</script>
+ -->
 
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/categoryForm.css" />
@@ -40,11 +48,11 @@
 	<nav class="nav1">
 		<div class="container">
 			<div class="right">
-				<form class="form-inline" action="/action_page.php">
-					<input class="form-control mr-sm-2" type="text"
+				<form class="form-inline" action="search();">
+					<input class="form-control mr-sm-2" id="search_subject" type="text"
 						placeholder="도토리 찾기">
 					<button class="btn btn-outline-warning" type="submit"
-						style="height: 40px;">
+						style="height: 40px;" onclick="search();">
 						<i class="fa fa-search"></i>
 					</button>
 				</form>
@@ -125,31 +133,55 @@
 
 											<table>
 												<tr>
-												<%-- 	<td width="20%">[ ${list.boardnum} ] </td> --%>
 													<td> ${list.subject}</td>
 												</tr>
 												</table>
 
 												<p class="list-group-item-text">${list.price} 원</p>
 										</div>
-
+										
+									
+									
+											<%-- 	<c:choose>
+										<c:when test="${userid ne null}">
+											<a href='javascript: like();'>
+											<img src='${pageContext.request.contextPath}/img/list/like.png' id='likeimg' style="width: 10%; height: 10%;">
+											</a>
+										</c:when>
+									<c:otherwise>
+											<a href='javascript: login_need();'>
+											<img src='${pageContext.request.contextPath}/img/list/dislike.png' id='dislikeimg'>
+											</a>
+									</c:otherwise>
+									</c:choose> --%>
+																		
+									
+									<span>
+								
+										<img src='${pageContext.request.contextPath}/img/list/like.png' onclick="like();" id='likeimg' style="width: 5%; height: 5%;">
+									</span>
+								
+								
 										<div class="col-md-3 text-center">
-											
+										
 										<c:if test="${list.soldout == 0}">
-											<button type="button" class="btn btn-info btn-lg btn-block blue" 
+											<button type="button" class="btn btn-info btn-md btn-block blue" 
 											onclick="location.href='${pageContext.request.contextPath}/board/content?num=${list.boardnum}'">판매중</button>
-											
 										</c:if>
 										
 										<c:if test="${list.soldout != 0}">
-											<button type="button" class="btn btn-danger btn-lg btn-block blue" 
+											<button type="button" class="btn btn-danger btn-md btn-block blue" 
 											onclick="location.href='${pageContext.request.contextPath}/board/content?num=${list.boardnum}'">판매완료</button>
 										</c:if>
 										</div>
 										
 									</a>
 								</c:forEach>
-</c:if>
+									</c:if>
+
+
+
+
 
 							</div>
 						</div>
@@ -175,5 +207,51 @@
 		<c:if test="${endPage < pageCount}">
 			<a href="list?pageNum=${startPage + bottomLine}">[다음]</a>
 		</c:if>
+		
+		
+		
+		
+		
+	<!-- 좋아요 -->
+	<script>
+	function like(){
+		  var frm_read = $('#frm_read');
+		  var boardnum = $('#boardnum', frm_read).val();
+		  //var mno = $('#mno', frm_read).val();
+		  //console.log("boardno, mno : " + boardno +","+ mno);
+		  
+		  $.ajax({
+		    url: "../liketo/like.do",
+		    type: "GET",
+		    cache: false,
+		    dataType: "json",
+		    data: 'boardnum=' +boardnum,
+		    success: function(data) {
+		      var msg = '';
+		      var like_img = '';
+		      msg += data.msg;
+		      alert(msg);
+		      
+		      if(data.like_check == 0){
+		        like_img = "./images/dislike.png";
+		      } else {
+		        like_img = "./images/like.png";
+		      }      
+		      $('#like_img', frm_read).attr('src', like_img);
+		      $('#like_cnt').html(data.like_cnt);
+		      $('#like_check').html(data.like_check);
+		    },
+		    error: function(request, status, error){
+		      alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		    }
+		  });
+		}
+	  </script> 
+		
+		
+		
+		
+		
+		
 </body>
 </html>

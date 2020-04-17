@@ -58,6 +58,11 @@
 		#{boardnum}
 	</delete>
 	
+<!-- 	<!-- 검색 -->
+	<select id="search" parameterType="String" resultType="Board">
+	select * from board where subject like '%'||('#keyword')||'%' or content like '%'||('#keyword')||'%';
+	</select>
+ -->
 	
 	<!-- 좋아요 -->
 	<update id="like_check" parameterType="HashMap">

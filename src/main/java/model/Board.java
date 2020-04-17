@@ -19,7 +19,15 @@ public class Board implements Serializable {
 	private int soldout;
 	private String passwd;
 	private int likecount;
+	private String oldfile;
 	
+	
+	public String getOldfile() {
+		return oldfile;
+	}
+	public void setOldfile(String oldfile) {
+		this.oldfile = oldfile;
+	}
 	public int getBoardnum() {
 		return boardnum;
 	}

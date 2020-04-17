@@ -181,7 +181,7 @@ label {
 					<tr>
 						<td>
 							<label class="w3-margin-right">Password Check</label> 
-							<input class="w3-input w3-round w3-border" size="22" type="password" name="userpasswd" id="PasswdCheck">
+							<input class="w3-input w3-round w3-border" size="22" type="password" id="PasswdCheck">
 							<div id="pwCheck"></div>
 						</td>
 					</tr>

@@ -189,16 +189,29 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "updatePro", method = RequestMethod.POST)
-	public String board_updatePro(HttpServletRequest request, Board article, Model m, String address1, String address2)
+	public String board_updatePro(HttpServletRequest multipart, Board article, Model m, String address1, String address2)
 			throws Exception {
+		
+		 System.out.println(article.getOldfile());
+		
+		 MultipartFile multi = ((MultipartRequest) multipart).getFile("uploadfile");
 
-		article.setAddress(address1 + " " + address2);
+			String filename = multi.getOriginalFilename();
+			if (filename != null && !filename.equals("")) {
+				String uploadPath = multipart.getRealPath("/") + "/uploadFile";
 
-		int boardnum = Integer.parseInt(request.getParameter("boardnum"));
+				FileCopyUtils.copy(multi.getInputStream(),
+						new FileOutputStream(uploadPath + "/" + multi.getOriginalFilename()));
 
-		dbPro.updateArticle(article);
-
-		request.setAttribute("boardnum", boardnum);
+				article.setFilename(filename);
+			} else {
+				article.setFilename(article.getOldfile());
+			}
+		 
+		  article.setAddress(address1 + " " + address2); 
+		  dbPro.updateArticle(article); 
+		  m.addAttribute("boardnum", article.getBoardnum());
+		 
 
 		return "board/updatePro";
 	}
@@ -210,6 +223,7 @@ public class BoardController {
 		return "board/deleteForm";
 	}
 
+	@RequestMapping(value = "deletePro")
 	public String board_deletePro(int num, String passwd, Model m) throws Exception {
 
 		int check = dbPro.deleteArticle(num, passwd);
