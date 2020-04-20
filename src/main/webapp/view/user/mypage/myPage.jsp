@@ -13,7 +13,7 @@
 
 <body>
 	<br>	<p>		<br>	<p>
-<div style="border: 3px solid skyblue;">
+<div>
 	<div align="center">
 		<div style="width: 80%;">
 			<div style="float: left; width:25%;">
@@ -45,11 +45,11 @@
 			</div>
 			<div style="float: left; width:25%;">
 				<label>관심 목록</label><br> <br>
-				<a href="${pageContext.request.contextPath}/user/jjimList"><i class="fas fa-heart fa-4x"></i></a>
+				<a href="${pageContext.request.contextPath}/board/jjimList"><i class="fas fa-heart fa-4x"></i></a>
 			</div>
 			<div style="float: left; width:25%;">
 				<label>거래 내역</label><br><br>
-				<a href="${pageContext.request.contextPath}/user/saleList"><i class="fas fa-clipboard-list  fa-4x"></i></a>
+					<a href="${pageContext.request.contextPath}/board/sellList"><i class="fas fa-clipboard-list  fa-4x"></i></a>
 			</div>
 		</div>
 	</div>
@@ -59,17 +59,17 @@
 	<br><p>
 	<div align="center">
 		<div style="width: 80%; height: 400px;">
-			<div style="float: left; width: 30%;">
-				<div style="border: 3px solid rgb(255, 194, 0); height: 200px;">
+			<div style="float: left; width: 30%;">	<br>
+				<div style=" height: 200px;">
 				<br><p></p><br>
 					<a href="${pageContext.request.contextPath}/chat/chatForm">
 						<i class="fas fa-comments  fa-4x"></i>
 					</a> 
 					<br>채팅
 				</div>
-				<div style="border: 3px solid pink; height: 200px; align: center;">
+				<div style="height: 200px; align: center;">
 				<br><p></p><br>
-					<a href="${pageContext.request.contextPath}/user/saleList">
+					<a href="${pageContext.request.contextPath}/board/MyReply">
 						<i class="fas fa-user-edit  fa-4x"></i>
 					</a> 
 					<br>작성한 리뷰
@@ -77,7 +77,8 @@
 			</div>내 주위에 있는 거래 보기<br> 
 					<i class="fas fa-map fa-2x"></i>
 			<div style="float: right; width: 70%;">
-				<div style="border: 3px solid skyblue; height:350px; " id="map">
+				<br>
+				<div style="height:350px; " id="map">
 				</div>
 			</div>
 		</div>
@@ -90,7 +91,11 @@
 		<input type="hidden" size="50" name="juAddress" value="${addressList }"/>
 	</div>
 </c:forEach>
-
+<c:forEach items="${subList }" var="subList">
+	<div class="subject" style="display: none">
+		<input type="hidden" size="50" name="sub" value="${subList }"/>
+	</div>
+</c:forEach>
 
 <script>
 	//container : 지도를 표시할 div의 아이디
@@ -99,52 +104,73 @@
 		//center : 지도 생성시 반드시 필요. (지도 중심 좌표) / LatLng : 위·경도 죄표[위도(latitude), 경도(longitude)]
 		center: new kakao.maps.LatLng(33.450701, 126.570667),
 		//level : 지도 확대 레벨
-		level: 3
+		level: 5
 	};
 	
 	
 
 	////////////////////////////////////////////////////////////////////
-	//내 주소와 같은 구에 있는 거래를 볼 수 있다.									 //
+	//내 주소와 같은 구에 있는 거래를 볼 수 있다.								 	  //
 	////////////////////////////////////////////////////////////////////
-	var geocoder2 = new kakao.maps.services.Geocoder();
+ 	var geocoder2 = new kakao.maps.services.Geocoder();
 	var addressArray = [];
 	var nearAddress =  $('.addAddress'); //jQuery로 클래스의 값을 가져온다.
 	
-	
+	var subjectArray = [];
+	var subAddress = $("input[name='sub']") ; //jQuery로 클래스의 값을 가져온다.
+	var subline= new Array();
+	var index=0;
 	for(var i=0; i<nearAddress.length; i++){
 		addressArray.push({
-			'groupAddress' : $("input[name='juAddress']").eq(i).val()	//이름이 juAddress인 것의 값을 넣는다.	/	eq(i) : jQuery객체로 반환
+			'groupAddress' : $("input[name='juAddress']").eq(i).val(),	//이름이 juAddress인 것의 값을 넣는다.	/	eq(i) : jQuery객체로 반환
+			'groupName' : $("input[name='sub']").eq(i).val()	//이름이 juAddress인 것의 값을 넣는다.	/	eq(i) : jQuery객체로 반환
 		});
 	}
 	
-	for(var i=0; i<addressArray.length; i++){
-		geocoder2.addressSearch(
-				addressArray[i].groupAddress,
-			function(result, status, data){
-				//정상적으로 검색 완료 시
-				if(status === daum.maps.services.Status.OK){
-					var coords = new daum.maps.LatLng(result[0].y, result[0].x);
-					
-					//결과값으로 받은 위치를 마커로 표시
-					var marker = new daum.maps.Marker({
-						map:map,
-						position : coords
-					});
-					
-					//마커를 지도에 표시
-					marker.setMap(map);
-					
-					var content = '<div style="width:150px; text-align:center; padding:5px;font-size:12px;">'+result[0].address_name+'</div>';
-					
-					var infowindow = new kakao.maps.InfoWindow({
-						content : content
-					});
-					infowindow.open(map, marker);
-				}
-				})
+	 for(var i=0; i<subAddress.length; i++){
+			subline[i] = subAddress[i].value ;
+			console.log(subline[i])
+			
+		
 	}
+	 
 	
+	
+	for(var i=0; i<addressArray.length; i++){
+		//console.log(addressArray[i].groupName);
+		
+		//	console.log("li:"+li.value)
+		geocoder2.addressSearch(addressArray[i].groupAddress,callback)
+	}
+	 
+	 function callback(result, status, data){
+			  var li = subAddress;
+			  
+			//	console.log("result:"+JSON.stringify(result))
+				console.log("data:"+JSON.stringify(subAddress))
+			
+			//정상적으로 검색 완료 시
+			if(status === daum.maps.services.Status.OK){
+				var coords = new daum.maps.LatLng(result[0].y, result[0].x);
+				
+				//결과값으로 받은 위치를 마커로 표시
+				var marker = new daum.maps.Marker({
+					map:map,
+					position : coords,
+					title : result[0].address_name
+				});
+				
+				//마커를 지도에 표시
+				marker.setMap(map);
+				//board테이블에 있는 subject를 출력
+				var content = '<div style="width:150px; text-align:center; padding:5px;font-size:12px;">'+li[index++].value+'</div>';
+				
+				var infowindow = new kakao.maps.InfoWindow({
+					content : content
+				});
+				infowindow.open(map, marker);
+			}
+			}
 	////////////////////////////////////////////////////////////////////
 
 	// 마커 이미지의 이미지 주소입니다
@@ -170,10 +196,10 @@
 				image : markerImage, // 마커 이미지 
 				title : '${useraddress}' // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
 			});
-			
+			 
 			//인포윈도우로 현재 장소에 대한 설명.
 			var infowindow = new kakao.maps.InfoWindow({
-				content : '<div style="width:150px; text-align:center; padding:5px;font-size:12px;">현재 위치</div>'
+				content : '<div style="width:150px; text-align:center; padding:5px;font-size:12px;">내 위치</div>'
 				
 			});
 			infowindow.open(map, marker);

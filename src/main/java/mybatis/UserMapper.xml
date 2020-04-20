@@ -78,9 +78,15 @@
 	</select>
 	
 	<select id="getAddress" parameterType="String" resultType="String">
-		SELECT substr(useraddress, 0, instr(useraddress, ' ', 1, 4))
-		FROM user1
-		WHERE substr(useraddress, 0, instr(useraddress, ' ', 1, 2)) =substr(#{useraddress}, 0, instr(#{useraddress}, ' ', 1, 2)) and useraddress not in(#{useraddress}) 
+		SELECT substr(address, 0, instr(address, ' ', 1, 4))
+		FROM board
+		WHERE substr(address, 0, instr(address, ' ', 1, 2)) =substr(#{useraddress}, 0, instr(#{useraddress}, ' ', 1, 2)) and address not in(#{useraddress}) and soldout=0 
+	</select>
+	
+	<select id="getUserSub" parameterType="String" resultType="String">
+		SELECT subject
+		FROM board
+		WHERE substr(address, 0, instr(address, ' ', 1, 2)) =substr(#{useraddress}, 0, instr(#{useraddress}, ' ', 1, 2)) and address not in(#{useraddress}) and soldout=0 
 	</select>
 	
 	<select id="getUserList" parameterType="int" resultType="User">

@@ -48,14 +48,13 @@ public class UserController {
 
 	@ModelAttribute // 메소드를 실행할 때 마다 매번 실행된다.
 	public void initProcess(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("------------------");
 
 		HttpSession session = request.getSession();
 		userId = (String) session.getAttribute("userId");
 		System.out.println("User----------" + userId);
 
 	}
-
+	
 	@RequestMapping(value = "selectJoinForm", method = RequestMethod.GET)
 	public String selectJoinForm(HttpServletRequest request) throws Exception {
 		String naverApiUrl = NaverAPI.getApiUrl();
@@ -132,7 +131,7 @@ public class UserController {
 			}
 			try{
 				userInfo = naverAPI.getUserInfo(access_token);
-				// 토큰 삭제
+				// �넗�겙 �궘�젣
 				String result = naverAPI.deleteAccessToken(access_token);
 				if (result.equals("success")) {
 					System.out.println("- 네이버 토큰 삭제 성공 -");
@@ -323,7 +322,7 @@ public class UserController {
 			return "redirect:/main/main";
 		} else if (emailChecked == 0) {
 			// 사용자에게 보낼 이메일 내용을 입력
-			String host = "http://localhost:8080/zSpringProject/user/";
+			String host = "http://localhost:9080/zSpringProject/user/";
 			String from = "oakNutSpring@gmail.com";
 			String to = service.getUserEmail(userId);
 
@@ -450,20 +449,25 @@ public class UserController {
 
 		List<String> userAddress = service.getAddress(useraddress);
 		System.out.println("userAddress------------------------" + userAddress);
-
+		
+		  List<String> userSub = service.getUserSub(useraddress);
+		  System.out.println("userSubject---------" + userSub);
+		 
+		
 		request.setAttribute("addressList", userAddress);
 		request.setAttribute("userScore", userScore);
 		request.setAttribute("useraddress", useraddress);
+		request.setAttribute("subList", userSub);
 
 		return "user/mypage/myPage";
 	}
 
 	// 회원 정보 수정 전 비밀번호 체크
-	@RequestMapping(value = "userPasswdCheck", method = RequestMethod.GET)
-	public String userPasswdCheck(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		@RequestMapping(value = "userPasswdCheck", method = RequestMethod.GET)
+		public String userPasswdCheck(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		return "user/update/userPasswdCheck";
-	}
+			return "user/update/userPasswdCheck";
+		}
 
 	// 회원 정보 수정 전 비밀번호 체크
 	@RequestMapping(value = "userPasswdCheckPro", method = RequestMethod.POST)
@@ -490,54 +494,40 @@ public class UserController {
 	}
 
 	// 회원 정보 수정 페이지
-	@RequestMapping(value = "userModifyForm")
-	public String userModifyForm(Model model, User user) throws Exception {
+		@RequestMapping(value = "userModifyForm")
+		public String userModifyForm(Model model, User user) throws Exception {
 
-		user = service.getUserInfo(userId);
+			user = service.getUserInfo(userId);
 
-		model.addAttribute("user", user);
+			model.addAttribute("user", user);
 
-		System.out.println(user);
-		return "user/update/userModifyForm";
-	}
-
-	
-	// 회원 정보 수정 처리
-	@RequestMapping(value = "userModifyPro", method = RequestMethod.POST)
-	public void userModifyPro(Model model, User user, String useraddress, String detailaddress, HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("utf-8");
-
-		user.setUseraddress(useraddress + " " + detailaddress);
-		
-		System.out.println(user);
-		int check = service.setUserUpdate(user);
-		PrintWriter script = response.getWriter();
-
-		if (check == 1) {
-			script.println("<script>");
-			script.println(" alert('수정이 완료되었습니다.');");
-			script.println("location.href = '/zSpringProject/user/myPage'");
-			script.println("</script>");
-			script.close();
+			System.out.println(user);
+			return "user/update/userModifyForm";
 		}
-	}
 
-	// 구매 내역
-	@RequestMapping(value = "saleList", method = RequestMethod.GET)
-	public String saleList(HttpServletRequest request) throws Exception {
+		
+		// 회원 정보 수정 처리
+		@RequestMapping(value = "userModifyPro", method = RequestMethod.POST)
+		public void userModifyPro(Model model, User user, String useraddress, String detailaddress, HttpServletRequest request, HttpServletResponse response)
+				throws Exception {
 
-		return "user/saleList";
-	}
+			response.setContentType("text/html; charset=UTF-8");
+			request.setCharacterEncoding("utf-8");
 
-	// 찜 목록
-	@RequestMapping(value = "jjimList", method = RequestMethod.GET)
-	public String jjimList(HttpServletRequest request) throws Exception {
+			user.setUseraddress(useraddress + " " + detailaddress);
+			
+			System.out.println(user);
+			int check = service.setUserUpdate(user);
+			PrintWriter script = response.getWriter();
 
-		return "user/jjimList";
-	}
+			if (check == 1) {
+				script.println("<script>");
+				script.println(" alert('수정이 완료되었습니다.');");
+				script.println("location.href = '/zSpringProject/user/myPage'");
+				script.println("</script>");
+				script.close();
+			}
+		}
 
 	// 회원 탈퇴
 	@RequestMapping(value = "userDelete", method = RequestMethod.GET)

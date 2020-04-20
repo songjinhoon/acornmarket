@@ -8,11 +8,25 @@
 </head>
 
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<script
-	src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="${pageContext.request.contextPath}/js/sweetalert/sweetalert.js"></script>
 
 <script type="text/javascript">
 
+function checkIt() {
+	var userinput = eval("document.userinput");
+	if (!document.user.PasswdCheck.value) {
+		swal("비밀번호를 입력하세요");
+		user.PasswdCheck.focus();
+		return false;
+	}
+
+	if (!document.user.detailAddress.value) {
+		swal("상세주소를 입력하세요");
+		user.detailAddress.focus();
+		return false;
+	}
+}
 	$(function() {
 		$('#PasswdCheck').blur(function() {
 			if ($('#userPasswd').val() != $('#PasswdCheck').val()) {
@@ -22,9 +36,17 @@
 					$('#PasswdCheck').val('');
 					$('#PasswdCheck').focus();
 				}
-			} else {
-				$('#pwCheck').text("비밀번호가 일치합니다.");
-				$('#pwCheck').css("color", "blue");
+			}  else{
+				if($('#PasswdCheck').val().length <8){
+					$('#pwCheck').text("비밀번호는 8자 이상으로 입력해주세요.");
+					$('#pwCheck').css("color", "red");
+					$('#userPasswd').val('');
+					$('#PasswdCheck').val('');
+					$('#userPasswd').focus();
+				}else{
+					$('#pwCheck').text("비밀번호가 일치합니다.");
+					$('#pwCheck').css("color", "blue");
+				}
 			}
 		});
 	});
@@ -52,7 +74,7 @@ label {
 		<div class="col-lg-4 jumbotron w3-panel w3-round-xlarge" style="width: 70%;">
 		<br><p>
 		<b style="color:#745d46;"><h3>회원정보 수정</h3></b>
-			<form action="${pageContext.request.contextPath}/user/userModifyPro" method="post" autocomplete="off">
+			<form action="${pageContext.request.contextPath}/user/userModifyPro" method="post" name="user" autocomplete="off" onsubmit="return checkIt()">
 				
 					
 				<table style="color: white;">
@@ -74,7 +96,7 @@ label {
 					<tr>
 						<td>
 							<label class="w3-margin-right">Password Check</label> 
-							<input class="w3-input w3-round w3-border" size="22" type="password" name="userpasswd" id="PasswdCheck">
+							<input class="w3-input w3-round w3-border" size="22" type="password" id="PasswdCheck">
 							<div id="pwCheck"></div>
 						</td>
 					</tr>

@@ -8,6 +8,8 @@
 		<typeAlias type="model.CScenterDataBean" alias="CScenter" />
 		<typeAlias alias="Market" type="model.MarketDataBean" />
 		<typeAlias alias="Marketcmt" type="model.CmtDataBean" />
+		<typeAlias type="model.Board" alias="Board" />
+		<typeAlias type="model.Reply" alias="Reply" />
 	</typeAliases>
 
 	<environments default="development">
@@ -27,5 +29,7 @@
 		<mapper resource="mybatis/WebNoteMapper.xml" />
 		<mapper resource="mybatis/CScenter.xml" />
 		<mapper resource="mybatis/Market.xml" />
+		<mapper resource="mybatis/BoardMapper.xml" />
+		<mapper resource="mybatis/ReplyMapper.xml" />
 	</mappers>
 </configuration>
