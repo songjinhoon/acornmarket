@@ -142,25 +142,15 @@ function search() {
 										
 									
 									
-											<%-- 	<c:choose>
-										<c:when test="${userid ne null}">
-											<a href='javascript: like();'>
-											<img src='${pageContext.request.contextPath}/img/list/like.png' id='likeimg' style="width: 10%; height: 10%;">
-											</a>
-										</c:when>
-									<c:otherwise>
-											<a href='javascript: login_need();'>
-											<img src='${pageContext.request.contextPath}/img/list/dislike.png' id='dislikeimg'>
-											</a>
-									</c:otherwise>
-									</c:choose> --%>
-																		
-									
-									<span>
-								
-										<img src='${pageContext.request.contextPath}/img/list/like.png' onclick="like();" id='likeimg' style="width: 5%; height: 5%;">
-									</span>
-								
+										
+										${list.likecheck}
+										<c:if test="${list.likecheck == -1 || list.likecheck == 0 }">
+										<img src='${pageContext.request.contextPath}/img/list/dislike.png' onclick="like(${list.boardnum},'${list.userid}');" id='${list.boardnum}like_img' style="width: 5%; height: 5%;">
+										</c:if>
+										
+										<c:if test="${list.likecheck == 1}">
+										<img src='${pageContext.request.contextPath}/img/list/like.png' onclick="like(${list.boardnum},'${list.userid}');" id='${list.boardnum}like_img' style="width: 5%; height: 5%;">
+										</c:if>
 								
 										<div class="col-md-3 text-center">
 										
@@ -178,11 +168,6 @@ function search() {
 									</a>
 								</c:forEach>
 									</c:if>
-
-
-
-
-
 							</div>
 						</div>
 					</div>
@@ -192,54 +177,34 @@ function search() {
 
 		</div>
 	</div>
-
-	<!-- 페이징처리 -->
-	<p align="center">
-
-		<c:if test="${startPage > bottomLine}">
-
-			<a href="list?pageNum=${startPage - bottomLine}">[이전]</a>
-		</c:if>
-		<c:forEach var="i" begin="${startPage}" end="${endPage}">
-			<a href="list?pageNum=${i}">[${i}]</a>
-		</c:forEach>
-
-		<c:if test="${endPage < pageCount}">
-			<a href="list?pageNum=${startPage + bottomLine}">[다음]</a>
-		</c:if>
-		
-		
-		
-		
 		
 	<!-- 좋아요 -->
 	<script>
-	function like(){
-		  var frm_read = $('#frm_read');
-		  var boardnum = $('#boardnum', frm_read).val();
-		  //var mno = $('#mno', frm_read).val();
-		  //console.log("boardno, mno : " + boardno +","+ mno);
-		  
+	function like(boardnum, userid){
+
+			var action = "${pageContext.request.contextPath}/board/like";
+			var data = {boardnum: boardnum, userid : userid};
+			alert(JSON.stringify(data))
+		
 		  $.ajax({
-		    url: "../liketo/like.do",
 		    type: "GET",
+		    url: action,
 		    cache: false,
 		    dataType: "json",
-		    data: 'boardnum=' +boardnum,
+		    data: data,
 		    success: function(data) {
-		      var msg = '';
-		      var like_img = '';
-		      msg += data.msg;
-		      alert(msg);
 		      
-		      if(data.like_check == 0){
-		        like_img = "./images/dislike.png";
+		      var like_img = '';
+		      
+		      if(data.likecheck == 1) { //좋아요 누름
+		        like_img = '${pageContext.request.contextPath}/img/list/like.png';
 		      } else {
-		        like_img = "./images/like.png";
+		    	like_img = '${pageContext.request.contextPath}/img/list/dislike.png';
+		    	
 		      }      
-		      $('#like_img', frm_read).attr('src', like_img);
-		      $('#like_cnt').html(data.like_cnt);
-		      $('#like_check').html(data.like_check);
+				console.log("like_img::"+like_img);
+				$('#'+boardnum+'like_img').attr('src', like_img);
+			
 		    },
 		    error: function(request, status, error){
 		      alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -247,11 +212,5 @@ function search() {
 		  });
 		}
 	  </script> 
-		
-		
-		
-		
-		
-		
 </body>
 </html>

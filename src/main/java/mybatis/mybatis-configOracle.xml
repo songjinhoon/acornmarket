@@ -11,6 +11,7 @@
 		<typeAlias type="model.WebNote" alias="WebNote"/>
 		<typeAlias type="model.CScenterDataBean" alias="CScenter" />
 		<typeAlias type="model.Reply" alias="Reply" />
+		<typeAlias type="model.LikeCheck" alias="LikeCheck" />
 	</typeAliases>
 	
 	<environments default="development">

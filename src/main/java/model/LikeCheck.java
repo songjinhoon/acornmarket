@@ -1,10 +1,13 @@
 package model;
 
-public class Likecheck {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class LikeCheck implements Serializable {
 
 	private int likenum;
 	private int boardnum;
-	private int like_check;
+	private int likecheck;
 	private String userid;
 	
 	public int getLikenum() {
@@ -19,22 +22,23 @@ public class Likecheck {
 	public void setBoardnum(int boardnum) {
 		this.boardnum = boardnum;
 	}
-	public int getLike_check() {
-		return like_check;
-	}
-	public void setLike_check(int like_check) {
-		this.like_check = like_check;
-	}
+
 	public String getUserid() {
 		return userid;
 	}
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
+	public int getLikecheck() {
+		return likecheck;
+	}
+	public void setLikecheck(int likecheck) {
+		this.likecheck = likecheck;
+	}
 	
 	@Override
 	public String toString() {
-		return "Likecheck [likenum=" + likenum + ", boardnum=" + boardnum + ", like_check=" + like_check + ", userid="
+		return "Likecheck [likenum=" + likenum + ", boardnum=" + boardnum + ", likecheck=" + likecheck + ", userid="
 				+ userid + "]";
 	}
 }

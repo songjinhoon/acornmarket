@@ -18,7 +18,7 @@ public class Board implements Serializable {
 	private String category;
 	private int soldout;
 	private String passwd;
-	private int likecount;
+	private int likecheck;
 	private String oldfile;
 	
 	
@@ -100,19 +100,18 @@ public class Board implements Serializable {
 	public void setPasswd(String passwd) {
 		this.passwd = passwd;
 	}
-	public int getLikecount() {
-		return likecount;
+	public int getLikecheck() {
+		return likecheck;
 	}
-	public void setLikecount(int likecount) {
-		this.likecount = likecount;
+	public void setLikecheck(int likecheck) {
+		this.likecheck = likecheck;
 	}
 	@Override
 	public String toString() {
 		return "Board [boardnum=" + boardnum + ", userid=" + userid + ", filename=" + filename + ", readcount="
 				+ readcount + ", regdate=" + regdate + ", subject=" + subject + ", content=" + content + ", address="
 				+ address + ", price=" + price + ", category=" + category + ", soldout=" + soldout + ", passwd="
-				+ passwd + ", likecount=" + likecount + "]";
+				+ passwd + ", likecheck=" + likecheck + ", oldfile=" + oldfile + "]";
 	}
-	
 	
 }

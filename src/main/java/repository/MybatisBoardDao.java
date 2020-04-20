@@ -13,6 +13,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import model.Board;
+import model.LikeCheck;
 import mybatis.AbstractRepository;
 
 public class MybatisBoardDao extends AbstractRepository {
@@ -189,13 +190,42 @@ public class MybatisBoardDao extends AbstractRepository {
 		}
 	
 	//좋아요
+	public LikeCheck getLikeCheck(LikeCheck like) {
+		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		try {
+			String statement = namespace + ".getLikeCheck";
+			return sqlSession.selectOne(statement, like);
+		} finally {
+			sqlSession.close();
+		}
+	}
 	
+	public void toggleLike(LikeCheck like) {
+		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		try {
+			sqlSession.update(namespace  + ".toggleLike", like);
+			sqlSession.commit();
+		} finally {
+			sqlSession.close();
+		}
+	}
 	
-	
-	
-	
-	
-	
-	
+	public void insertLike(LikeCheck like) {
+		SqlSession sqlSession = getSqlSessionFactory().openSession();
+			
+		int number = 1;
+			
+		try {
+			number = sqlSession.insert(namespace + ".insert_likenum", like);
+				like.setLikenum(number);
+				sqlSession.insert(namespace + ".insertLike", like);
+				sqlSession.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		finally {
+			sqlSession.close();
+		}
+	}
 	
 }// class end
