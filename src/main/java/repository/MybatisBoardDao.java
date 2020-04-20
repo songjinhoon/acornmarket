@@ -189,7 +189,7 @@ public class MybatisBoardDao extends AbstractRepository {
 		}
 	
 
-	// ÆÇ¸Å¸®½ºÆ®
+	// ï¿½Ç¸Å¸ï¿½ï¿½ï¿½Æ®
 	public List<Board> sellList(String userid) {
 		SqlSession sqlSession = getSqlSessionFactory().openSession();
 		String statement = null;
@@ -202,7 +202,7 @@ public class MybatisBoardDao extends AbstractRepository {
 		}
 	}
 
-	// ÆÇ¸Å¸®½ºÆ®
+	// ï¿½Ç¸Å¸ï¿½ï¿½ï¿½Æ®
 	public List<Board> buyList(String userid) {
 		SqlSession sqlSession = getSqlSessionFactory().openSession();
 		String statement = null;
@@ -215,7 +215,7 @@ public class MybatisBoardDao extends AbstractRepository {
 		}
 	}
 
-	// °ü½É¸ñ·Ï ¸®½ºÆ®
+	// ï¿½ï¿½ï¿½É¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
 	public List<Board> likeList(String userid) {
 		SqlSession sqlSession = getSqlSessionFactory().openSession();
 		String statement = null;
@@ -224,6 +224,17 @@ public class MybatisBoardDao extends AbstractRepository {
 			return sqlSession.selectList(statement, userid);
 
 		} finally {
+			sqlSession.close();
+		}
+	}
+	
+	public List<Board> getBoardList(int count) {
+		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		String statement = null;
+		try {
+			statement = namespace + ".getBoardList";
+			return sqlSession.selectList(statement, count);
+		}finally {
 			sqlSession.close();
 		}
 	}

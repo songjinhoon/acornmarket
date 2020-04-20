@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import model.Board;
 import model.User;
 import model.WebNote;
+import repository.MybatisBoardDao;
 import repository.MybatisUserDao;
 
 @Controller
@@ -22,6 +24,8 @@ public class MainController {
 	
 	@Autowired
 	MybatisUserDao userService;
+	@Autowired
+	MybatisBoardDao boardService;
 	
 	@ModelAttribute
 	public void initProcess(HttpServletRequest request, HttpServletResponse response) {
@@ -44,12 +48,15 @@ public class MainController {
 		return userList;
 	}
 	
-//	거래장소 top6 추출 - 다음주에 합치면 작업하자.
+//	likecount top6 추출 
 	@RequestMapping(value = "chart2")
 	@ResponseBody
-	public WebNote chart2(){
+	public List<Board> chart2(){
+		int count = 6;
+		List<Board> boardList = boardService.getBoardList(count);
+		//이곳에 해쉬 태그 처리 해주고 해시태그를 데이터에 넣어주면 끝.
 		
-		return new WebNote();
+		return boardList;
 	}
 	
 }

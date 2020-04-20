@@ -164,7 +164,7 @@
     	$(document).ready(function(){
 
  			$.ajax({
-	            url: "http://localhost:8080${pageContext.request.contextPath}/main/chart1",
+	            url: "http://211.63.89.78:8080${pageContext.request.contextPath}/main/chart1",
 	            type: "GET",
 	            success: function(user){
 	            	/* chart1 정의 */            	
@@ -214,7 +214,7 @@
 	        });
  			
    			$.ajax({
-	            url: "http://localhost:8080${pageContext.request.contextPath}/main/chart2",
+	            url: "http://211.63.89.78:8080${pageContext.request.contextPath}/main/chart2",
 	            type: "GET",
 	            success: function(data){
 	            	alert(data);

@@ -101,4 +101,12 @@
 		FROM board b, likecheck l
 		WHERE b.boardnum = l.boardnum and l.userid = #{userid}
 	</select>
+	
+	<select id="getBoardList" parameterType="int" resultType="Board">
+		SELECT *
+		FROM   (SELECT * 
+		        FROM board 
+		        ORDER BY likecount DESC)
+		WHERE  ROWNUM &lt;= #{count} 
+	</select>
 </mapper>
