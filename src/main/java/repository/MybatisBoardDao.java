@@ -14,6 +14,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import model.myReply;
 import model.Board;
+import model.LikeCheck;
 import mybatis.AbstractRepository;
 
 public class MybatisBoardDao extends AbstractRepository {
@@ -105,6 +106,7 @@ public class MybatisBoardDao extends AbstractRepository {
 		return article;
 	}
 
+
 	public Board getUpdateArticle(int num) {
 		SqlSession sqlSession = getSqlSessionFactory().openSession();
 		Board article = null;
@@ -131,6 +133,7 @@ public class MybatisBoardDao extends AbstractRepository {
 			sqlSession.close();
 		}
 	}
+
 
 	public int deleteArticle(int num, String passwd) throws Exception {
 		String dbpasswd = null;
@@ -252,5 +255,46 @@ public class MybatisBoardDao extends AbstractRepository {
 			sqlSession.close();
 		}
 	}
+	
+
+	//좋아요
+		public LikeCheck getLikeCheck(LikeCheck like) {
+			SqlSession sqlSession = getSqlSessionFactory().openSession();
+			try {
+				String statement = namespace + ".getLikeCheck";
+				return sqlSession.selectOne(statement, like);
+			} finally {
+				sqlSession.close();
+			}
+		}
+		
+		public void toggleLike(LikeCheck like) {
+			SqlSession sqlSession = getSqlSessionFactory().openSession();
+			try {
+				sqlSession.update(namespace  + ".toggleLike", like);
+				sqlSession.commit();
+			} finally {
+				sqlSession.close();
+			}
+		}
+		
+		public void insertLike(LikeCheck like) {
+			SqlSession sqlSession = getSqlSessionFactory().openSession();
+				
+			int number = 1;
+				
+			try {
+				number = sqlSession.insert(namespace + ".insert_likenum", like);
+					like.setLikenum(number);
+					sqlSession.insert(namespace + ".insertLike", like);
+					sqlSession.commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+			finally {
+				sqlSession.close();
+			}
+		}
+
 
 }// class end

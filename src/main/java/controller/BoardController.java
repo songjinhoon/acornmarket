@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartRequest;
 import model.myReply;
 import model.Reply;
 import model.Board;
+import model.LikeCheck;
 import repository.MybatisBoardDao;
 import repository.MybatisReplyDao;
 
@@ -72,6 +74,7 @@ public class BoardController {
 	}
 
 
+
 	@RequestMapping(value = "write", method = RequestMethod.GET)
 	public String board_writeForm(@ModelAttribute("article") Board article) {
 
@@ -88,6 +91,7 @@ public class BoardController {
 		article.setAddress(address1 + " " + address2);
 
 		article.setFilename("null");
+		article.setUserid(userid);
 		m.addAttribute("category", article.getCategory());
 
 		MultipartFile multi = ((MultipartRequest) multipart).getFile("uploadfile");
@@ -110,6 +114,7 @@ public class BoardController {
 
 		return "board/writePro";
 	}
+
 
 
 	@RequestMapping(value = "categoryForm")
@@ -191,29 +196,45 @@ public class BoardController {
 
 
 	@RequestMapping(value = "updateForm")
-	public String board_updateForm(int num, Model m) {
+	public String board_updateForm(int num, Board article,HttpServletRequest request) {
 
-		Board article = dbPro.getUpdateArticle(num);
-		m.addAttribute("article", article);
+		article = dbPro.getUpdateArticle(num);
+		request.setAttribute("article", article);
 
 		return "board/updateForm";
 	}
 
 
-	@RequestMapping(value = "updatePro", method = RequestMethod.POST)
-	public String board_updatePro(HttpServletRequest request, Board article, Model m, String address1, String address2)
-			throws Exception {
 
-		article.setAddress(address1 + " " + address2);
+	   @RequestMapping(value = "updatePro", method = RequestMethod.POST)
+	   public String board_updatePro(HttpServletRequest multipart, Board article, Model m, String address1, String address2)
+	         throws Exception {
+	      
+	       System.out.println(article.getOldfile());
+	      
+	       MultipartFile multi = ((MultipartRequest) multipart).getFile("uploadfile");
 
-		int boardnum = Integer.parseInt(request.getParameter("boardnum"));
+	         String filename = multi.getOriginalFilename();
+	         if (filename != null && !filename.equals("")) {
+	            String uploadPath = multipart.getRealPath("/") + "/uploadFile";
 
-		dbPro.updateArticle(article);
+	            FileCopyUtils.copy(multi.getInputStream(),
+	                  new FileOutputStream(uploadPath + "/" + multi.getOriginalFilename()));
 
-		request.setAttribute("boardnum", boardnum);
+	            article.setFilename(filename);
+	         } else {
+	            article.setFilename(article.getOldfile());
+	         }
+	       
+	        article.setAddress(address1 + " " + address2); 
+	        dbPro.updateArticle(article); 
+	        m.addAttribute("boardnum", article.getBoardnum());
+	       
 
-		return "board/updatePro";
-	}
+	      return "board/updatePro";
+	   }
+
+
 
 
 	@RequestMapping(value = "delete")
@@ -357,4 +378,32 @@ public class BoardController {
 			
 			return "user/board/Reply";
 		}
+		
+
+@ResponseBody
+	@RequestMapping(value = "like", method = RequestMethod.GET)
+	public String like(HttpServletRequest request, LikeCheck like) {
+
+		
+		JSONObject obj = new JSONObject();
+
+		LikeCheck likeResult = dbPro.getLikeCheck(like);
+		if (likeResult == null) {
+			dbPro.insertLike(like);
+			
+			System.out.println("@@@@@@@@@@@likesetting");
+		}
+
+		dbPro.toggleLike(like);
+		likeResult = dbPro.getLikeCheck(like);
+
+		System.out.println(">>>>>>>>>>>>" + like);
+		System.out.println("@@@@@@@@@@@"+likeResult.toString());
+		
+		obj.put("boardnum", likeResult.getBoardnum());
+		obj.put("userid", likeResult.getUserid());
+		obj.put("likecheck", likeResult.getLikecheck());
+
+		return obj.toJSONString();
+	}
 }
