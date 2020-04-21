@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
+import model.myReply;
 import model.Board;
 import mybatis.AbstractRepository;
 
@@ -189,7 +190,7 @@ public class MybatisBoardDao extends AbstractRepository {
 		}
 	
 
-	// �ǸŸ���Ʈ
+	// 占실매몌옙占쏙옙트
 	public List<Board> sellList(String userid) {
 		SqlSession sqlSession = getSqlSessionFactory().openSession();
 		String statement = null;
@@ -202,7 +203,7 @@ public class MybatisBoardDao extends AbstractRepository {
 		}
 	}
 
-	// �ǸŸ���Ʈ
+	// 占실매몌옙占쏙옙트
 	public List<Board> buyList(String userid) {
 		SqlSession sqlSession = getSqlSessionFactory().openSession();
 		String statement = null;
@@ -215,7 +216,7 @@ public class MybatisBoardDao extends AbstractRepository {
 		}
 	}
 
-	// ���ɸ�� ����Ʈ
+	// 占쏙옙占심몌옙占� 占쏙옙占쏙옙트
 	public List<Board> likeList(String userid) {
 		SqlSession sqlSession = getSqlSessionFactory().openSession();
 		String statement = null;
@@ -235,6 +236,19 @@ public class MybatisBoardDao extends AbstractRepository {
 			statement = namespace + ".getBoardList";
 			return sqlSession.selectList(statement, count);
 		}finally {
+			sqlSession.close();
+		}
+	}
+	
+
+	public List<myReply> myReply(String userid) {
+		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		String statement = null;
+		try {
+			statement = namespace + ".myReply";
+			return sqlSession.selectList(statement, userid);
+
+		} finally {
 			sqlSession.close();
 		}
 	}

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
+import model.myReply;
 import model.Reply;
 import model.Board;
 import repository.MybatisBoardDao;
@@ -346,11 +347,14 @@ public class BoardController {
 	}
 
 	// 작성한 리뷰
-	@RequestMapping(value = "MyReply", method = RequestMethod.GET)
-	public String Reply(HttpServletRequest request, Model model) throws Exception {
+		@RequestMapping(value = "MyReply", method = RequestMethod.GET)
+		public String Reply(HttpServletRequest request, Model model) throws Exception {
 
-		
-
-		return "user/board/Reply";
-	}
+			List<myReply> li = dbPro.myReply(userid);
+			System.out.println(li);
+			
+			model.addAttribute("list", li);
+			
+			return "user/board/Reply";
+		}
 }
