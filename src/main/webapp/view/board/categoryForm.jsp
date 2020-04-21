@@ -26,6 +26,14 @@
 	src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
+<!-- 검색창  -->
+<!-- <script type="text/javascript">
+function search() {
+	
+	})
+}
+</script>
+ -->
 
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/categoryForm.css" />
@@ -40,11 +48,11 @@
 	<nav class="nav1">
 		<div class="container">
 			<div class="right">
-				<form class="form-inline" action="/action_page.php">
-					<input class="form-control mr-sm-2" type="text"
+				<form class="form-inline" action="search();">
+					<input class="form-control mr-sm-2" id="search_subject" type="text"
 						placeholder="도토리 찾기">
 					<button class="btn btn-outline-warning" type="submit"
-						style="height: 40px;">
+						style="height: 40px;" onclick="search();">
 						<i class="fa fa-search"></i>
 					</button>
 				</form>
@@ -125,32 +133,41 @@
 
 											<table>
 												<tr>
-												<%-- 	<td width="20%">[ ${list.boardnum} ] </td> --%>
 													<td> ${list.subject}</td>
 												</tr>
 												</table>
 
 												<p class="list-group-item-text">${list.price} 원</p>
 										</div>
-
+										
+									
+									
+										
+										${list.likecheck}
+										<c:if test="${list.likecheck == -1 || list.likecheck == 0 }">
+										<img src='${pageContext.request.contextPath}/img/list/dislike.png' onclick="like(${list.boardnum},'${list.userid}');" id='${list.boardnum}like_img' style="width: 5%; height: 5%;">
+										</c:if>
+										
+										<c:if test="${list.likecheck == 1}">
+										<img src='${pageContext.request.contextPath}/img/list/like.png' onclick="like(${list.boardnum},'${list.userid}');" id='${list.boardnum}like_img' style="width: 5%; height: 5%;">
+										</c:if>
+								
 										<div class="col-md-3 text-center">
-											
+										
 										<c:if test="${list.soldout == 0}">
-											<button type="button" class="btn btn-info btn-lg btn-block blue" 
+											<button type="button" class="btn btn-info btn-md btn-block blue" 
 											onclick="location.href='${pageContext.request.contextPath}/board/content?num=${list.boardnum}'">판매중</button>
-											
 										</c:if>
 										
 										<c:if test="${list.soldout != 0}">
-											<button type="button" class="btn btn-danger btn-lg btn-block blue" 
+											<button type="button" class="btn btn-danger btn-md btn-block blue" 
 											onclick="location.href='${pageContext.request.contextPath}/board/content?num=${list.boardnum}'">판매완료</button>
 										</c:if>
 										</div>
 										
 									</a>
 								</c:forEach>
-</c:if>
-
+									</c:if>
 							</div>
 						</div>
 					</div>
@@ -160,20 +177,40 @@
 
 		</div>
 	</div>
+		
+	<!-- 좋아요 -->
+	<script>
+	function like(boardnum, userid){
 
-	<!-- 페이징처리 -->
-	<p align="center">
-
-		<c:if test="${startPage > bottomLine}">
-
-			<a href="list?pageNum=${startPage - bottomLine}">[이전]</a>
-		</c:if>
-		<c:forEach var="i" begin="${startPage}" end="${endPage}">
-			<a href="list?pageNum=${i}">[${i}]</a>
-		</c:forEach>
-
-		<c:if test="${endPage < pageCount}">
-			<a href="list?pageNum=${startPage + bottomLine}">[다음]</a>
-		</c:if>
+			var action = "${pageContext.request.contextPath}/board/like";
+			var data = {boardnum: boardnum, userid : userid};
+			alert(JSON.stringify(data))
+		
+		  $.ajax({
+		    type: "GET",
+		    url: action,
+		    cache: false,
+		    dataType: "json",
+		    data: data,
+		    success: function(data) {
+		      
+		      var like_img = '';
+		      
+		      if(data.likecheck == 1) { //좋아요 누름
+		        like_img = '${pageContext.request.contextPath}/img/list/like.png';
+		      } else {
+		    	like_img = '${pageContext.request.contextPath}/img/list/dislike.png';
+		    	
+		      }      
+				console.log("like_img::"+like_img);
+				$('#'+boardnum+'like_img').attr('src', like_img);
+			
+		    },
+		    error: function(request, status, error){
+		      alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		    }
+		  });
+		}
+	  </script> 
 </body>
 </html>

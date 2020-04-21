@@ -12,9 +12,14 @@
 		#{category}
 	</select>
 
+	
 	<select id="getArticles" parameterType="hashmap"
 		resultType="Board">
-		select * from board where category = #{category}
+		select t1.boardnum, t1.userid, filename, readcount, regdate, subject,
+		content, address, price, category, passwd, t1.likecheck from board t1
+		left outer join likecheck t2 on t1.boardnum = t2.boardnum and
+		t1.userid = t2.userid
+		where category = #{category}
 		order by boardnum desc
 	</select>
 	
@@ -29,7 +34,7 @@
 
 	<insert id="insert" parameterType="Board">
 		insert into board values
-		(#{boardnum},#{userid},#{filename},#{readcount},to_char(sysdate, 'yyyy-mm-dd'),#{subject},#{content},#{address},#{price},#{category},0,#{passwd},0)
+		(#{boardnum},#{userid},#{filename},#{readcount},sysdate,#{subject},#{content},#{address},#{price},#{category},0,#{passwd},0)
 	</insert>
 
 	<update id="content_update" parameterType="int">
@@ -54,6 +59,7 @@
 		boardnum=#{boardnum}
 	</update>
 
+
 	<delete id="delete" parameterType="int">
 		delete from board where boardnum =
 		#{boardnum}
@@ -61,17 +67,34 @@
 	
 	
 	<!-- 좋아요 -->
-	<update id="like_check" parameterType="HashMap">
-    update likecheck
-    set likecount  = likecount  + 1 
-    where userid=#{userid} and boardnum=#{boardnum}
-  	</update>
-  
-  	<update id="like_check_cancel" parameterType="HashMap">
-    update likecheck
-    set likecount  = 0
-    where userid=#{userid} and boardnum=#{boardnum}
-  	</update>
+	
+	<!-- 좋아요 likenum -->
+	<select id="insert_likenum" resultType="int">
+	select max(likenum)+1 from likecheck
+	</select> 
+	
+	<insert id="insertLike" parameterType="LikeCheck">
+	insert into likecheck (likenum, boardnum, userid, likecheck) values (#{likenum}, #{boardnum}, #{userid}, 1)
+	</insert>
+	
+	<update id="toggleLike" parameterType="LikeCheck">
+	update likecheck set likecheck = likecheck * -1
+	where boardnum = #{boardnum} and userid = #{userid}
+	</update>
+	
+	<select id="getLikeCheck" parameterType="LikeCheck" resultType="LikeCheck">
+	select * from likecheck where boardnum = #{boardnum} and userid = #{userid}
+	</select>
+	
+	<!-- 좋아요 count  -->
+	<!-- <select id="countLike">
+	select count(likecheck) from likecheck where boardnum = #{boardnum} and likecheck = 1
+	</select> -->
+	
+	<!-- 검색  -->
+	<!-- <select id="search">
+	select * from board where upper(subject) like '%' || upper('#{keyword}') || '%'
+	</select> -->
   	
   	<!-- soldout 체크 -->
 	<update id="soldoutCheck1" parameterType="int">
