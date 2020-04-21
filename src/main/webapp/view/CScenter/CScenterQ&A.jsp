@@ -6,6 +6,7 @@
 <title>1:1 Q&A | 도토리 마켓</title>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/CScenterQ&A.css" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/store_common.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
 	<div class="row">
@@ -49,7 +50,7 @@
 				</div>
 				<!-- /CS Center 탭버튼 -->
 
-				<form name="f1" id="f1" method="post" action="">
+				<form name="f1" id="form1">
 					<input type="hidden" name="">
 					<!-- 고객센터 콘텐츠 -->
 					<div class="right_contents">
@@ -71,6 +72,7 @@
 								<header class="n-section-title">
 								<h2 class="tit">문의 작성</h2>
 								</header>
+								<input type="hidden" name="receiver" value="admin1">
 								<table class="n-table table-row">
 									<tbody>
 										<tr>
@@ -89,40 +91,34 @@
 										<tr>
 											<th scope="row">작성자</th>
 											<td>
-												<input type="text" class="n-input" name="user_nm" value="김선호">
+												<input type="text" class="n-input" name="writer" value="${userName}">
 											</td>
 										</tr>
 										<tr class="n-same-row">
 											<th scope="row">휴대전화</th>
 											<td>
-												<input type="text" class="n-input" name="mobile" value="010-4042-4699">
+												<input type="text" class="n-input" value="폰번호 넣기">
 											</td>
 										</tr>
 										<tr class="n-same-row">
 											<th scope="row">이메일</th>
 											<td>
-												<input type="text" class="n-input" name="email" value="sunho2343@naver.com">
-											</td>
-										</tr>
-										<tr>
-											<th scope="row">제목</th>
-											<td>
-												<input type="text" class="n-input" name="subject" value placeholder="제목을 입력해주세요.">
+												<input type="text" class="n-input" value="이메일 넣기">
 											</td>
 										</tr>
 										<tr class="n-same-row">
 											<th scope="row">문의내용</th>
 											<td>
-												<textarea name="qa_msg" cols="100" rows="100" class="n-input" placeholder="내용을 입력해주세요."></textarea>
+												<textarea name="messagecontent" cols="100" rows="100" class="n-input" placeholder="내용을 입력해주세요."></textarea>
 											</td>
 										</tr>
-										<tr class="n-same-row">
+<!-- 										<tr class="n-same-row">
 											<th scope="row">사진</th>
 											<td class="file-upload">
 												<ul class="file_show" id="file_show"></ul>
 												<button type="button" class="btn-file" onclick="$('#Filedata').click();">파일 선택</button>
 											</td>
-										</tr>
+										</tr> -->
 									</tbody>
 								</table>
 							</div>
@@ -157,7 +153,9 @@
 						</div>
 						<!-- 버튼 -->
 						<div class="n-btn-group">
-							<a href="javascript:void(0)" onclick="cancel(); return false;" class="n-btn btn-lighter">취소</a> <a href="javascript:void(0)" onclick="qna_add(); return false;" class="n-btn btn-accent">작성하기</a>
+							<a href="javascript:void(0)" onclick="cancel(); return false;" class="n-btn btn-lighter">취소</a>
+							<a href="#" id="btn1">작성하기</a>
+							<!-- <a href="javascript:void(0)" onclick="qna_add(); return false;" class="n-btn btn-accent">작성하기</a> -->
 						</div>
 						<!-- /버튼 -->
 					</div>
@@ -167,4 +165,27 @@
 		</div>
 	</div>
 </body>
+	<script>
+		$('#btn1').on('click', function(){
+			let queryString = $('#form1').serialize();
+			
+	        $.ajax({
+	            url: "http://localhost:8080${pageContext.request.contextPath}/chat/messagePro",
+	            type: "POST",
+	            dataType: "json",
+	            data: queryString,
+	            success: function(data){
+	            	if(data.writer == "[cwjli13wa]"){
+	            		alert("문의 완료")
+	            		window.location.reload(true);
+	            	}else{
+	            		alert("문의 실패");
+	            	}
+	            },
+	            error: function(){
+	                alert("serialize err");
+	            }
+	        });
+		});
+	</script>
 </html>

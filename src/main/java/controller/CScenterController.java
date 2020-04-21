@@ -35,7 +35,7 @@ public class CScenterController {
 
 	@ModelAttribute
 	public void initProcess(HttpServletRequest request) {
-
+		
 		ip = request.getRemoteAddr();
 	}
 
@@ -196,8 +196,8 @@ public class CScenterController {
 	}
 
 	@RequestMapping(value = "CScenterQ&A", method = RequestMethod.GET)
-	public String CScenterQ(Model model) throws Exception {
-
+	public String CScenterQ(Model model, HttpSession session) throws Exception {
+		// 유저정보 받아와서 폼태그에 값 넣어주셈
 		List li = service.getArticles2();
 		model.addAttribute("li", li);
 		return "CScenter/CScenterQ&A";
