@@ -61,12 +61,7 @@
 		delete from board where boardnum =
 		#{boardnum}
 	</delete>
-	
-	<!-- 검색 -->
-	<!-- <select id="search" parameterType="String" resultType="Board">
-	select * from board where subject like '%'||('#keyword')||'%' or content like '%'||('#keyword')||'%';
-	</select> -->
-	
+
   	<!-- soldout 체크 -->
 	<update id="soldoutCheck1" parameterType="int">
 	update board set soldout = 0 where boardnum = #{boardnum}
@@ -100,7 +95,7 @@
 	
 	<!-- 좋아요 count  -->
 	<!-- <select id="countLike">
-	select count(likecheck) from likecheck where boardnum = #{boardnum} and likechek = 1
+	select count(likecheck) from likecheck where boardnum = #{boardnum} and likecheck = 1
 	</select> -->
 	
 	<!-- 검색  -->
