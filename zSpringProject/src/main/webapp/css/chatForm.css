@@ -1,0 +1,19 @@
+h1 { text-align: center; }
+.chattingform { background-color: #F0E4C8; height: 450px; border: 10px solid #745d46; padding: 2%; }
+#section1 { margin-bottom: 50px; }
+.chattinglist { background-color: #F2F2F2; border: 1px solid #9B6E04; height: 300px; overflow-y: scroll; }
+.chattinglist .p { text-align: center;  }
+.contentform { background-color: #F2F2F2; border: 1px solid #9B6E04;  height: 300px; overflow-y: scroll; }
+.contentform .col-sm-6 { margin-bottom: 10px; }
+#inputMessage { width: 100%; }
+.me { background-color: yellow; border-radius: 10px; }
+.you { background-color: #ACFA58; border-radius: 10px; }
+.button { width: 100%; background-color: #FACC2E;}
+
+/* userListWindow css   */
+#userListWindow .section1 { padding: 0; text-align: center; border: 1px solid 9B6E04; }
+#userListWindow .section1 p { margin: 0; border-bottom: 1px solid #9B6E04; }
+#userListWindow .section2 { padding: 0; }
+
+
+
