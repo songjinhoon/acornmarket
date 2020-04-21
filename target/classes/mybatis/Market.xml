@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mybatis.Market">
+	<cache />
+
+	<select id="insert_max" resultType="int">
+		select nvl(max(num)+1,1) from
+		market
+	</select>
+
+	<insert id="insert" parameterType="Market">
+		insert into market values
+		(#{num},#{category},#{subject},#{region},#{sdate},#{edate},#{writer},#{stime},#{etime},#{address},#{detailaddress},#{content},#{passwd},#{regdate},#{readcount},#{ip})
+	</insert>
+
+	<select id="getArticle" resultType="Market">
+		select *
+		from market order by
+		num desc
+	</select>
+
+	<select id="getArticles" parameterType="int" resultType="Market">
+		select *
+		from market where num = #{num}
+	</select>
+	
+	<select id="insert_max2" resultType="int">
+		select nvl(max(cmt_num)+1,1) from
+		cmtboard
+	</select>
+	
+	<insert id="insert2" parameterType="Marketcmt">
+		insert into cmtboard values
+		(#{num},#{cmt_num},#{cmt_writer},#{cmt_star},#{cmt_content},sysdate)
+	</insert>
+	
+	<select id="getArticles2" parameterType="int" resultType="Marketcmt">
+		select *
+		from cmtboard where num = #{num} order by cmt_regdate desc
+	</select>
+</mapper>

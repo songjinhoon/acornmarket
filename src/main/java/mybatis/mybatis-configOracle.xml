@@ -10,6 +10,7 @@
 		<typeAlias alias="Marketcmt" type="model.CmtDataBean" />
 		<typeAlias type="model.Board" alias="Board" />
 		<typeAlias type="model.Reply" alias="Reply" />
+		<typeAlias type="model.myReply" alias="myReply" />
 	</typeAliases>
 
 	<environments default="development">
