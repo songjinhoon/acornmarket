@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +21,8 @@
 
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script
+	src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <body>
 
@@ -37,78 +38,100 @@
 						<li><a
 							href="${pageContext.request.contextPath}/board/categoryForm?category=디지털/가전"
 							title="">디지털/가전</a></li>
-						<li><a href="${pageContext.request.contextPath}/board/categoryForm?category=가구/인테리어" title="">가구/인테리어</a></li>
-						<li><a href="${pageContext.request.contextPath}/board/categoryForm?category=여성패션/잡화" title="">여성패션/잡화 </a></li>
-						<li><a href="${pageContext.request.contextPath}/board/categoryForm?category=남성패션/잡화" title="">남성패션/잡화 </a></li>
-						<li><a href="${pageContext.request.contextPath}/board/categoryForm?category=뷰티/미용" title="">뷰티/미용</a></li>
-						<li><a href="${pageContext.request.contextPath}/board/categoryForm?category=반려동물용품" title="">반려동물용품</a></li>
-						<li><a href="${pageContext.request.contextPath}/board/categoryForm?category=기타중고물품" title="">기타중고물품</a></li>
+						<li><a
+							href="${pageContext.request.contextPath}/board/categoryForm?category=가구/인테리어"
+							title="">가구/인테리어</a></li>
+						<li><a
+							href="${pageContext.request.contextPath}/board/categoryForm?category=여성패션/잡화"
+							title="">여성패션/잡화 </a></li>
+						<li><a
+							href="${pageContext.request.contextPath}/board/categoryForm?category=남성패션/잡화"
+							title="">남성패션/잡화 </a></li>
+						<li><a
+							href="${pageContext.request.contextPath}/board/categoryForm?category=뷰티/미용"
+							title="">뷰티/미용</a></li>
+						<li><a
+							href="${pageContext.request.contextPath}/board/categoryForm?category=반려동물용품"
+							title="">반려동물용품</a></li>
+						<li><a
+							href="${pageContext.request.contextPath}/board/categoryForm?category=기타중고물품"
+							title="">기타중고물품</a></li>
 					</ul>
 				</div>
 			</div>
 
-			<!--글내용--> 
+			<!--글내용-->
 			<div class="col-sm-8 img-thumbnail">
 				<div id="feedback">
 					<div class="container">
 						<div class="col-md-5">
 							<div class="form-area">
 								<form role="form" method="post"
-									action="${pageContext.request.contextPath}/board/updatePro"  enctype="multipart/form-data">
-									
-									<input type="hidden" name="boardnum" value="${article.boardnum}">
+									action="${pageContext.request.contextPath}/board/updatePro"
+									enctype="multipart/form-data">
+
+									<input type="hidden" name="boardnum"
+										value="${article.boardnum}">
 									<!-- <input type="hidden" name="userid" value="22"> -->
 									<input type="hidden" name="passwd" value="${article.passwd}">
 									<input type="hidden" name="regdate" value="${article.regdate}">
-									<input type="hidden" name="readcount" value="${article.readcount}">
-									
-									
-									<br style="clear: both">
-									
+									<input type="hidden" name="readcount"
+										value="${article.readcount}"> <br style="clear: both">
+
 									<div class="img1">
 										<img
 											src="<%=request.getContextPath()%>/uploadFile/${article.filename}">
 									</div>
-									<br>
-									
-									글 제목 : <input type="text"name="subject"class="form-control"style="margin-bottom: 25px; text-align: center;" value="${article.subject}">
+									<br> 글 제목 : <input type="text" name="subject"
+										class="form-control"
+										style="margin-bottom: 25px; text-align: center;"
+										value="${article.subject}">
 
-									
+
 									<div class="form-group">
-										<select class="form-control" id="category" name="category" >
-											<option value="디지털/가전" <c:if test="${article.category eq 'category'}">selected</c:if>>디지털/가전</option>
-											<option value="가구/인테리어" <c:if test="${article.category eq 'category'}">selected</c:if>>가구/인테리어</option>
-											<option value="여성패션/잡화" <c:if test="${article.category eq 'category'}">selected</c:if>>여성패션/잡화</option>
-											<option value="남성패션/잡화" <c:if test="${article.category eq 'category'}">selected</c:if>>남성패션/잡화</option>
-											<option value="뷰티/미용" <c:if test="${article.category eq 'category'}">selected</c:if>>뷰티/미용</option>
-											<option value="반려동물용품" <c:if test="${article.category eq 'category'}">selected</c:if>>반려동물용품</option>
-											<option value="기타중고물품" <c:if test="${article.category eq 'category'}">selected</c:if>>기타중고물품</option>
+										<select class="form-control" id="category" name="category">
+											<option value="디지털/가전"
+												<c:if test="${article.category eq 'category'}">selected</c:if>>디지털/가전</option>
+											<option value="가구/인테리어"
+												<c:if test="${article.category eq 'category'}">selected</c:if>>가구/인테리어</option>
+											<option value="여성패션/잡화"
+												<c:if test="${article.category eq 'category'}">selected</c:if>>여성패션/잡화</option>
+											<option value="남성패션/잡화"
+												<c:if test="${article.category eq 'category'}">selected</c:if>>남성패션/잡화</option>
+											<option value="뷰티/미용"
+												<c:if test="${article.category eq 'category'}">selected</c:if>>뷰티/미용</option>
+											<option value="반려동물용품"
+												<c:if test="${article.category eq 'category'}">selected</c:if>>반려동물용품</option>
+											<option value="기타중고물품"
+												<c:if test="${article.category eq 'category'}">selected</c:if>>기타중고물품</option>
 										</select>
-										</div>
+									</div>
 
 									<div class="form-group">
-									가격 	: <input type="text" class="form-control" id="price"
+										가격 : <input type="text" class="form-control" id="price"
 											name="price" value="${article.price}">
 									</div>
 
 									<div class="form-group">
 										<input type="file" class="form-control" id="filename"
-											name="filename" value="${article.filename}">
-									</div> 
-									
+											name="uploadfile">
+									</div>
+									<input type="hidden" name="oldfile" value="${article.filename}">
+
 									<div class="form-group">
-									userid : <input type="text" class="form-control" id="userid"
+										userid : <input type="text" class="form-control" id="userid"
 											name="userid" value="${article.userid} ">
 									</div>
-									
+
 									<tr>
-										<td>
-										<label>
-										<input class="form-control" size="32" type="text" name="address1" id="address1"
-												placeholder="${article.address}" value="${article.address}"> </label> 
-										<label><input type="text" size="32" class="form-control" style=" margin-top: 3px;"id="address2" name="address2" placeholder="상세주소"> </label>		
-												
-												<input type="button" class="w3-button w3-round-large w3-tiny w3-border"
+										<td><label> <input class="form-control" size="32"
+												type="text" name="address1" id="address1"
+												placeholder="${article.address}" value="${article.address}">
+										</label> <label><input type="text" size="32"
+												class="form-control" style="margin-top: 3px;" id="address2"
+												name="address2" placeholder="상세주소"> </label> <input
+											type="button"
+											class="w3-button w3-round-large w3-tiny w3-border"
 											style="background-color: #f0e68c; color: #745d46; margin-top: 3px;"
 											onclick="sample3_execDaumPostcode()" value="주소 찾기"> <br>
 											<div id="wrap"
@@ -123,11 +146,11 @@
 									<br>
 
 									<div class="form-group">
-									<textarea class="form-control" type="textarea" id="content"
+										<textarea class="form-control" type="textarea" id="content"
 											name="content" maxlength="300" rows="20">${article.content}</textarea>
 									</div>
-								
-								
+
+
 									<div class=button style="margin-left: 33%;">
 										<input type="submit" value="글수정">&nbsp;&nbsp; <input
 											type="reset" value="다시작성">&nbsp;&nbsp; <input
@@ -143,9 +166,9 @@
 			</div>
 		</div>
 	</div>
-	
-	
-		<script>
+
+
+	<script>
 		// 주소 찾기 찾기 화면을 넣을 element
 		var element_wrap = document.getElementById('wrap');
 		function foldDaumPostcode() {

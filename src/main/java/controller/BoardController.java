@@ -206,7 +206,7 @@ public class BoardController {
 
 
 
-	   @RequestMapping(value = "updatePro", method = RequestMethod.POST)
+	  @RequestMapping(value = "updatePro", method = RequestMethod.POST)
 	   public String board_updatePro(HttpServletRequest multipart, Board article, Model m, String address1, String address2)
 	         throws Exception {
 	      
@@ -225,7 +225,7 @@ public class BoardController {
 	         } else {
 	            article.setFilename(article.getOldfile());
 	         }
-	       
+	        article.setUserid(userid);
 	        article.setAddress(address1 + " " + address2); 
 	        dbPro.updateArticle(article); 
 	        m.addAttribute("boardnum", article.getBoardnum());
