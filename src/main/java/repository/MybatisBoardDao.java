@@ -216,7 +216,7 @@ public class MybatisBoardDao extends AbstractRepository {
 		int number = 1;
 			
 		try {
-			number = sqlSession.insert(namespace + ".insert_likenum", like);
+			number = sqlSession.selectOne(namespace + ".insert_likenum", like);
 				like.setLikenum(number);
 				sqlSession.insert(namespace + ".insertLike", like);
 				sqlSession.commit();

@@ -313,8 +313,8 @@ public class BoardController {
 		dbPro.toggleLike(like);
 		likeResult = dbPro.getLikeCheck(like);
 
-		System.out.println(">>>>>>>>>>>>" + like);
-		System.out.println("@@@@@@@@@@@"+likeResult.toString());
+		System.out.println(">>>00>>>>>>>>>" + like);
+		System.out.println("@@@@++++@@@@@@@"+likeResult.toString());
 		
 		obj.put("boardnum", likeResult.getBoardnum());
 		obj.put("userid", likeResult.getUserid());
