@@ -14,7 +14,7 @@
 	<select id="getArticles" parameterType="hashmap"
 		resultType="Board">
 		select t1.boardnum, t1.userid, filename, readcount, regdate, subject,
-		content, address, price, category, passwd, t1.likecheck from board t1
+		content, address, price, category, passwd, likecheck from board t1
 		left outer join likecheck t2 on t1.boardnum = t2.boardnum and
 		t1.userid = t2.userid
 		where category = #{category}

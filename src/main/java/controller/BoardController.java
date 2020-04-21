@@ -50,14 +50,12 @@ public class BoardController {
 
 		HttpSession session = request.getSession();
 		userid = (String) session.getAttribute("userId");
-		System.out.println(userid);
 	}
 
 	@RequestMapping(value = "list")
 	public String board_list(HttpServletRequest request, Model m) {
 
 		List li = dbPro.getlistArticles();
-		System.out.println(">>>>>" + li);
 		m.addAttribute("li", li);
 
 		return "board/list";
@@ -95,7 +93,6 @@ public class BoardController {
 		}
 
 		article.setUserid(userid);
-		System.out.println("writer--" + article);
 		dbPro.insertArticle(article);
 
 		return "board/writePro";
@@ -248,8 +245,6 @@ public class BoardController {
 	@RequestMapping(value = "replyUpdate", method = RequestMethod.GET)
 	public String reply_update(Reply reply) {
 
-		System.out.println(reply.getComments() + " + : " + reply.getReplynum());
-		System.out.println(reply.getBoardnum() + " + : " + reply.getUserid());
 		reply.setUserid(userid);
 
 		int check = replyPro.updatereply(reply);
@@ -279,7 +274,6 @@ public class BoardController {
 	public String selling(HttpServletRequest request) {
 
 		int boardnum = Integer.parseInt(request.getParameter("boardnum"));
-		System.out.println(boardnum);
 		int check = dbPro.soldoutCheck1(boardnum);
 
 		if (check == 1) {
@@ -293,7 +287,6 @@ public class BoardController {
 	@RequestMapping(value = "selloff", method = RequestMethod.POST)
 	public String selloff(HttpServletRequest request, String boardnum) {
 		String bdnum = request.getParameter("boardnum");
-		System.out.println(boardnum);
 		int check = dbPro.soldoutCheck2(Integer.parseInt(boardnum));
 
 		if (check == 1) {
