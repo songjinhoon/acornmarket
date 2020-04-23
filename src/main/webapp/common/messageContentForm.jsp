@@ -33,7 +33,7 @@
 			}
 			
 			$.ajax({
-	            url: "http://localhost:8080${pageContext.request.contextPath}/chat/messageContent",
+	            url: "http://211.63.89.78:8080${pageContext.request.contextPath}/chat/messageContent",
 	            type: "POST",
 	            dataType: "json",
 	            data: webNote,

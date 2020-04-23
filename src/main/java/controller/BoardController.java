@@ -76,8 +76,8 @@ public class BoardController {
 
 
 	@RequestMapping(value = "write", method = RequestMethod.GET)
-	public String board_writeForm(@ModelAttribute("article") Board article) {
-
+	public String board_writeForm() {
+ 
 		return "board/writeForm";
 	}
 
@@ -118,7 +118,7 @@ public class BoardController {
 
 
 	@RequestMapping(value = "categoryForm")
-	public String board_categoryForm(HttpServletRequest request, @RequestParam("category") String category, Model m) {
+	public String board_categoryForm(HttpServletRequest request, @RequestParam("category") String category,@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, Model m) {
 
 		HttpSession session = request.getSession();
 
@@ -154,7 +154,7 @@ public class BoardController {
 		int endRow = startRow + pageSize - 1;
 		// int endRow = currentPage * pageSize;
 
-		List li = dbPro.getArticles(startRow, endRow, category);
+		List li = dbPro.getArticles(startRow, endRow, category,keyword);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		int number = count - (currentPage - 1) * pageSize;
@@ -176,6 +176,7 @@ public class BoardController {
 		m.addAttribute("startPage", startPage);//
 		m.addAttribute("endPage", endPage);
 		m.addAttribute("pageCount", pageCount);
+		m.addAttribute("category", category);
 
 		m.addAttribute("li", li);
 		request.setAttribute("userid", userid);

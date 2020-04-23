@@ -1,4 +1,9 @@
-
+.header-area .header-top_area{
+	padding: 19px 0 10.5px 0;
+}
+#navigation a{
+	text-decoration: none;
+}
 /* 카테고리 */
 .right{
 float: right;

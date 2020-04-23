@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import model.CScenterDataBean;
+import model.User;
 import mybatis.AbstractRepository;
 
 public class CScenterDao extends AbstractRepository {
@@ -165,5 +166,19 @@ public class CScenterDao extends AbstractRepository {
 		} finally {
 			sqlSession.close();
 		}
+	}
+	
+	public User getUserInfo(String userId) throws Exception {
+		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		User userinfo = null;
+		try {
+			String statement = namespace + ".getUserInfo";
+			userinfo = sqlSession.selectOne(statement, userId);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			sqlSession.close();
+		}
+		return userinfo;
 	}
 }

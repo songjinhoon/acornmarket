@@ -16,7 +16,7 @@ import com.google.gson.JsonParser;
  
 public class KakaoAPI {
 	private static String clientId = "de621075efa65c9dc9ec223e759b1e6d";
-	private static String redirectUri = "http://localhost:8080/zSpringProject/user/kakaoLoginForm";
+	private static String redirectUri = "http://211.63.89.78:8080/zSpringProject/user/kakaoLoginForm";
 	
 	public static String getApiUrl() {
 		String apiUrl = "https://kauth.kakao.com/oauth/authorize?client_id=" + clientId +"&redirect_uri=" + redirectUri +"&response_type=code";

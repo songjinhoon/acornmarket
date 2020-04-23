@@ -21,12 +21,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import model.CScenterDataBean;
+import model.User;
 import repository.CScenterDao;
 
 @Controller
 @RequestMapping("/CScenter/")
 public class CScenterController {
 
+	String userId;
 	String ip;
 	int check=0;
 	
@@ -37,6 +39,8 @@ public class CScenterController {
 	public void initProcess(HttpServletRequest request) {
 		
 		ip = request.getRemoteAddr();
+		HttpSession session = request.getSession();
+		userId = (String) session.getAttribute("userId");
 	}
 
 	@RequestMapping(value = "CScenter", method = RequestMethod.GET)
@@ -128,6 +132,7 @@ public class CScenterController {
 		model.addAttribute("tempEndPage",tempEndPage);
 		model.addAttribute("page",page);
 		model.addAttribute("number",number);
+		model.addAttribute("userId",userId);
 		check=0;
 		return "CScenter/CScenterNotice";
 	}
@@ -191,6 +196,7 @@ public class CScenterController {
 		model.addAttribute("li1", li1);
 		model.addAttribute("li2", li2);
 		model.addAttribute("category", category);
+		model.addAttribute("userId",userId);
 
 		return "CScenter/CScenterFAQ";
 	}
@@ -198,6 +204,9 @@ public class CScenterController {
 	@RequestMapping(value = "CScenterQ&A", method = RequestMethod.GET)
 	public String CScenterQ(Model model, HttpSession session) throws Exception {
 		// 유저정보 받아와서 폼태그에 값 넣어주셈
+		
+		User userinfo = service.getUserInfo(userId);
+		model.addAttribute("userinfo",userinfo);
 		List li = service.getArticles2();
 		model.addAttribute("li", li);
 		return "CScenter/CScenterQ&A";

@@ -2,6 +2,7 @@ package util;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 
@@ -18,6 +19,8 @@ public class WebSocketChat {
 	@OnMessage
 	public void onMessage(String message, Session session) throws IOException {
 		System.out.println(message);
+		System.out.println("현재 접속자 수: " +clients.size());
+		System.out.println(clients.toString());
 		synchronized (clients) {
 			String id = null;
 			if (message.indexOf(":[") > 0) {

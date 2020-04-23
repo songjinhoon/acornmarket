@@ -84,15 +84,15 @@
     </div>
    	<script>
 		function pageChange1(){
-			window.location.href="http://localhost:8080/zSpringProject/chat/webNoteListForm?categoryCheck=2";
+			window.location.href="http://211.63.89.78:8080/zSpringProject/chat/webNoteListForm?categoryCheck=2";
 		}
 		function pageChange2(){
-			window.location.href="http://localhost:8080/zSpringProject/chat/webNoteListForm?categoryCheck=1";
+			window.location.href="http://211.63.89.78:8080/zSpringProject/chat/webNoteListForm?categoryCheck=1";
 		}
 		function messageEvent(){
 			var popupX = (window.screen.width / 2) - (400 / 2);
 			var popupY= (window.screen.height / 2) - (400 / 2);
-			window.open('http://localhost:8080/zSpringProject/common/messageForm.jsp','쪽지','width=400,height=400,location=no,status=no,scrollbars=yes, left=' + popupX + ', top=' + popupY);
+			window.open('http://211.63.89.78:8080/zSpringProject/common/messageForm.jsp','쪽지','width=400,height=400,location=no,status=no,scrollbars=yes, left=' + popupX + ', top=' + popupY);
 		}
    		function messageContent(messageNo){
    			var webNote = {
@@ -100,14 +100,14 @@
    			}
    			
    			$.ajax({
-	            url: "http://localhost:8080${pageContext.request.contextPath}/chat/messageContent",
+	            url: "http://211.63.89.78:8080${pageContext.request.contextPath}/chat/messageContent",
 	            type: "POST",
 	            dataType: "json",
 	            data: webNote,
 	            success: function(data){
 	            	var popupX = (window.screen.width / 2) - (400 / 2);
 	    			var popupY = (window.screen.height / 2) - (400 / 2);
-	    			var url = "http://localhost:8080/zSpringProject/common/messageContentForm.jsp?messageNo=" + data.messageno;					
+	    			var url = "http://211.63.89.78:8080/zSpringProject/common/messageContentForm.jsp?messageNo=" + data.messageno;					
  	    			window.open(url,'쪽지','width=400,height=400,location=no,status=no,scrollbars=yes, left=' + popupX + ', top=' + popupY);					 
 	            },
 	            error: function(){
@@ -130,7 +130,7 @@
 			}
 			
    			$.ajax({
-	            url: "http://localhost:8080${pageContext.request.contextPath}/chat/messsageDelete",
+	            url: "http://211.63.89.78:8080${pageContext.request.contextPath}/chat/messsageDelete",
 	            type: "POST",
 	            data: JSON.stringify(data),
 	            contentType: "application/json",

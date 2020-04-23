@@ -37,7 +37,7 @@
 	    	let queryString = $('#form1').serialize();
 	    	
 	        $.ajax({
-	            url: "http://localhost:8080${pageContext.request.contextPath}/chat/messagePro",
+	            url: "http://211.63.89.78:8080${pageContext.request.contextPath}/chat/messagePro",
 	            type: "POST",
 	            dataType: "json",
 	            data: queryString,

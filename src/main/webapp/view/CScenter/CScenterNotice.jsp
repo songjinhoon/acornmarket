@@ -14,13 +14,13 @@
 			<div class="single category">
 				<h3 class="side-title">카테고리</h3>
 				<ul class="list-unstyled">
-					<li><a href="" title="">디지털/가전</a></li>
-					<li><a href="" title="">가구/인테리어</a></li>
-					<li><a href="" title="">여성패션/잡화 </a></li>
-					<li><a href="" title="">남성패션/잡화 </a></li>
-					<li><a href="" title="">뷰티/미용</a></li>
-					<li><a href="" title="">반려동물용품</a></li>
-					<li><a href="" title="">기타중고물품</a></li>
+					<li><a href="${pageContext.request.contextPath}/board/categoryForm?category=디지털/가전" title="">디지털/가전</a></li>
+					<li><a href="${pageContext.request.contextPath}/board/categoryForm?category=가구/인테리어" title="">가구/인테리어</a></li>
+					<li><a href="${pageContext.request.contextPath}/board/categoryForm?category=여성패션/잡화" title="">여성패션/잡화 </a></li>
+					<li><a href="${pageContext.request.contextPath}/board/categoryForm?category=남성패션/잡화" title="">남성패션/잡화 </a></li>
+					<li><a href="${pageContext.request.contextPath}/board/categoryForm?category=뷰티/미용" title="">뷰티/미용</a></li>
+					<li><a href="${pageContext.request.contextPath}/board/categoryForm?category=반려동물용품" title="">반려동물용품</a></li>
+					<li><a href="${pageContext.request.contextPath}/board/categoryForm?category=기타중고물품" title="">기타중고물품</a></li>
 				</ul>
 			</div>
 		</div>
@@ -91,7 +91,9 @@
 						<!-- 하단 페이징 -->
 						<div class="pagination-box box">
 							<div class="pagination">
+							<c:if test="${userId == 'admin1' }">
 								<a href="${pageContext.request.contextPath}/CScenter/CScenter_writeForm?type=n&page=${page}" class="plain-btn btn search_again_btn faq_search_btn">글쓰기</a>
+								</c:if>
 								<div class="wrapper">
 									<a href="${pageContext.request.contextPath}/CScenter/CScenterNotice?page=1" class="fa fa-angle-double-left paging-btn btn first"></a>
 									<c:if test="${page > 1}"> 

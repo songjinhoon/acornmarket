@@ -1374,14 +1374,14 @@ h3 {
 @media (min-width: 1200px) and (max-width: 1500px) {
   /* line 7, ../../Arafath/CL/january 2020/240. Animal/HTML/scss/_slider.scss */
   .slider_area .single_slider {
-    height: 600px;
+    height: 700px;
   }
 }
 
 @media (min-width: 1501px) and (max-width: 1700px) {
   /* line 7, ../../Arafath/CL/january 2020/240. Animal/HTML/scss/_slider.scss */
   .slider_area .single_slider {
-    height: 600px;
+    height: 700px;
   }
 }
 

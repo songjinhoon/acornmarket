@@ -19,7 +19,7 @@
 		content, address, price, category, passwd, t1.likecheck from board t1
 		left outer join likecheck t2 on t1.boardnum = t2.boardnum and
 		t1.userid = t2.userid
-		where category = #{category}
+		where category = #{category}  and content like '%' ||  #{keyword} || '%'
 		order by boardnum desc
 	</select>
 	
@@ -29,12 +29,13 @@
 	
 	<!-- 글번호 올려주는거? -->
 	 <select id="insert_boardnum" resultType="int">
-		select max(boardnum)+1 from board
+		SELECT nvl(max(boardnum)+1, 1)
+		FROM board
 	</select> 
 
 	<insert id="insert" parameterType="Board">
 		insert into board values
-		(#{boardnum},#{userid},#{filename},#{readcount},sysdate,#{subject},#{content},#{address},#{price},#{category},0,#{passwd},0)
+		(#{boardnum},#{userid},#{filename},#{readcount},sysdate,#{subject},#{content},#{address},#{price},#{category},0,#{passwd})
 	</insert>
 
 	<update id="content_update" parameterType="int">
@@ -70,11 +71,11 @@
 	
 	<!-- 좋아요 likenum -->
 	<select id="insert_likenum" resultType="int">
-	select max(likenum)+1 from likecheck
+		select nvl(max(likenum)+1, 0) from likecheck
 	</select> 
 	
 	<insert id="insertLike" parameterType="LikeCheck">
-	insert into likecheck (likenum, boardnum, userid, likecheck) values (#{likenum}, #{boardnum}, #{userid}, 1)
+	insert into likecheck (likenum, boardnum, userid, likecheck) values (#{likenum}, #{boardnum}, #{userid}, -1)
 	</insert>
 	
 	<update id="toggleLike" parameterType="LikeCheck">
@@ -129,7 +130,7 @@
 		SELECT *
 		FROM   (SELECT * 
 		        FROM board 
-		        ORDER BY likecount DESC)
+		        ORDER BY readcount DESC)
 		WHERE  ROWNUM &lt;= #{count} 
 	</select>
 	

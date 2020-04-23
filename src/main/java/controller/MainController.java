@@ -54,6 +54,8 @@ public class MainController {
 	public List<Board> chart2(){
 		int count = 6;
 		List<Board> boardList = boardService.getBoardList(count);
+		
+		
 		//이곳에 해쉬 태그 처리 해주고 해시태그를 데이터에 넣어주면 끝.
 		
 		return boardList;

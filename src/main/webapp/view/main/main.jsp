@@ -23,7 +23,9 @@
                     <div class="col-lg-2 col-md-6">
                     </div>
                     <div class="col-lg-5 col-md-6 fcan">
+                    	<p class="text-center" style="color: black; font-weight: bold;">온도가 가장 높은 도토리인 TOP 6</p>
                     	<canvas id="myChart1" width="400" height="250"></canvas>
+                    	<p class="text-center" style="color: black; font-weight: bold;">조회수가 가장 많은 게시글 TOP 6</p>
                     	<canvas id="myChart2" width="400" height="250"></canvas>
                     </div>
                 </div>
@@ -80,59 +82,6 @@
             </div>
         </div>
     </div>
-    <footer class="footer">
-        <div class="footer_top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-4 col-md-8 col-lg-4">
-                        <div class="footer_widget">
-                            <h3 class="footer_title">Introduction</h3>
-                            <ul class="address_line">
-                                <li>+880 4664 216</li>
-                                <li><a href="#"></a></li>
-                                <li>132, Teheran-ro, Gangnam-gu, Seoul, Republic of Korea</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-4  col-md-8 col-lg-4">
-                        <div class="footer_widget">
-                            <h3 class="footer_title">Service</h3>
-                            <ul class="links">
-                                <li><a href="#" onclick="return false;">거래 온도</a></li>
-                                <li><a href="#" onclick="return false;">거래 게시판</a></li>
-                                <li><a href="#" onclick="return false;">거래 장소 설정</a></li>
-                                <li><a href="#" onclick="return false;">쪽지 채팅</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-4  col-md-8 col-lg-4">
-                        <div class="footer_widget">
-                            <h3 class="footer_title">Project Member</h3>
-                            <ul class="links">
-                                <li><a href="#" onclick="return false;">Song Jinhoon</a></li>
-                                <li><a href="#" onclick="return false;">Kim Sunho</a></li>
-                                <li><a href="#" onclick="return false;">Kim Ensole</a></li>
-                                <li><a href="#" onclick="return false;">Kim Yurim</a></li>
-                            </ul>
-                        </div>
-                    </div>
-            	</div>
-        	</div>
-       	</div>
-        <div class="copy-right_text">
-            <div class="container">
-                <div class="bordered_1px"></div>
-                <div class="row">
-                    <div class="col-xl-12">
-                        <p class="copy_right text-center">
-                        	동네 주민들과 함께 하는 사이트 도토리 마켓
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-
     <!-- JS here -->
     <script src="${pageContext.request.contextPath}/js/vendor/modernizr-3.5.0.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/vendor/jquery-1.12.4.min.js"></script>
@@ -217,15 +166,14 @@
 	            url: "http://211.63.89.78:8080${pageContext.request.contextPath}/main/chart2",
 	            type: "GET",
 	            success: function(data){
-	            	alert(data);
 	        		var ctx = document.getElementById('myChart2');
 	        		var myChart = new Chart(ctx, {
 	        		    type: 'pie',
 	        		    data: {
-	        		        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+	        		        labels: [data[0].subject, data[1].subject, data[2].subject, data[3].subject, data[4].subject, data[5].subject],
 	        		        datasets: [{
 	        		            label: '# of Votes',
-	        		            data: [12, 19, 3, 5, 2, 3],
+	        		            data: [data[0].readcount, data[1].readcount, data[2].readcount, data[3].readcount, data[4].readcount, data[5].readcount],
 	        		            backgroundColor: [
 	        		                'rgba(255, 99, 132, 0.2)',
 	        		                'rgba(54, 162, 235, 0.2)',

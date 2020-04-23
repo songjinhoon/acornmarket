@@ -5,26 +5,9 @@
 <html>
 <head>
 <title>카테고리폼</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-
-
-<!-- 리스트 -->
 <link
 	href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css"
 	rel="stylesheet" id="bootstrap-css">
-<script
-	src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
 <!-- 검색창  -->
 <!-- <script type="text/javascript">
@@ -123,7 +106,7 @@ function search() {
 									<a href="#" class="list-group-item">
 										<div class="media col-md-3">
 											<figure class="pull-left">
-												<img class="media-object img-rounded img-responsive"
+												<img class="media-object img-rounded img-responsive round"
 													src="${pageContext.request.contextPath}/uploadFile/${list.filename}"  alt=""></figure>
 													
 										</div>
@@ -140,19 +123,18 @@ function search() {
 												<p class="list-group-item-text">${list.price} 원</p>
 										</div>
 										
-									
-									
+								
 										
-										${list.likecheck}
+										<div class="col-md-3 text-center">
+										
 										<c:if test="${list.likecheck == -1 || list.likecheck == 0 }">
-										<img src='${pageContext.request.contextPath}/img/list/dislike.png' onclick="like(${list.boardnum},'${list.userid}');" id='${list.boardnum}like_img' style="width: 5%; height: 5%;">
+										<img src='${pageContext.request.contextPath}/img/list/dislike.png' onclick="like(${list.boardnum},'${list.userid}');" id='${list.boardnum}like_img' style="width: 21%; height: 5%;">
 										</c:if>
 										
 										<c:if test="${list.likecheck == 1}">
-										<img src='${pageContext.request.contextPath}/img/list/like.png' onclick="like(${list.boardnum},'${list.userid}');" id='${list.boardnum}like_img' style="width: 5%; height: 5%;">
+										<img src='${pageContext.request.contextPath}/img/list/like.png' onclick="like(${list.boardnum},'${list.userid}');" id='${list.boardnum}like_img' style="width: 21%; height: 5%;">
 										</c:if>
 								
-										<div class="col-md-3 text-center">
 										
 										<c:if test="${list.soldout == 0}">
 											<button type="button" class="btn btn-info btn-md btn-block blue" 
@@ -184,7 +166,6 @@ function search() {
 
 			var action = "${pageContext.request.contextPath}/board/like";
 			var data = {boardnum: boardnum, userid : userid};
-			alert(JSON.stringify(data))
 		
 		  $.ajax({
 		    type: "GET",

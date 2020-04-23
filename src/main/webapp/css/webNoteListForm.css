@@ -18,4 +18,4 @@
 #section3 .row .pagebutton { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
 #section3 .row #deleteBtn { position: absolute; right: 10%; width: 50%; }
 #section3 .row #deleteBtn:hover { background-color: #745d46; }
-
+footer { margin-top: 400px; }

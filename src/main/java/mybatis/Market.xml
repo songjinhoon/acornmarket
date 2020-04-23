@@ -15,29 +15,81 @@
 		(#{num},#{category},#{subject},#{region},#{sdate},#{edate},#{writer},#{stime},#{etime},#{address},#{detailaddress},#{content},#{passwd},#{regdate},#{readcount},#{ip})
 	</insert>
 
-	<select id="getArticle" resultType="Market">
-		select *
-		from market order by
-		num desc
+	<select id="getArticle" parameterType="hashmap" resultType="Market">
+		<if test="searchType == 'all'.toString()">
+			select * from (select rownum rnum,a.* from(select * from
+			market order by num desc) a) where rnum between #{getPageStart}
+			and
+			#{getPageEnd}
+		</if>
+		<if test="searchType == 's'.toString()">
+			select * from (select rownum rnum,a.* from(select * from
+			market where subject like '%' ||  #{keyword} || '%' order by num desc) a) where rnum between #{getPageStart}
+			and
+			#{getPageEnd}
+		</if>
+		<if test="searchType == 'r'.toString()">
+			select * from (select rownum rnum,a.* from(select * from
+			market where region like '%' ||  #{keyword} || '%' order by num desc) a) where rnum between #{getPageStart}
+			and
+			#{getPageEnd}
+		</if>
+		<if test="searchType == 'c'.toString()">
+			select * from (select rownum rnum,a.* from(select * from
+			market where category like '%' ||  #{keyword} || '%' order by num desc) a) where rnum between #{getPageStart}
+			and
+			#{getPageEnd}
+		</if>
 	</select>
 
 	<select id="getArticles" parameterType="int" resultType="Market">
 		select *
 		from market where num = #{num}
 	</select>
-	
+
 	<select id="insert_max2" resultType="int">
-		select nvl(max(cmt_num)+1,1) from
-		cmtboard
+		select nvl(max(cmt_num)+1,1)
+		from
+		cmtboard where num = #{num}
 	</select>
-	
+
 	<insert id="insert2" parameterType="Marketcmt">
 		insert into cmtboard values
 		(#{num},#{cmt_num},#{cmt_writer},#{cmt_star},#{cmt_content},sysdate)
 	</insert>
-	
-	<select id="getArticles2" parameterType="int" resultType="Marketcmt">
-		select *
-		from cmtboard where num = #{num} order by cmt_regdate desc
+
+	<select id="getArticles2" parameterType="hashmap" resultType="Marketcmt">
+		select * from(select rownum rnum,a.* from(select * from cmtboard where
+		num = #{num} order
+		by cmt_num desc) a)where rnum between
+		#{getPageStart}
+		and #{getPageEnd}
+	</select>
+
+	<select id="getArticleCount" resultType="int">
+		select nvl(count(*),0)
+		from market
+	</select>
+
+	<select id="getPasswd" parameterType="int" resultType="string">
+		select
+		passwd from market where num = #{num}
+	</select>
+
+	<delete id="delete" parameterType="int">
+		delete from market where num
+		=
+		#{num}
+	</delete>
+
+	<select id="getAverage" resultType="double">
+		select nvl(avg(cmt_star),0)
+		from cmtboard where num = #{num}
+	</select>
+
+	<select id="getCmtCount" resultType="int">
+		select nvl(count(*),0)
+		from
+		cmtboard where num = #{num}
 	</select>
 </mapper>

@@ -91,19 +91,19 @@
 										<tr>
 											<th scope="row">작성자</th>
 											<td>
-												<input type="text" class="n-input" name="writer" value="${userName}">
+												<input type="text" class="n-input" name="writer" value="${userinfo.userid}">
 											</td>
 										</tr>
 										<tr class="n-same-row">
 											<th scope="row">휴대전화</th>
 											<td>
-												<input type="text" class="n-input" value="폰번호 넣기">
+												<input type="text" class="n-input" value="${userinfo.userphone}">
 											</td>
 										</tr>
 										<tr class="n-same-row">
 											<th scope="row">이메일</th>
 											<td>
-												<input type="text" class="n-input" value="이메일 넣기">
+												<input type="text" class="n-input" value="${userinfo.useremail}">
 											</td>
 										</tr>
 										<tr class="n-same-row">
@@ -154,7 +154,7 @@
 						<!-- 버튼 -->
 						<div class="n-btn-group">
 							<a href="javascript:void(0)" onclick="cancel(); return false;" class="n-btn btn-lighter">취소</a>
-							<a href="#" id="btn1">작성하기</a>
+							<a href="#" id="btn1" class="n-btn btn-lighter">작성하기</a>
 							<!-- <a href="javascript:void(0)" onclick="qna_add(); return false;" class="n-btn btn-accent">작성하기</a> -->
 						</div>
 						<!-- /버튼 -->
@@ -166,6 +166,7 @@
 	</div>
 </body>
 	<script>
+	
 		$('#btn1').on('click', function(){
 			let queryString = $('#form1').serialize();
 			

@@ -50,7 +50,7 @@
 							<strong>시간</strong> ${article.stime} ~ ${article.etime }
 						</p>
 						<div class="action">
-							<button class="add-to-cart btn btn-default" type="button">delete</button>
+							<button class="add-to-cart btn btn-default" type="button" onclick="location.href='${pageContext.request.contextPath}/market/market_deleteform?num=${num }'">delete</button>
 						</div>
 					</div>
 				</div>
@@ -62,23 +62,8 @@
 				<div class="rating-block">
 					<h4>Average user rating</h4>
 					<h2 class="bold padding-bottom-7">
-						4.3 <small>/ 5</small>
+						${average } <small>/ 10</small>
 					</h2>
-					<button type="button" class="btn btn-warning btn-sm" aria-label="Left Align">
-						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-					</button>
-					<button type="button" class="btn btn-warning btn-sm" aria-label="Left Align">
-						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-					</button>
-					<button type="button" class="btn btn-warning btn-sm" aria-label="Left Align">
-						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-					</button>
-					<button type="button" class="btn btn-default btn-grey btn-sm" aria-label="Left Align">
-						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-					</button>
-					<button type="button" class="btn btn-default btn-grey btn-sm" aria-label="Left Align">
-						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-					</button>
 				</div>
 			</div>
 			<div class="col-sm-3">
@@ -86,7 +71,7 @@
 				<div class="pull-left">
 					<div class="pull-left" style="width: 35px; line-height: 1;">
 						<div style="height: 9px; margin: 5px 0;">
-							5 <span class="glyphicon glyphicon-star"></span>
+							10 <span class="glyphicon glyphicon-star"></span>
 						</div>
 					</div>
 					<div class="pull-left" style="width: 180px;">
@@ -101,7 +86,7 @@
 				<div class="pull-left">
 					<div class="pull-left" style="width: 35px; line-height: 1;">
 						<div style="height: 9px; margin: 5px 0;">
-							4 <span class="glyphicon glyphicon-star"></span>
+							8 <span class="glyphicon glyphicon-star"></span>
 						</div>
 					</div>
 					<div class="pull-left" style="width: 180px;">
@@ -116,7 +101,7 @@
 				<div class="pull-left">
 					<div class="pull-left" style="width: 35px; line-height: 1;">
 						<div style="height: 9px; margin: 5px 0;">
-							3 <span class="glyphicon glyphicon-star"></span>
+							6 <span class="glyphicon glyphicon-star"></span>
 						</div>
 					</div>
 					<div class="pull-left" style="width: 180px;">
@@ -131,7 +116,7 @@
 				<div class="pull-left">
 					<div class="pull-left" style="width: 35px; line-height: 1;">
 						<div style="height: 9px; margin: 5px 0;">
-							2 <span class="glyphicon glyphicon-star"></span>
+							4 <span class="glyphicon glyphicon-star"></span>
 						</div>
 					</div>
 					<div class="pull-left" style="width: 180px;">
@@ -146,7 +131,7 @@
 				<div class="pull-left">
 					<div class="pull-left" style="width: 35px; line-height: 1;">
 						<div style="height: 9px; margin: 5px 0;">
-							1 <span class="glyphicon glyphicon-star"></span>
+							2 <span class="glyphicon glyphicon-star"></span>
 						</div>
 					</div>
 					<div class="pull-left" style="width: 180px;">
@@ -164,65 +149,72 @@
 			<div class="col-sm-6">
 				<hr />
 				<form class="star-input" method="post" action="${pageContext.request.contextPath}/market/market_cmtwrite?num=${num}">
-				<input type="hidden" name = "cmt_writer" value="${userId}">
-				<input type="hidden" name = "num" value="${num}">
+					<input type="hidden" name="cmt_writer" value="${userId}">
 					<div class="review-block">
 						<div class="row">
 							<div class="col-sm-9">
 								<div class="review-block-rate">
-									<span class="star-input"> 
-									<span class="input"> 
-									<input type="radio" name="cmt_star" id="p1" value="1"><label for="p1">1</label> 
-									<input type="radio" name="cmt_star" id="p2" value="2"><label for="p2">2</label> 
-									<input type="radio" name="cmt_star" id="p3" value="3"><label for="p3">3</label> 
-									<input type="radio" name="cmt_star" id="p4" value="4"><label for="p4">4</label> 
-									<input type="radio" name="cmt_star" id="p5" value="5"><label for="p5">5</label> 
-									<input type="radio" name="cmt_star" id="p6" value="6"><label for="p6">6</label> 
-									<input type="radio" name="cmt_star" id="p7" value="7"><label for="p7">7</label> 
-									<input type="radio" name="cmt_star" id="p8" value="8"><label for="p8">8</label> 
-									<input type="radio" name="cmt_star" id="p9" value="9"><label for="p9">9</label> 
-									<input type="radio" name="cmt_star" id="p10" value="10"><label for="p10">10</label>
-									</span> 
-									<output for="star-input"><b>0</b>점</output>
+									<span class="star-input"> <span class="input"> <input type="radio" name="cmt_star" id="p1" value="1"><label for="p1">1</label> <input type="radio" name="cmt_star" id="p2" value="2"><label for="p2">2</label> <input type="radio" name="cmt_star" id="p3" value="3"><label for="p3">3</label> <input type="radio" name="cmt_star" id="p4" value="4"><label for="p4">4</label> <input type="radio" name="cmt_star" id="p5" value="5"><label for="p5">5</label> <input type="radio" name="cmt_star" id="p6" value="6"><label for="p6">6</label> <input type="radio" name="cmt_star" id="p7" value="7"><label for="p7">7</label> <input type="radio" name="cmt_star" id="p8" value="8"><label for="p8">8</label> <input type="radio" name="cmt_star" id="p9" value="9"><label for="p9">9</label> <input type="radio" name="cmt_star" id="p10" value="10"><label for="p10">10</label>
+									</span> <output for="star-input">
+										<b>0</b>점</output>
 									</span>
 								</div>
 								<div class="review-block-description">
-								<c:if test="${userId == null}">
-									<textarea name="cmt_content" cols="65" rows="7" readonly="readonly">로그인 후 이용가능한 서비스입니다.</textarea>
+									<c:if test="${userId == null}">
+										<textarea name="cmt_content" cols="65" rows="7" readonly="readonly">로그인 후 이용가능한 서비스입니다.</textarea>
 									</c:if>
 									<c:if test="${userId != null}">
-									<textarea name="cmt_content" cols="65" rows="7"></textarea>
+										<textarea name="cmt_content" cols="65" rows="7"></textarea>
 									</c:if>
 								</div>
 								<c:if test="${userId != null}">
-								<input type="submit" name="submit" value="등록">
+									<input type="submit" name="submit" value="등록">
 								</c:if>
 							</div>
 						</div>
 					</div>
 				</form>
-				<hr/>
+				<hr />
 				<c:forEach var="article" items="${li}">
 					<div class="row">
 						<div class="col-sm-3">
 							<img src="http://dummyimage.com/60x60/666/ffffff&text=No+Image" class="img-rounded">
-							<div class="review-block-name"><a href="#">${article.cmt_writer}</a></div>
+							<div class="review-block-name">
+								<a href="#">${article.cmt_writer}</a>
+							</div>
 							<div class="review-block-date">${article.cmt_regdate}</div>
 						</div>
 						<div class="col-sm-9">
 							<div class="review-block-rate">
 								<div class="stars">
-								<span class="fa fa-star checked"></span>
-								<span class="fa fa-star checked"></span>
-								<span class="fa fa-star checked"></span>
-								<span class="fa fa-star"></span>
-								<span class="fa fa-star"></span>
-							</div>
+									<span class="fa fa-star checked"></span> <span class="fa fa-star checked"></span> <span class="fa fa-star checked"></span> <span class="fa fa-star"></span> <span class="fa fa-star"></span>
+								</div>
 							</div>
 							<div class="review-block-description">${article.cmt_content}</div>
 						</div>
 					</div>
+				</c:forEach>
+				<nav aria-label="pagination">
+				<ul class="pagination">
+
+					<!-- prev 버튼 -->
+					<c:if test="${page > 1}">
+					<li id="page-prev"><a href="${pageContext.request.contextPath}/market/market_content?num=${num }&page=${page-1}" aria-label="Prev"> <span aria-hidden="true">«</span>
+					</a></li></c:if>
+
+					<!-- 페이지 번호 (시작 페이지 번호부터 끝 페이지 번호까지) -->
+					<c:forEach begin="${startPage}" end="${endPage}" var="i">
+						<li id="page${i}"><a href="${pageContext.request.contextPath}/market/market_content?num=${num }&page=${i}"> <!-- 시각 장애인을 위한 추가 --> <span>${i}<span class="sr-only">(current)</span></span>
+						</a></li>
 					</c:forEach>
+
+					<!-- next 버튼 -->
+					<c:if test="${page < endPage}"> 
+					<li id="page-next"><a href="${pageContext.request.contextPath}/market/market_content?num=${num }&page=${page+ 1}" aria-label="Next"> <span aria-hidden="true">»</span>
+					</a></li></c:if>
+
+				</ul>
+				</nav>
 			</div>
 		</div>
 		<!-- /container -->
@@ -277,35 +269,29 @@
 		</script>
 </body>
 <script>
-var starRating = function(){
-	  var $star = $(".star-input"),
-	      $result = $star.find("output>b");
-	  $(document)
-	    .on("focusin", ".star-input>.input", function(){
-	    $(this).addClass("focus");
-	  })
-	    .on("focusout", ".star-input>.input", function(){
-	    var $this = $(this);
-	    setTimeout(function(){
-	      if($this.find(":focus").length === 0){
-	        $this.removeClass("focus");
-	      }
-	    }, 100);
-	  })
-	    .on("change", ".star-input :radio", function(){
-	    $result.text($(this).next().text());
-	  })
-	    .on("mouseover", ".star-input label", function(){
-	    $result.text($(this).text());
-	  })
-	    .on("mouseleave", ".star-input>.input", function(){
-	    var $checked = $star.find(":checked");
-	    if($checked.length === 0){
-	      $result.text("0");
-	    } else {
-	      $result.text($checked.next().text());
-	    }
-	  });
+	var starRating = function() {
+		var $star = $(".star-input"), $result = $star.find("output>b");
+		$(document).on("focusin", ".star-input>.input", function() {
+			$(this).addClass("focus");
+		}).on("focusout", ".star-input>.input", function() {
+			var $this = $(this);
+			setTimeout(function() {
+				if ($this.find(":focus").length === 0) {
+					$this.removeClass("focus");
+				}
+			}, 100);
+		}).on("change", ".star-input :radio", function() {
+			$result.text($(this).next().text());
+		}).on("mouseover", ".star-input label", function() {
+			$result.text($(this).text());
+		}).on("mouseleave", ".star-input>.input", function() {
+			var $checked = $star.find(":checked");
+			if ($checked.length === 0) {
+				$result.text("0");
+			} else {
+				$result.text($checked.next().text());
+			}
+		});
 	};
 	starRating();
 </script>

@@ -49,8 +49,7 @@
 	<script type="text/javascript">
 		var textarea = document.getElementById('messageWindow');
 		var userlsitarea = document.getElementById('userListWindow');
-		<%-- var webSocket = new WebSocket('ws://localhost:8080<%= request.getContextPath() %>/weball'); --%>
-		var webSocket = new WebSocket('ws://localhost:8080<%= request.getContextPath() %>/chat');
+		var webSocket = new WebSocket('ws://211.63.89.78:8080<%= request.getContextPath() %>/chat');
 		var inputMessage = document.getElementById('inputMessage');
 		
 		webSocket.onerror = function(event){ onError(event) };

@@ -74,13 +74,8 @@
 									<h3 style="margin-bottom: 25px; text-align: center;">${article.subject}
 									</h3>
 
-
-									<div class="form-group cont2">
-										<input type="text" class="form-control white" id="boardnum"
-											name="boardnum" value="${article.boardnum}" readonly
-											name="boardnum">
-									</div>
-
+										<input type="hidden" name="boardnum" value="${article.boardnum}">
+									
 									<div class="form-group cont2">
 										<input type="text" class="form-control white" id="regdate"
 											name="regdate" value="${article.regdate}" readonly
@@ -89,26 +84,14 @@
 
 									<div class="form-group cont2">
 										<input type="text" class="form-control" id="readcount"
-											name="readcount" value="${article.readcount}" readonly
+											name="readcount" value="조회수 - ${article.readcount}" readonly
 											name="readcount">
 									</div>
 
-									<div class="form-group cont1">
+									<div class="form-group cont2">
 										<input type="text" class="form-control" id="userid"
-											name="userid" value="${article.userid}">
+											name="userid" value="작성자 -${article.userid}">
 									</div>
-
-
-									<c:choose>
-										<c:when test="${userid ne null}">
-											<a href='javascript: like_func();'><img
-												src='./images/dislike.png' id='like_img'></a>
-										</c:when>
-										<c:otherwise>
-											<a href='javascript: login_need();'><img
-												src='./images/dislike.png'></a>
-										</c:otherwise>
-									</c:choose>
 
 
 									<div class="form-group">
@@ -124,7 +107,7 @@
 
 									<div class="form-group">
 										가격 : <input type="text" class="form-control" id="price"
-											name="price" value="${article.price}" readonly>
+											name="price" value="가격 - ${article.price}" readonly>
 									</div>
 
 									<div class="form-group">

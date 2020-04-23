@@ -96,3 +96,10 @@
     font:bold 18px Helvetica, Arial, sans-serif;
     vertical-align: middle;
 }
+.header-area .header-top_area{
+	padding: 19px 0 10.5px 0;
+}
+#navigation a{
+	text-decoration: none;
+}
+

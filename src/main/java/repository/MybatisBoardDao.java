@@ -31,7 +31,7 @@ public class MybatisBoardDao extends AbstractRepository {
 		}
 	}
 
-	public List<Board> getArticles(int startRow, int endRow, String category) {
+	public List<Board> getArticles(int startRow, int endRow, String category,String keyword) {
 
 		startRow = startRow - 1;
 		endRow = endRow - startRow;
@@ -40,10 +40,14 @@ public class MybatisBoardDao extends AbstractRepository {
 		map.put("category", category);
 		map.put("startRow", startRow);
 		map.put("endRow", endRow);
+		map.put("keyword", keyword);
+		System.out.println("category="+category);
+		System.out.println(keyword);
 
 		SqlSession sqlSession = getSqlSessionFactory().openSession();
 		try {
 			String statement = namespace + ".getArticles";
+			System.out.println(sqlSession.selectList(statement, map));
 			return sqlSession.selectList(statement, map);
 		} finally {
 			sqlSession.close();
@@ -66,20 +70,14 @@ public class MybatisBoardDao extends AbstractRepository {
 	
 
 	public void insertArticle(Board article) {
-	
 		SqlSession sqlSession = getSqlSessionFactory().openSession();
-
 		String statement = null;
-
-		int boardnumber = article.getBoardnum();
-		int number = 1;
-		
 		try {
-			article.setBoardnum(boardnumber);
-			number = sqlSession.selectOne(namespace + ".insert_boardnum");
+			statement = namespace + ".insert_boardnum";
+			int number = sqlSession.selectOne(statement);
 			article.setBoardnum(number);
-			sqlSession.insert(namespace + ".insert", article);
-			
+			statement = namespace + ".insert";
+			sqlSession.insert(statement, article);
 			sqlSession.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -280,11 +278,11 @@ public class MybatisBoardDao extends AbstractRepository {
 		
 		public void insertLike(LikeCheck like) {
 			SqlSession sqlSession = getSqlSessionFactory().openSession();
-				
+			System.out.println("like check: " + like);
 			int number = 1;
 				
 			try {
-				number = sqlSession.insert(namespace + ".insert_likenum", like);
+				number = sqlSession.selectOne(namespace + ".insert_likenum", like);
 					like.setLikenum(number);
 					sqlSession.insert(namespace + ".insertLike", like);
 					sqlSession.commit();

@@ -78,4 +78,9 @@
 		select * from csboard where
 		category='faq2'
 	</select>
+	
+	<select id="getUserInfo" resultType="User">
+		select * from user1 where
+		userid=#{userId}
+	</select>
 </mapper>
