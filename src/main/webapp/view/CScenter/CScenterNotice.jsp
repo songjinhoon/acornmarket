@@ -6,6 +6,9 @@
 <title>공지사항 | 도토리 마켓</title>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/CScenterNotice.css" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/store_common.css" />
+<style>
+	footer { margin-top: 400px; }
+</style>
 </head>
 <body>
 	<div class="row">

@@ -35,7 +35,7 @@
 
 	<insert id="insert" parameterType="Board">
 		insert into board values
-		(#{boardnum},#{userid},#{filename},#{readcount},sysdate,#{subject},#{content},#{address},#{price},#{category},0,#{passwd})
+		(#{boardnum},#{userid},#{filename},#{readcount},sysdate,#{subject},#{content},#{address},#{price},#{category},0,#{passwd},0)
 	</insert>
 
 	<update id="content_update" parameterType="int">

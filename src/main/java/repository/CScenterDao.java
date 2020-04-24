@@ -74,6 +74,8 @@ public class CScenterDao extends AbstractRepository {
 			String statement = namespace + ".insert_max";
 			num = sqlSession.selectOne(statement);
 			article.setNum(num);
+			
+			System.out.println(article);
 			sqlSession.insert(namespace + ".insert", article);
 			sqlSession.commit();
 		} catch (Exception e) {

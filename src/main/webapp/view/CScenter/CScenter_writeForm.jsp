@@ -8,7 +8,6 @@
 </head>
 <style>
 body {
-	padding-top: 70px;
 	padding-bottom: 30px;
 }
 </style>
@@ -71,8 +70,7 @@ body {
 		}
 		if (index == 2) {
 
-			document.writeform.action = '${pageContext.request.contextPath}/CScenter/CScenter_write?type=${type}';
-
+			window.location = 'http://211.63.89.78:8000/zSpringProject/CScenter/CScenter_write?type=${type}';
 		}
 		document.form.submit();
 

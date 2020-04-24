@@ -9,7 +9,8 @@
 </head>
 <body>
 	<form name="form" id="form" role="form" method="post">
-		<input type="hidden" name="readCount" value="${article.readcount }"> <input type="hidden" name="readCount" value="${regdate }"> <input type="hidden" name="subject" value="${article.subject }"> <input type="hidden" name="content" value="${article.content }"> <input type="hidden" name="adminId" value="${article.adminId }"> <input type="hidden" name="category" value="${article.category }"> <input type="hidden" name="passwd" value="${article.passwd }">
+		<input type="hidden" name="readCount" value="${article.readcount }"> 
+		<%-- <input type="hidden" name="regdate" value="${regdate }"> --%> <input type="hidden" name="subject" value="${article.subject }"> <input type="hidden" name="content" value="${article.content }"> <input type="hidden" name="adminId" value="${article.adminId }"> <input type="hidden" name="category" value="${article.category }"> <input type="hidden" name="passwd" value="${article.passwd }">
 		<div class="row">
 			<div class="col-sm-2">
 				<!-- Category -->
@@ -72,12 +73,11 @@
 </body>
 <script>
 	function mySubmit(index) {
-
 		if (index == 1) {
 			if( ${type=='write'}) {
-			document.form.action = '${pageContext.request.contextPath}/CScenter/CScenter_write';
+				document.form.action = '${pageContext.request.contextPath}/CScenter/CScenter_write';
 			}
-			document.form.action = '${pageContext.request.contextPath}/CScenter/CScenter_modify?num=${num}';
+				document.form.action = '${pageContext.request.contextPath}/CScenter/CScenter_modify?num=${num}';
 		}
 		if (index == 2) {
 

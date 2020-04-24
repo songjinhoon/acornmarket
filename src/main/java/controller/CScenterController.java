@@ -85,12 +85,10 @@ public class CScenterController {
 
 	@RequestMapping(value = "CScenter_write", method = RequestMethod.POST)
 	public String CScenter_writePro(CScenterDataBean article,@RequestParam(value="type", required = false, defaultValue="n") String type) throws Exception {
-
-		System.out.println(article);
 		article.setIp(ip);
 		service.insertArticle(article);
 		if(type.equals("n")) {
-		return "redirect:/CScenter/CScenterNotice";
+			return "redirect:/CScenter/CScenterNotice";
 		}
 		return "redirect:/CScenter/CScenterFAQ";
 	}

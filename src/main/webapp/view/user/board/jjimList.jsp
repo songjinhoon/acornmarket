@@ -50,12 +50,12 @@
 								<div class="col-md-4 col-sm-6">
 									<div class="product-grid8">
 										<div class="product-image8">
-											<%-- <a href="${pageContext.request.contextPath}/board/content?num=${list.boardnum}"> 
+											<a href="${pageContext.request.contextPath}/board/content?num=${list.boardnum}"> 
 										<img class="pic-1" src="${pageContext.request.contextPath}/uploadFile/${list.filename}">
-									</a> --%>
-											<a href="${pageContext.request.contextPath}/board/content?num=${list.boardnum}">
+									</a>
+											<%-- <a href="${pageContext.request.contextPath}/board/content?num=${list.boardnum}">
 												<img class="pic-1" src="${pageContext.request.contextPath}/img/list/aa.png">
-											</a>
+											</a> --%>
 										</div>
 										<div class="product-content">
 											<div class="price">${list.subject}</div>

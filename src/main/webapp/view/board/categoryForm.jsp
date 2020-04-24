@@ -31,14 +31,15 @@ function search() {
 	<nav class="nav1">
 		<div class="container">
 			<div class="right">
-				<form class="form-inline" action="search();">
-					<input class="form-control mr-sm-2" id="search_subject" type="text"
-						placeholder="도토리 찾기">
-					<button class="btn btn-outline-warning" type="submit"
-						style="height: 40px;" onclick="search();">
-						<i class="fa fa-search"></i>
-					</button>
-				</form>
+				<form class="form-inline">
+            <input type="hidden" name="category" value="${category }"> 
+               <input class="form-control mr-sm-2" id="search_subject" name="keyword" type="text"
+                  placeholder="도토리 찾기">
+               <button class="btn btn-outline-warning" type="submit"
+                  style="height: 40px;" onclick="search();">
+                  <i class="fa fa-search"></i>
+               </button>
+            </form>
 			</div>
 		</div>
 	</nav>

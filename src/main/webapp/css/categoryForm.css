@@ -77,13 +77,17 @@ a.list-group-item.active small {
 .blue {
 	width : 75%;
 	font-size: 15px; 
-	margin-left: 30%;
+	float: right;
 }
 
 .writebutton { 
 	margin-right: 4%;
 }
 
+.round {
+	width: 600px;
+	height: 180px;
+}
 
 
 
